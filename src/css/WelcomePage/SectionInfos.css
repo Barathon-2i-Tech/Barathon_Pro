@@ -1,0 +1,54 @@
+/*-----------SECTION:BANNER INFOS-----------*/
+.sec-banner-infos {
+}
+
+.sec-banner-infos .banner-infos-bg__txt-container {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.sec-banner-infos .elementor-shape {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    width: 100vw;
+    line-height: 0;
+    direction: ltr;
+}
+
+.sec-banner-infos .elementor-shape-top {
+    top: -59px;
+}
+.sec-banner-infos .elementor-shape-bottom {
+    bottom: -59px;
+}
+
+.sec-banner-infos .elementor-shape .elementor-shape-fill {
+    -webkit-transform-origin: center;
+    -ms-transform-origin: center;
+    transform-origin: center;
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+}
+
+.sec-banner-infos .elementor-shape.elementor-shape-top svg{
+    width: calc(250% + 1.3px);
+    height: 60px;
+    transform: translateX(-50%) rotateY(180deg);
+}
+.sec-banner-infos .elementor-shape.elementor-shape-bottom svg{
+    width: calc(250% + 1.3px);
+    height: 60px;
+    transform: translateX(-80%) rotateY(180deg);
+}
+.sec-banner-infos .elementor-shape svg {
+    display: block;
+    position: relative;
+    left: 50%;
+}
+
+.sec-banner-infos .elementor-shape.elementor-shape-bottom, .sec-banner-infos .elementor-shape.elementor-shape-top {
+    -webkit-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+}

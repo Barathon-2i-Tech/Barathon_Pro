@@ -1,0 +1,161 @@
+@font-face {
+    font-family: MontserratExtraBold;
+    src:local("MontserratExtraBold"), url("src/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: MontserratBoldItalic;
+    src: local("MontserratBoldItalic"), url("src/fonts/Montserrat-BoldItalic.ttf") format("truetype");
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: MontserratBold;
+    src: local("MontserratBold"), url("src/fonts/Montserrat-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: MontserratMedium;
+    src: local("MontserratMedium"), url("src/fonts/Montserrat-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: MontserratRegular;
+    src: local("MontserratRegular"), url("src/fonts/Montserrat-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+.body {
+    font-family: MontserratRegular;
+}
+
+.font-bold {
+    font-family: MontserratBold;
+}
+
+/* Headings */
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+    margin: 0 0 16px;
+    line-height: 1.2;
+}
+
+h1,
+.h1 {
+    font-family: MontserratBold;
+    font-size: 42px;
+    font-weight: 700;
+    text-transform: none;
+    line-height:45px;
+}
+
+.banner-title,
+h1.banner-title {
+    font-size: 28px;
+    line-height: 1;
+}
+
+h2,
+.h2 {
+    font-family: MontserratBold;
+    font-size: 30px;
+    font-weight: 700;
+    text-transform:none;
+    line-height:40px;
+}
+
+h3,
+.h3 {
+    font-family: MontserratBold;
+    font-size: 27px;
+    font-weight: 700;
+    text-transform: none;
+    line-height:40px;
+}
+
+h4,
+.h4 {
+    font-size: 25px;
+    font-weight: 700;
+    text-transform: none;
+    line-height:40px;
+}
+
+h5,
+.h5 {
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: none;
+    line-height:30px !important;
+}
+
+h6,
+.h6 {
+    font-family: MontserratMedium;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: none;
+}
+
+@media (min-width: 992px) {
+    .banner-title,
+    h1.banner-title {
+        font-size: 60px;
+    }
+
+    h1,
+    .h1 {
+        font-size: 50px;
+        font-weight: 700;
+        line-height:50px;
+    }
+
+    h2,
+    .h2 {
+        font-size: 44px;
+        line-height:62px;
+    }
+
+    h3,
+    .h3 {
+        font-size: 40px;
+        line-height:56px;
+    }
+
+    h4,
+    .h4 {
+        font-size: 36px;
+        line-height:48px;
+    }
+
+    h5,
+    .h5 {
+        font-size: 24px;
+        line-height:34px;
+    }
+
+    h6,
+    .h6 {
+        font-size: 19px;
+    }
+}
