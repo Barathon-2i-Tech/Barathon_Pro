@@ -4,15 +4,12 @@ export default function BannerWelcome() {
             <div className="container mx-auto max-w-screen-xl py-44 lg:items-center grid grid-cols-1 md:grid-cols-2 gap-10 px-4">
                 <div className="">
                     <div className="">
-                        <h1 className="text-white">Welcome to Barathon !</h1>
+                        <h1 className="text-white">Bievenue chez Barathon !</h1>
                     </div>
                     <div className="">
                         <div className="banner-welcome__description h6 text-white pb-22 ">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting
-                            industry. Lorem Ipsum has been the industrys standard dummy text ever
-                            since the 1500s, when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book. It has survived not only five
-                            centuries PageMaker including versions of Lorem Ipsum.
+                            Barathon regroupe les bars autour de vous et ceux-ci vous propose une multitude d'evenements !
+                            Découvrez Barathon et explorez tous les evenements des bars autour de vous.
                         </div>
                     </div>
                     <div className="text-white display-desktop-hard">

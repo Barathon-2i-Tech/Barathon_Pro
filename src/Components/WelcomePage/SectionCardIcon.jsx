@@ -27,7 +27,7 @@ export default function SectionCardIcon() {
                     <div className="card-icon flex justify-center flex-wrap">
                         <div className="card-icon__container-icon w-full flex align-items-center justify-center">
                             <img
-                                className="banner-welcome__img"
+                                className=""
                                 src={logo}
                                 alt=""
                                 width="300"

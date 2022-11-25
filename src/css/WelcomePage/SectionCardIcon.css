@@ -5,13 +5,16 @@
 }
 .card-icon__container-icon{
     width: 128px;
-    height: 128px;
+    height: 100px;
     margin-bottom: 20px;
 }
 
 .card-icon__container-icon .crown{
     width: 98px;
     height: 98px;
+}
+.card-icon__container-icon img{
+    max-height: 90px!important;
 }
 
 @media screen and (min-width: 991px) {
