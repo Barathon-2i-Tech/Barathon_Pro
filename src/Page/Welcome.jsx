@@ -1,4 +1,3 @@
-//import { Link, Head } from '@inertiajs/inertia-react';
 //import PropTypes from 'prop-types';
 import BannerWelcome from '../Components/WelcomePage/BannerWelcome.jsx';
 import SectionText from '../Components/WelcomePage/SectionText.jsx';
