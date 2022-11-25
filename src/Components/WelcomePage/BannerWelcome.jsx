@@ -4,12 +4,13 @@ export default function BannerWelcome() {
             <div className="container mx-auto max-w-screen-xl py-44 lg:items-center grid grid-cols-1 md:grid-cols-2 gap-10 px-4">
                 <div className="">
                     <div className="">
-                        <h1 className="text-white">Bievenue chez Barathon !</h1>
+                        <h1 className="text-white">Bienvenue chez Barathon !</h1>
                     </div>
                     <div className="">
                         <div className="banner-welcome__description h6 text-white pb-22 ">
-                            Barathon regroupe les bars autour de vous et ceux-ci vous propose une multitude d'evenements !
-                            Découvrez Barathon et explorez tous les evenements des bars autour de vous.
+                            Barathon regroupe les bars autour de vous et ceux-ci vous propose une
+                            multitude d evenements ! Découvrez Barathon et explorez tous les
+                            evenements des bars autour de vous.
                         </div>
                     </div>
                     <div className="text-white display-desktop-hard">

@@ -26,13 +26,7 @@ export default function SectionCardIcon() {
                 <div key={key} className="">
                     <div className="card-icon flex justify-center flex-wrap">
                         <div className="card-icon__container-icon w-full flex align-items-center justify-center">
-                            <img
-                                className=""
-                                src={logo}
-                                alt=""
-                                width="300"
-                                height="100"
-                            />
+                            <img className="" src={logo} alt="" width="300" height="100" />
                         </div>
                         <div className="h6 txt-yellow w-full text-center text-cyan-900">
                             {title}

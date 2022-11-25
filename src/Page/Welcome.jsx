@@ -1,26 +1,24 @@
 //import PropTypes from 'prop-types';
 import BannerWelcome from '../Components/WelcomePage/BannerWelcome.jsx';
 import SectionText from '../Components/WelcomePage/SectionText.jsx';
-import SectionCardIcon from "../Components/WelcomePage/SectionCardIcon.jsx";
-import SectionInfosNumber from "../Components/WelcomePage/SectionInfosNumber";
-import SectionCardHover from "../Components/WelcomePage/SectionCardHover";
-import SectionInfosBg from "../Components/WelcomePage/SectionInfosBg";
-import SectionInfosList from "../Components/WelcomePage/SectionInfosList";
-import FooterWelcome from "../Components/WelcomePage/FooterWelcome";
+import SectionCardIcon from '../Components/WelcomePage/SectionCardIcon.jsx';
+import SectionInfosNumber from '../Components/WelcomePage/SectionInfosNumber';
+import SectionCardHover from '../Components/WelcomePage/SectionCardHover';
+import SectionInfosBg from '../Components/WelcomePage/SectionInfosBg';
+import SectionInfosList from '../Components/WelcomePage/SectionInfosList';
+import FooterWelcome from '../Components/WelcomePage/FooterWelcome';
 
-import '../css/WelcomePage/BannerWelcome.css'
-import '../css/WelcomePage/GlobalWelcome.css'
-import '../css/WelcomePage/SectionCardIcon.css'
-import '../css/WelcomePage/SectionInfos.css'
-import '../css/WelcomePage/SectionCardHover.css'
-import '../css/WelcomePage/SectionInfosList.css'
-import '../css/WelcomePage/TypoCustom.css'
+import '../css/WelcomePage/BannerWelcome.css';
+import '../css/WelcomePage/GlobalWelcome.css';
+import '../css/WelcomePage/SectionCardIcon.css';
+import '../css/WelcomePage/SectionInfos.css';
+import '../css/WelcomePage/SectionCardHover.css';
+import '../css/WelcomePage/SectionInfosList.css';
+import '../css/WelcomePage/TypoCustom.css';
 
-
-export default function Welcome(props) {
+export default function Welcome() {
     return (
         <>
-
             <div className="relative items-top sm:pt-0 overflow-hidden">
                 <div className="logo-container fixed top-0 left-0 z-40 ml-6 mt-6">
                     <svg
@@ -340,7 +338,6 @@ export default function Welcome(props) {
                     </svg>
                 </div>
 
-
                 <div className="sec-banner relative">
                     <div className="background-banner absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 color-filter is-opacity-5 is-dark-blue"></div>
                     <BannerWelcome />
@@ -356,27 +353,30 @@ export default function Welcome(props) {
                 </div>
                 <div className="relative">
                     <section className="sec-cards-icons container mx-auto max-w-screen-xl py-20 lg:items-center grid grid-cols-1 md:grid-cols-3 gap-10 px-4">
-                        <SectionCardIcon/>
+                        <SectionCardIcon />
                     </section>
                 </div>
                 <div className="sec-banner-infos relative bg-cyan-800 mt-20">
-                    <SectionInfosNumber number={'300'} description={'Description'}/>
+                    <SectionInfosNumber number={'300'} description={'Description'} />
                 </div>
                 <div className="sec-card-hover relative mt-20">
-                    <SectionCardHover/>
+                    <SectionCardHover />
                 </div>
 
-
-
                 <div className="sec-banner-infos relative bg-orange-300 mt-20">
-                    <SectionInfosBg title={'TITLE'} description={'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'}/>
+                    <SectionInfosBg
+                        title={'TITLE'}
+                        description={
+                            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'
+                        }
+                    />
                 </div>
 
                 <div className="sec-banner-ImgListInfos relative mt-20">
-                    <SectionInfosList/>
+                    <SectionInfosList />
                 </div>
                 <div className="footerWelcome relative">
-                    <FooterWelcome/>
+                    <FooterWelcome />
                 </div>
             </div>
         </>
