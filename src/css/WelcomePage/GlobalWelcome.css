@@ -1,9 +1,10 @@
+/*----------Header---------*/
 .logo-container {
   height: auto;
-  width: 105px;
+  width: 85px;
 }
 .logo-container svg {
-  max-width: 105px;
+  max-width: 85px;
   height: auto;
 }
 
