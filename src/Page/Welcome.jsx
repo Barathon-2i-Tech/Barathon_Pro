@@ -1,4 +1,3 @@
-//import PropTypes from 'prop-types';
 import BannerWelcome from '../Components/WelcomePage/BannerWelcome.jsx';
 import SectionText from '../Components/WelcomePage/SectionText.jsx';
 import SectionCardIcon from '../Components/WelcomePage/SectionCardIcon.jsx';
@@ -8,8 +7,6 @@ import SectionInfosBg from '../Components/WelcomePage/SectionInfosBg';
 import SectionInfosList from '../Components/WelcomePage/SectionInfosList';
 import FooterWelcome from '../Components/WelcomePage/FooterWelcome';
 import HeaderWelcome from '../Components/WelcomePage/HeaderWelcome.jsx';
-
-
 import '../css/WelcomePage/BannerWelcome.css';
 import '../css/WelcomePage/GlobalWelcome.css';
 import '../css/WelcomePage/SectionCardIcon.css';
@@ -22,10 +19,9 @@ export default function Welcome() {
     return (
         <>
             <div className="relative items-top sm:pt-0 overflow-hidden">
-                <div className='text-white z-40 fixed w-full bg-cyan-800 bg-opacity-90'>
-                    <HeaderWelcome/>
+                <div className="text-white z-40 fixed w-full bg-cyan-800 bg-opacity-90">
+                    <HeaderWelcome />
                 </div>
-                
 
                 <div className="sec-banner relative">
                     <div className="background-banner absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 color-filter is-opacity-5 is-dark-blue"></div>
@@ -72,5 +68,3 @@ export default function Welcome() {
     );
 }
 
-//Welcome.propTypes = {
-//};

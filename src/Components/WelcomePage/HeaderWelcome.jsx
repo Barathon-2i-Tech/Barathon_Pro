@@ -1,5 +1,4 @@
-import {Link} from "react-router-dom"; 
-
+import { Link } from 'react-router-dom';
 
 export default function HeaderWelcome() {
     return (
@@ -7,9 +6,8 @@ export default function HeaderWelcome() {
             <>
                 <div id="navbar">
                     <nav className="flex justify-between">
-                    <div className="logo-container mt-2 ml-6 mb-2">
-                        <Link to="/">
-                            
+                        <div className="logo-container mt-2 ml-6 mb-2">
+                            <Link to="/">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width="502"
@@ -325,20 +323,24 @@ export default function HeaderWelcome() {
                                         </clipPath>
                                     </defs>
                                 </svg>
-                            
-                        </Link>
+                            </Link>
                         </div>
-                        
                         <ul className="flex items-center text-sm">
                             <li className="h-full mr-2">
-                                <Link to="/register" className="h-full hover:text-white flex items-center text-white">
+                                <Link
+                                    to="/register"
+                                    className="h-full hover:text-white flex items-center text-white"
+                                >
                                     <div className="bg-teal-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-full">
                                         Connexion Pro
                                     </div>
                                 </Link>
                             </li>
                             <li className="h-full mr-2">
-                                <Link to="/subscribe" className="h-full flex hover:text-white items-center text-white">
+                                <Link
+                                    to="/subscribe"
+                                    className="h-full flex hover:text-white items-center text-white"
+                                >
                                     <div className="bg-orange-300 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-full">
                                         S enregistrer
                                     </div>
