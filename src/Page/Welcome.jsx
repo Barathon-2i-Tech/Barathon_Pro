@@ -22,12 +22,10 @@ export default function Welcome() {
                 <div className="text-white z-40 fixed w-full bg-cyan-800 bg-opacity-80">
                     <HeaderWelcome />
                 </div>
-
                 <div className="sec-banner relative">
                     <div className="background-banner absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 color-filter is-opacity-5 is-dark-blue"></div>
                     <BannerWelcome />
                 </div>
-
                 <div className="sec-banner-text relative  mt-20">
                     <SectionText
                         title={'The Place to Be !'}
@@ -56,7 +54,6 @@ export default function Welcome() {
                         }
                     />
                 </div>
-
                 <div className="sec-banner-ImgListInfos relative mt-20">
                     <SectionInfosList />
                 </div>
