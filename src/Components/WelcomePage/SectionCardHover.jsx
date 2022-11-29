@@ -3,30 +3,30 @@ export default function SectionCardHover() {
         {
             key: `1`,
             imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/illustration-saint-patrick-feuilles-trefle-rougeoyant-forme-neons-mur-briques_1314-3098.webp`,
-            title: 'St Patrick s Day !',
+            title: "St Patrick's Day !",
             description:
-                'Dans vos meilleurs Pub Irlandais, Buvez autant de biere qu un leprechaun.',
+                "Dans vos meilleurs Pub Irlandais, Buvez autant de bière qu'un leprechaun.",
         },
         {
             key: `2`,
             imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/cocktail-bibliotheque-comptoir-du-bar-lounge-boisson-relaxante_482257-24605.jpeg`,
-            title: 'Soirée Coctail',
+            title: 'Soirée Cocktail',
             description:
-                'Plusieurs Bar a Cocktails et meme des soirée organisées autour de multiples recettes',
+                'Plusieurs Bar à Cocktails et meme des soirées organisées autour de multiples recettes',
         },
         {
             key: `3`,
             imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/boite-nuit-bar-cocktails-lumineux-neon-retro-enseigne-realiste-vecteur-lettres-lumiere-bleues-fluorescentes-rougeoyantes-verre-cocktail-jaune-cadre-olive-violet-rose-illustration-mur-briques-sombres_1441-3359.webp`,
             title: 'Bar Dansant',
             description:
-                'Une multitude de d organisateurs de soirées dansantes. Faites la tourné des soirées boites ou concert !',
+                "Une multitude de d'organisateurs de soirées dansantes. Faites la tourné des soirées boites ou concerts !",
         },
         {
             key: `4`,
             imgUrl: `https://m.media-amazon.com/images/I/61gwiml4VDL.jpg`,
             title: 'After Work !',
             description:
-                'Trouvez vos bars préférés. Soyez au courants des évènements avenir. Buvez un verre avec vos collegues.',
+                "Trouvez vos bars préférés. Soyez au courants des évènements avenir. C'est party pour l'After-work !!",
         },
     ];
 

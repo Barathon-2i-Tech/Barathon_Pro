@@ -2,20 +2,20 @@ export default function SectionCardIcon() {
     const dataSvg = [
         {
             key: `1`,
-            title: 'title',
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            title: 'Tout Types de Bars',
+            text: "Trouvez des bars en fonction de vos envies, bieres ou cocktails. Si vous vous sentez l'ame d'un pirate, trouvez votre bars à rhum !",
             logo: 'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/beer_cup_glass_icon_141548.svg',
         },
         {
             key: `2`,
-            title: 'title',
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            title: 'Les Évènements !',
+            text: "Des soirées halloween, etudiantes, Techno et plein d'autre organisés par les bars.",
             logo: 'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/dj_turntable_icon_161376%20(1).svg',
         },
         {
             key: `3`,
-            title: 'title',
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+            title: 'BON PLAN !!!',
+            text: "tu peux reserver ton accès à la soirée via l'application ! En fonction des bars tu aura acces à differents avantages* ! (accès rapide, verre offert)*",
             logo: 'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/-vip_96379.svg',
         },
     ];

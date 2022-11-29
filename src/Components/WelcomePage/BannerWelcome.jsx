@@ -7,13 +7,13 @@ export default function BannerWelcome() {
                         <h1 className="text-white">Bienvenue chez Barathon !</h1>
                     </div>
                     <div className="">
-                        <div className="banner-welcome__description h6 text-white pb-22 ">
+                        <div className="banner-welcome__description h6 text-white pb-22 mt-3">
                             Barathon regroupe les bars autour de vous et ceux-ci vous propose une
                             multitude d evenements ! Découvrez Barathon et explorez tous les
                             evenements des bars autour de vous.
                         </div>
                     </div>
-                    <div className="text-white display-desktop-hard">
+                    <div className="text-white display-desktop-hard mt-14">
                         <div className="banner-welcome__dl-title w-full text-center bold flex justify-center h5 extra-bold">
                             Téléchargez Barathon
                         </div>

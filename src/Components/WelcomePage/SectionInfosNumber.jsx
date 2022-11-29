@@ -2,18 +2,18 @@ export default function SectionInfosNumber() {
     const dataNumber = [
         {
             key: `1`,
-            number: 300,
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            number: 650,
+            text: 'Événements organisés en 2022',
         },
         {
             key: `2`,
-            number: 12,
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            number: 1607,
+            text: 'Bars proposé sur notre Applications',
         },
         {
             key: `3`,
-            number: 4600,
-            text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            number: 11560,
+            text: 'Téléchargements en 2022',
         },
     ];
 

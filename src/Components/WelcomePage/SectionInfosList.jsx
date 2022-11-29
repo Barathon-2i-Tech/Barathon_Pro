@@ -3,17 +3,29 @@ export default function SectionInfosList() {
         {
             key: `1`,
             orderGridImg: 'lg:order-last',
-            imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/phone-user-event.png`,
-            title: 'Devenez Barathonien et decouvrez toutes les soirées disponibles !',
-            subtitle: '136 Bars Participants',
+            imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/%5BBARA%5D%20Accueil%20evenements%20(1).png`,
+            title: 'Pour nos Barathoniens !',
+            subtitle: 'Il y a quoi pour moi ?',
             allLi: [
                 {
                     key: `1`,
-                    li: 'the first li',
+                    li: "Avec la géolocalisation, tu peux trouver les tous les bars de l'application autour de toi",
                 },
                 {
                     key: `2`,
-                    li: 'the second li',
+                    li: 'Enregistre et suis tes évènements',
+                },
+                {
+                    key: `3`,
+                    li: "l'acces à tes tickets VIP",
+                },
+                {
+                    key: `4`,
+                    li: 'On te notifie si il y a du changements dans le programme de tes soirées',
+                },
+                {
+                    key: '5',
+                    li: "Gères l'apparence de ton app grace au DarkMode",
                 },
             ],
         },
@@ -21,16 +33,28 @@ export default function SectionInfosList() {
             key: `2`,
             orderGridImg: 'lg:order-first',
             imgUrl: `https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/%5BPRO%5D%20Dashboard.jpg`,
-            title: 'Vous etes un Bar ? Créez votre profile pro !',
-            subtitle: '136 Bars Participants',
+            title: 'Pour les bars !',
+            subtitle: 'Il y a quoi pour les enseignes ?',
             allLi: [
                 {
                     key: `1`,
-                    li: 'the first li of the second item',
+                    li: 'Un accès Multiples pour les gerants mais aussi les employés',
                 },
                 {
                     key: `2`,
-                    li: 'the second li of the second item',
+                    li: 'Gérer plusieurs enseignes à la fois sur votre compte',
+                },
+                {
+                    key: `3`,
+                    li: 'La creation et modification de vos évènements',
+                },
+                {
+                    key: `4`,
+                    li: 'La gestion de vos évènements grace à un acces simple et rapide de ceux-ci',
+                },
+                {
+                    key: `5`,
+                    li: 'Vous pouvez demander la création de multiples tags afin de categoriser vos evenements et enseignes',
                 },
             ],
         },

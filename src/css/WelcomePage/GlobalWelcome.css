@@ -66,6 +66,14 @@
   .display-mobile-hard {
     display: none !important;
   }
+  .logo-container {
+    height: auto;
+    width: 105px;
+  }
+  .logo-container svg {
+    max-width: 105px;
+    height: auto;
+  }
 }
 @media screen and (min-width: 500px) {
   .display-md-hard {
