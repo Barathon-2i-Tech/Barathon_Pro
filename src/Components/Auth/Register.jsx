@@ -88,7 +88,7 @@ export default function Register() {
             <FormContext.Provider
                 value={{ activeStepIndex, setActiveStepIndex, formData, setFormData }}
             >
-                <div className="sm:w-screen flex flex-col items-center justify-start">
+                <div className="flex flex-col items-center justify-start">
                     <Stepper />
                     <Step />
                 </div>
