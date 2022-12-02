@@ -1,0 +1,32 @@
+.barathonienRadio {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+}
+.proRadio {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+}
+
+#yes:checked ~ .option-1 {
+  border-color: #fb923c;
+  background: #fb923c;
+  color: #fff;
+}
+
+#no:checked ~ .option-2 {
+  border-color: #134e4a;
+  background: #134e4a;
+  color: #fff;
+}
+
+@media screen and (min-width: 600px) {
+  .registerWrapper {
+    min-width: 600px;
+  }
+}
