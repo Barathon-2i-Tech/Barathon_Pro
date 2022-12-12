@@ -34,7 +34,7 @@ export default function Register() {
                     onClick={goBack}
                     className="w-fit m-2 sm:mt-6 sm:ml-6 bg-orange-300 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
                 >
-                    Acceuil
+                    Accueil
                 </button>
             </div>
             <div className="z-10 flex justify-center items-center">
