@@ -125,7 +125,9 @@ export default function RegisterBarathonien() {
                                         variant="contained"
                                         className="sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
                                     >
-                                        S inscrire
+                                        {/*eslint-disable-next-line react/no-unescaped-entities*/} 
+                                        S'inscrire
+                                        {/*TODO @Simon remove disable eslint*/} 
                                     </Button>
                                 </Box>
                             </form>

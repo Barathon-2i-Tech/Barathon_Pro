@@ -1,7 +1,7 @@
 // Step.js
 import { useContext } from 'react';
 import { FormContext } from '../Auth/Register';
-import RegisterBarathonien from '../Auth/RegisterBarthonien';
+import RegisterBarathonien from '../Auth/RegisterBarathonien';
 import RegisterUser from '../Auth/RegisterUser';
 import RegisterPro from '../Auth/RegisterPro';
 
@@ -20,7 +20,6 @@ function Step() {
             } else {
                 stepContent = <RegisterPro />;
             }
-
             break;
         default:
             break;
