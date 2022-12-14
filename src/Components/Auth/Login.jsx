@@ -13,7 +13,7 @@ export default function Login() {
     // This function is used to navigate to the home page
     // It will be called when the button is clicked
     const goBack = () => {
-        navigate("/");
+        navigate('/');
     };
 
     const initialValues = {

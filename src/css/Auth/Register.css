@@ -27,37 +27,34 @@
   color: #fff;
 }
 
-
 /* Stepper */
 
-.pb-bar-steps {padding-bottom: 50px;}
-
+.pb-bar-steps {
+  padding-bottom: 50px;
+}
 
 /* button*/
 
-.border-left{
+.border-left {
   border-radius: 10px 0 0 10px;
 }
 
-.border-right{
+.border-right {
   border-radius: 0 10px 10px 0;
 }
 
 .style-cyan .button-style {
-  background: #155e75!important;
+  background: #155e75 !important;
 }
 .style-orange .button-style {
-  background: #fb923c!important;
+  background: #fb923c !important;
 }
-
 
 @media screen and (min-width: 600px) {
   .registerWrapper {
     min-width: 600px;
   }
 }
- .w-60-pct{
+.w-60-pct {
   width: 60%;
- }
-
-
+}

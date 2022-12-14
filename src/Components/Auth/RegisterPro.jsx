@@ -10,16 +10,14 @@ import { FormContext } from './RegisterHome';
 export default function RegisterPro() {
     const { formData, setFormData } = useContext(FormContext);
 
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
 
-     // Use this hook to programmatically navigate to another page
-     const navigate = useNavigate();
-
-     // This function is used to navigate to the home page
-     // It will be called when the button is clicked
-     const goDashboard = () => {
-         navigate('/dashboard');
-     };
-
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goDashboard = () => {
+        navigate('/dashboard');
+    };
 
     const initialValues = {
         siren: '',

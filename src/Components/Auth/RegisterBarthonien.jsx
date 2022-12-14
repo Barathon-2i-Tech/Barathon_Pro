@@ -22,14 +22,14 @@ export default function RegisterBarathonien() {
         city: yup.string().required('Ville Obligatoire'),
     });
 
-     // Use this hook to programmatically navigate to another page
-     const navigate = useNavigate();
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
 
-     // This function is used to navigate to the home page
-     // It will be called when the button is clicked
-     const sucessRegister = () => {
-         navigate('/registersucess');
-     };
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const sucessRegister = () => {
+        navigate('/registersucess');
+    };
 
     const handleFormSubmit = (values, actions) => {
         const data = { ...formData, ...values };
@@ -47,7 +47,6 @@ export default function RegisterBarathonien() {
                 if (err & err.response) console.log('Error: ', err);
             });
     };
-    
 
     return (
         <div className="w-full min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">

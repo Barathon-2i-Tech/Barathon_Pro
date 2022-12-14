@@ -10,26 +10,23 @@ export default function RegisterAgeVerify() {
     const { activeStepIndex, setActiveStepIndex, formData, setFormData } = useContext(FormContext);
 
     const initialValues = {
-        birthday: ''
+        birthday: '',
     };
 
     const ageSchema = yup.object().shape({
-        birthday: yup.string()
-        .test(
-            "birthday",
-            "Vous n'etes pas majeur",
-            value => {
-              return moment().diff(moment(value),'years') >= 18;
-            }
-        )
-        .required('date anniversaire obligatoire')
+        birthday: yup
+            .string()
+            .test('birthday', "Vous n'etes pas majeur", (value) => {
+                return moment().diff(moment(value), 'years') >= 18;
+            })
+            .required('date anniversaire obligatoire'),
     });
 
     const handleFormSubmit = (values) => {
         const data = { ...formData, ...values };
         setFormData(data);
         setActiveStepIndex(activeStepIndex + 1);
-        console.log(data)
+        console.log(data);
     };
 
     return (
@@ -59,7 +56,7 @@ export default function RegisterAgeVerify() {
                                         name="birthday"
                                         InputLabelProps={{
                                             shrink: true,
-                                          }}
+                                        }}
                                         //convert to boolean using !! operator
                                         error={!!touched.birthday && !!errors.birthday}
                                         helperText={touched.birthday && errors.birthday}

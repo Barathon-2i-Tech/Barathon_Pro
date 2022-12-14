@@ -13,7 +13,7 @@ function Step() {
     let stepContent;
     switch (activeStepIndex) {
         case 0:
-            stepContent = <RegisterAgeVerify/>;
+            stepContent = <RegisterAgeVerify />;
             break;
         case 1:
             stepContent = <RegisterUser />;

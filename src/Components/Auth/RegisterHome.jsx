@@ -17,17 +17,15 @@ export default function Register() {
     };
     const switcherClick = (event) => {
         console.log(event.target.value);
-        var buttonStyleCustom = document.getElementById("container-form");
-        if (selected === "no"){
-            buttonStyleCustom.classList.add("style-orange");
-            buttonStyleCustom.classList.remove("style-cyan");
+        var buttonStyleCustom = document.getElementById('container-form');
+        if (selected === 'no') {
+            buttonStyleCustom.classList.add('style-orange');
+            buttonStyleCustom.classList.remove('style-cyan');
         } else {
-            buttonStyleCustom.classList.add("style-cyan");
-            buttonStyleCustom.classList.remove("style-orange");
+            buttonStyleCustom.classList.add('style-cyan');
+            buttonStyleCustom.classList.remove('style-orange');
         }
     };
-
-   
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -49,7 +47,7 @@ export default function Register() {
                 </button>
             </div>
             <div className="z-10 flex justify-center items-center">
-                    <ApplicationLogo className="w-16 h-16 sm:w-28 sm:h-28 fill-current z-10" />
+                <ApplicationLogo className="w-16 h-16 sm:w-28 sm:h-28 fill-current z-10" />
             </div>
 
             <div className="flex justify-center">
@@ -65,9 +63,7 @@ export default function Register() {
                             onChange={handleChange}
                             onClick={switcherClick}
                         />
-                        <label
-                            className="border-left font-semibold cursor-pointer border-2 option option-1 h-full w-full flex items-center justify-evenly hover:border-solid hover:border-cyan-900 hover:border-2 pt-2 pb-2 pr-4 pl-4"
-                        >
+                        <label className="border-left font-semibold cursor-pointer border-2 option option-1 h-full w-full flex items-center justify-evenly hover:border-solid hover:border-cyan-900 hover:border-2 pt-2 pb-2 pr-4 pl-4">
                             <div className="dot"></div>
                             <span>Barathonien</span>
                         </label>
@@ -84,9 +80,7 @@ export default function Register() {
                             onClick={switcherClick}
                             checked={selected === 'no'}
                         />
-                        <label
-                            className="border-right font-semibold cursor-pointer border-2 option option-2 h-full w-full flex items-center justify-evenly hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4"
-                        >
+                        <label className="border-right font-semibold cursor-pointer border-2 option option-2 h-full w-full flex items-center justify-evenly hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4">
                             <div className="dot"></div>
                             <span>Professionnel</span>
                         </label>
