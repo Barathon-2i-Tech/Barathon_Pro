@@ -24,7 +24,6 @@ function Step() {
             } else {
                 stepContent = <RegisterPro />;
             }
-
             break;
         default:
             break;
