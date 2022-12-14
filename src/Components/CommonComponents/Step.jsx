@@ -1,9 +1,10 @@
 // Step.js
 import { useContext } from 'react';
-import { FormContext } from '../Auth/Register';
+import { FormContext } from '../Auth/RegisterHome';
 import RegisterBarathonien from '../Auth/RegisterBarthonien';
 import RegisterUser from '../Auth/RegisterUser';
 import RegisterPro from '../Auth/RegisterPro';
+import RegisterAgeVerify from '../Auth/RegisterAgeVerify';
 
 function Step() {
     var stepContentBarathonien = document.getElementById('yes');
@@ -12,9 +13,12 @@ function Step() {
     let stepContent;
     switch (activeStepIndex) {
         case 0:
-            stepContent = <RegisterUser />;
+            stepContent = <RegisterAgeVerify/>;
             break;
         case 1:
+            stepContent = <RegisterUser />;
+            break;
+        case 2:
             if (stepContentBarathonien.checked) {
                 stepContent = <RegisterBarathonien />;
             } else {

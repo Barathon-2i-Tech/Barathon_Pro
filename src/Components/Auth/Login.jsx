@@ -13,7 +13,7 @@ export default function Login() {
     // This function is used to navigate to the home page
     // It will be called when the button is clicked
     const goBack = () => {
-        navigate(-1);
+        navigate("/");
     };
 
     const initialValues = {
@@ -119,7 +119,7 @@ export default function Login() {
                                         <Button
                                             type="submit"
                                             variant="contained"
-                                            className="sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
+                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
                                         >
                                             Se connecter
                                         </Button>

@@ -1,13 +1,25 @@
+import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 import axios from 'axios';
 //import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
-import { FormContext } from './Register';
+import { FormContext } from './RegisterHome';
 
 export default function RegisterPro() {
     const { formData, setFormData } = useContext(FormContext);
+
+
+     // Use this hook to programmatically navigate to another page
+     const navigate = useNavigate();
+
+     // This function is used to navigate to the home page
+     // It will be called when the button is clicked
+     const goDashboard = () => {
+         navigate('/dashboard');
+     };
+
 
     const initialValues = {
         siren: '',
@@ -29,6 +41,7 @@ export default function RegisterPro() {
             .then((response) => {
                 console.log(response.data);
                 actions.resetForm();
+                goDashboard();
             })
             .catch((err) => {
                 if (err & err.response) console.log('Error: ', err);
@@ -36,7 +49,7 @@ export default function RegisterPro() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
+        <div className="w-full min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
             <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
                 <Box m="20px">
                     <Formik
@@ -81,13 +94,12 @@ export default function RegisterPro() {
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="end" mt="20px">
-                                    <Button
+                                    <button
                                         type="submit"
-                                        variant="contained"
-                                        className="sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
+                                        className="button-style bg-orange-400 text-white sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0  text-base"
                                     >
                                         S inscrire
-                                    </Button>
+                                    </button>
                                 </Box>
                             </form>
                         )}

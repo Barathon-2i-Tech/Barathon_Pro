@@ -1,29 +1,35 @@
+import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, TextField } from '@mui/material';
-import ApplicationLogo from '../CommonComponents/ApplicationLigo';
-import { Link } from 'react-router-dom';
+import { Box, TextField } from '@mui/material';
 import axios from 'axios';
 //import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
-import { FormContext } from './Register';
+import { FormContext } from './RegisterHome';
 
 export default function RegisterBarathonien() {
     const { formData, setFormData } = useContext(FormContext);
 
     const initialValues = {
-        birthday: '',
         address: '',
         postal_code: '',
         city: '',
     };
 
     const barathonienSchema = yup.object().shape({
-        birthday: yup.string().required('date anniversaire obligatoire'),
         address: yup.string().required('adresse obligatoire'),
         postal_code: yup.string().required('code postal obligatoire'),
         city: yup.string().required('Ville Obligatoire'),
     });
+
+     // Use this hook to programmatically navigate to another page
+     const navigate = useNavigate();
+
+     // This function is used to navigate to the home page
+     // It will be called when the button is clicked
+     const sucessRegister = () => {
+         navigate('/registersucess');
+     };
 
     const handleFormSubmit = (values, actions) => {
         const data = { ...formData, ...values };
@@ -35,20 +41,17 @@ export default function RegisterBarathonien() {
             .then((response) => {
                 console.log(response.data);
                 actions.resetForm();
+                sucessRegister();
             })
             .catch((err) => {
                 if (err & err.response) console.log('Error: ', err);
             });
     };
+    
 
     return (
-        <div className="min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
+        <div className="w-full min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
             <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
-                <div className="z-10 flex justify-center items-center">
-                    <Link href="/">
-                        <ApplicationLogo className="w-28 h-28 sm:w-40 sm:h-40 fill-current z-10" />
-                    </Link>
-                </div>
                 <Box m="20px">
                     <Formik
                         initialValues={initialValues}
@@ -64,21 +67,7 @@ export default function RegisterBarathonien() {
                                 >
                                     <TextField
                                         fullWidth
-                                        variant="filled"
-                                        type="date"
-                                        label="Date de naissance"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        value={values.birthday}
-                                        name="birthday"
-                                        //convert to boolean using !! operator
-                                        error={!!touched.birthday && !!errors.birthday}
-                                        helperText={touched.birthday && errors.birthday}
-                                        sx={{ gridColumn: 'span 2' }}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="text"
                                         label="Adresse"
                                         onBlur={handleBlur}
@@ -92,7 +81,7 @@ export default function RegisterBarathonien() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="text"
                                         label="Code Postal"
                                         onBlur={handleBlur}
@@ -106,7 +95,7 @@ export default function RegisterBarathonien() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="text"
                                         label="Ville"
                                         onBlur={handleBlur}
@@ -120,13 +109,12 @@ export default function RegisterBarathonien() {
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="end" mt="20px">
-                                    <Button
+                                    <button
                                         type="submit"
-                                        variant="contained"
-                                        className="sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
+                                        className=" bg-orange-400 text-white sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 text-base"
                                     >
                                         S inscrire
-                                    </Button>
+                                    </button>
                                 </Box>
                             </form>
                         )}

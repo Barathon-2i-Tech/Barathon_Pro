@@ -1,4 +1,5 @@
 .barathonienRadio {
+  cursor: pointer;
   top: 0;
   bottom: 0;
   left: 0;
@@ -6,6 +7,7 @@
   opacity: 0;
 }
 .proRadio {
+  cursor: pointer;
   top: 0;
   bottom: 0;
   left: 0;
@@ -20,13 +22,42 @@
 }
 
 #no:checked ~ .option-2 {
-  border-color: #134e4a;
-  background: #134e4a;
+  border-color: #155e75;
+  background: #155e75;
   color: #fff;
 }
+
+
+/* Stepper */
+
+.pb-bar-steps {padding-bottom: 50px;}
+
+
+/* button*/
+
+.border-left{
+  border-radius: 10px 0 0 10px;
+}
+
+.border-right{
+  border-radius: 0 10px 10px 0;
+}
+
+.style-cyan .button-style {
+  background: #155e75!important;
+}
+.style-orange .button-style {
+  background: #fb923c!important;
+}
+
 
 @media screen and (min-width: 600px) {
   .registerWrapper {
     min-width: 600px;
   }
 }
+ .w-60-pct{
+  width: 60%;
+ }
+
+

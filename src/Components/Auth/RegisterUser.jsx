@@ -1,10 +1,10 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, TextField } from '@mui/material';
 //import axios from 'axios';
 //import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
-import { FormContext } from './Register';
+import { FormContext } from './RegisterHome';
 import '../../css/Auth/Register.css';
 
 export default function Register() {
@@ -33,11 +33,12 @@ export default function Register() {
     const handleFormSubmit = (values) => {
         const data = { ...formData, ...values };
         setFormData(data);
+        console.log(data);
         setActiveStepIndex(activeStepIndex + 1);
     };
 
     return (
-        <div className="min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
+        <div className="w-full min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
             <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
                 <Box m="20px">
                     <Formik
@@ -54,7 +55,7 @@ export default function Register() {
                                 >
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="text"
                                         label="Prénom"
                                         onBlur={handleBlur}
@@ -69,7 +70,7 @@ export default function Register() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="text"
                                         label="Nom"
                                         onBlur={handleBlur}
@@ -83,7 +84,7 @@ export default function Register() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="email"
                                         label="Email"
                                         onBlur={handleBlur}
@@ -97,7 +98,7 @@ export default function Register() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="password"
                                         label="Mot de passe"
                                         onBlur={handleBlur}
@@ -111,7 +112,7 @@ export default function Register() {
                                     />
                                     <TextField
                                         fullWidth
-                                        variant="filled"
+                                        variant="outlined"
                                         type="password"
                                         label="Confirmation du mot de passe"
                                         onBlur={handleBlur}
@@ -131,13 +132,12 @@ export default function Register() {
                                     />
                                 </Box>
                                 <Box display="flex" justifyContent="end" mt="20px">
-                                    <Button
+                                    <button
                                         type="submit"
-                                        variant="contained"
-                                        className="sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
+                                        className="button-style bg-orange-400 text-white sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 text-base"
                                     >
                                         Etape suivante
-                                    </Button>
+                                    </button>
                                 </Box>
                             </form>
                         )}
