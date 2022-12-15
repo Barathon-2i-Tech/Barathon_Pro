@@ -1,49 +1,59 @@
-import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, TextField } from '@mui/material';
-import axios from 'axios';
-//import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
 import { FormContext } from './RegisterHome';
+import { useAuth } from '../Hooks/useAuth';
+import Axios from '../../utils/axiosUrl';
+
+
+
+
+const initialValues = {
+    siren: '',
+    kbis: '',
+};
+
+const barathonienSchema = yup.object().shape({
+    siren: yup.string().required('Siren obligatoire'),
+    kbis: yup.string().required('Kbis obligatoire'),
+});
+
 
 export default function RegisterPro() {
+
     const { formData, setFormData } = useContext(FormContext);
 
-    // Use this hook to programmatically navigate to another page
-    const navigate = useNavigate();
 
-    // This function is used to navigate to the home page
-    // It will be called when the button is clicked
-    const goDashboard = () => {
-        navigate('/dashboard');
-    };
+    const { login } = useAuth();
 
-    const initialValues = {
-        siren: '',
-        kbis: '',
-    };
+    const handleFormSubmit = (values) => {
+        const dataValues = { ...formData, ...values };
+        setFormData(dataValues);
+        console.log(dataValues);
 
-    const barathonienSchema = yup.object().shape({
-        siren: yup.string().required('Siren obligatoire'),
-        kbis: yup.string().required('Kbis obligatoire'),
-    });
 
-    const handleFormSubmit = (values, actions) => {
-        const data = { ...formData, ...values };
-        setFormData(data);
-        console.log(data);
-
-        axios
-            .post('http://localhost/api/register/owner', data)
-            .then((response) => {
-                console.log(response.data);
-                actions.resetForm();
-                goDashboard();
-            })
-            .catch((err) => {
-                if (err & err.response) console.log('Error: ', err);
-            });
+        Axios.api
+        .post('/register/owner', dataValues,
+            {
+            headers: {
+                'accept': 'application/vnd.api+json',
+                'Content-Type': 'application/vnd.api+json',
+            },
+        },
+        )
+        .then((response) => {
+            if (response.data.data.user.owner_id != null) {
+                login(response.data.data);
+            } else {
+                alert("Vous n'etes pas autorisé à accéder à l'administration");
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            alert('Une erreur est survenue. Merci de réessayer');
+        });
+        
     };
 
     return (
@@ -79,7 +89,7 @@ export default function RegisterPro() {
                                     <TextField
                                         fullWidth
                                         variant="filled"
-                                        type="text"
+                                        type="file"
                                         label="K-bis"
                                         onBlur={handleBlur}
                                         onChange={handleChange}

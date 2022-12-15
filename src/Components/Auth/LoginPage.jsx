@@ -3,10 +3,57 @@ import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
 import ApplicationLogo from '../CommonComponents/ApplicationLigo';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useAuth } from '../Hooks/useAuth';
+import Axios from '../../utils/axiosUrl';
 //import { useState } from 'react';
 
-export default function Login() {
+
+const initialValues = {
+    email: '',
+    password: '',
+};
+const userSchema = yup.object().shape({
+    email: yup.string().email('Invalid Email').required('Email est obligatoire'),
+    password: yup.string().min(8, 'Minimum 8 characteres').required('obligatoire'),
+});
+
+export default function LoginPage() {
+
+    const { login } = useAuth();
+
+ 
+    const handleSubmitPro = (values) => {
+    Axios.api
+        .post('/login', {
+            
+                email: values.email,
+                password: values.password,
+            },
+            {
+            headers: {
+                'accept': 'application/vnd.api+json',
+                'Content-Type': 'application/vnd.api+json',
+            },
+        },
+        )
+        .then((response) => {
+            if (response.data.data.user.owner_id != null) {
+                login(response.data.data);
+            } else {
+                alert("Vous n'etes pas autorisé à accéder à l'administration");
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            alert('Une erreur est survenue. Merci de réessayer');
+        });
+    };
+
+
+
+
+
+
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
 
@@ -15,39 +62,8 @@ export default function Login() {
     const goBack = () => {
         navigate('/');
     };
-
-    const initialValues = {
-        email: '',
-        password: '',
-    };
-
-    const userSchema = yup.object().shape({
-        email: yup.string().email('Invalid Email').required('Email est obligatoire'),
-        password: yup.string().min(8, 'Minimum 8 characteres').required('obligatoire'),
-    });
-
-    /*
-    useEffect(() => {
-        return () => {
-            reset('password', 'password_confirmation');
-        };
-    }, []);
-
-*/
-
-    const handleFormSubmit = (values, actions) => {
-        axios
-            .post('http://localhost/api/login', values)
-            .then((response) => {
-                console.log(response.data);
-                console.log('LOGIN OK');
-                actions.resetForm();
-                navigate('/dashboard');
-            })
-            .catch((err) => {
-                if (err & err.response) console.log('Error: ', err);
-            });
-    };
+    
+   
 
     return (
         <div className="mx-auto max-w-screen-2xl ">
@@ -69,7 +85,7 @@ export default function Login() {
                     <Box m="20px">
                         <Formik
                             initialValues={initialValues}
-                            onSubmit={handleFormSubmit}
+                            onSubmit={handleSubmitPro}
                             validationSchema={userSchema}
                         >
                             {({

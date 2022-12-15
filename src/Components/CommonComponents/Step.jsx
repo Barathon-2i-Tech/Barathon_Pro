@@ -1,10 +1,11 @@
 // Step.js
 import { useContext } from 'react';
 import { FormContext } from '../Auth/RegisterHome';
-import RegisterBarathonien from '../Auth/RegisterBarthonien';
+
 import RegisterUser from '../Auth/RegisterUser';
 import RegisterPro from '../Auth/RegisterPro';
 import RegisterAgeVerify from '../Auth/RegisterAgeVerify';
+import RegisterBarathonien from '../Auth/RegisterBarathonien';
 
 function Step() {
     var stepContentBarathonien = document.getElementById('yes');
@@ -20,7 +21,7 @@ function Step() {
             break;
         case 2:
             if (stepContentBarathonien.checked) {
-                stepContent = <RegisterBarathonien />;
+                stepContent = <RegisterBarathonien/>;
             } else {
                 stepContent = <RegisterPro />;
             }

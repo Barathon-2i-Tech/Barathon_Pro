@@ -1,7 +1,7 @@
 import './App.css';
 import Welcome from './Page/Welcome.jsx';
 import Register from './Components/Auth/RegisterHome';
-import Login from './Components/Auth/Login';
+import LoginPage from './Components/Auth/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
         <div className="App">
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
-                <Route path="/login" element={<Login />}></Route>
+                <Route path="/login" element={<LoginPage />}></Route>
                 <Route path="/register" element={<Register />}></Route>
                 <Route path="/dashboard" element={<div>DASHBOARD</div>}></Route>
                 <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
