@@ -6,9 +6,6 @@ import { FormContext } from './RegisterHome';
 import { useAuth } from '../Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
 
-
-
-
 const initialValues = {
     siren: '',
     kbis: '',
@@ -19,11 +16,8 @@ const barathonienSchema = yup.object().shape({
     kbis: yup.string().required('Kbis obligatoire'),
 });
 
-
 export default function RegisterPro() {
-
     const { formData, setFormData } = useContext(FormContext);
-
 
     const { login } = useAuth();
 
@@ -32,28 +26,24 @@ export default function RegisterPro() {
         setFormData(dataValues);
         console.log(dataValues);
 
-
         Axios.api
-        .post('/register/owner', dataValues,
-            {
-            headers: {
-                'accept': 'application/vnd.api+json',
-                'Content-Type': 'application/vnd.api+json',
-            },
-        },
-        )
-        .then((response) => {
-            if (response.data.data.user.owner_id != null) {
-                login(response.data.data);
-            } else {
-                alert("Vous n'etes pas autorisé à accéder à l'administration");
-            }
-        })
-        .catch((e) => {
-            console.error(e);
-            alert('Une erreur est survenue. Merci de réessayer');
-        });
-        
+            .post('/register/owner', dataValues, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                },
+            })
+            .then((response) => {
+                if (response.data.data.user.owner_id != null) {
+                    login(response.data.data);
+                } else {
+                    alert("Vous n'etes pas autorisé à accéder à l'administration");
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+            });
     };
 
     return (

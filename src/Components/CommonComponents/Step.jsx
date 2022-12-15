@@ -21,7 +21,7 @@ function Step() {
             break;
         case 2:
             if (stepContentBarathonien.checked) {
-                stepContent = <RegisterBarathonien/>;
+                stepContent = <RegisterBarathonien />;
             } else {
                 stepContent = <RegisterPro />;
             }

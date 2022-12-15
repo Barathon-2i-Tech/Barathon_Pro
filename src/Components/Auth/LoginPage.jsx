@@ -7,7 +7,6 @@ import { useAuth } from '../Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
 //import { useState } from 'react';
 
-
 const initialValues = {
     email: '',
     password: '',
@@ -18,41 +17,35 @@ const userSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
-
     const { login } = useAuth();
 
- 
     const handleSubmitPro = (values) => {
-    Axios.api
-        .post('/login', {
-            
-                email: values.email,
-                password: values.password,
-            },
-            {
-            headers: {
-                'accept': 'application/vnd.api+json',
-                'Content-Type': 'application/vnd.api+json',
-            },
-        },
-        )
-        .then((response) => {
-            if (response.data.data.user.owner_id != null) {
-                login(response.data.data);
-            } else {
-                alert("Vous n'etes pas autorisé à accéder à l'administration");
-            }
-        })
-        .catch((e) => {
-            console.error(e);
-            alert('Une erreur est survenue. Merci de réessayer');
-        });
+        Axios.api
+            .post(
+                '/login',
+                {
+                    email: values.email,
+                    password: values.password,
+                },
+                {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                    },
+                },
+            )
+            .then((response) => {
+                if (response.data.data.user.owner_id != null) {
+                    login(response.data.data);
+                } else {
+                    alert("Vous n'etes pas autorisé à accéder à l'administration");
+                }
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+            });
     };
-
-
-
-
-
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -62,8 +55,6 @@ export default function LoginPage() {
     const goBack = () => {
         navigate('/');
     };
-    
-   
 
     return (
         <div className="mx-auto max-w-screen-2xl ">
