@@ -36,7 +36,7 @@ export default function RegisterPro() {
                 if (response.data.data.user.owner_id != null) {
                     login(response.data.data);
                 } else {
-                    alert("Vous n'etes pas autorisé à accéder à l'administration");
+                    alert("Vous n'etes pas autorisé à accéder à l'espace professionel");
                 }
             })
             .catch((e) => {

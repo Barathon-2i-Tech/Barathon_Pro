@@ -5,6 +5,7 @@ import ApplicationLogo from '../../Components/CommonComponents/ApplicationLigo';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
+import toast, { Toaster } from 'react-hot-toast';
 
 const initialValues = {
     email: '',
@@ -15,7 +16,30 @@ const userSchema = yup.object().shape({
     password: yup.string().min(8, 'Minimum 8 characteres').required('obligatoire'),
 });
 
+
+
 export default function LoginPage() {
+    const notify = () => toast(
+        "This toast is super big. I don't think anyone could eat it in one bite.\n\nIt's larger than you expected. You eat it but it does not seem to get smaller.",
+        {
+          duration: 6000,
+        }
+      );
+
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
+
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goBack = () => {
+        navigate('/');
+    };
+    // This function is used to the page for barathonien who can't log in website
+    // const unauthorizedLog = () => {
+    //     navigate('/unauthorizedlogin');
+    // };
+
+
     const { login } = useAuth();
 
     const handleSubmitPro = (values) => {
@@ -37,7 +61,7 @@ export default function LoginPage() {
                 if (response.data.data.user.owner_id != null) {
                     login(response.data.data);
                 } else {
-                    alert("Vous n'etes pas autorisé à accéder à l'administration");
+                    notify();
                 }
             })
             .catch((e) => {
@@ -46,17 +70,11 @@ export default function LoginPage() {
             });
     };
 
-    // Use this hook to programmatically navigate to another page
-    const navigate = useNavigate();
-
-    // This function is used to navigate to the home page
-    // It will be called when the button is clicked
-    const goBack = () => {
-        navigate('/');
-    };
+    
 
     return (
         <div className="mx-auto max-w-screen-2xl ">
+            <Toaster />
             <div className="w-fit inline-block text-white lg:text-xl">
                 <button
                     onClick={goBack}

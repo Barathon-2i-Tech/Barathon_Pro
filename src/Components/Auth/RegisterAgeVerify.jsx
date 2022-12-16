@@ -26,7 +26,6 @@ export default function RegisterAgeVerify() {
         const data = { ...formData, ...values };
         setFormData(data);
         setActiveStepIndex(activeStepIndex + 1);
-        console.log(data);
     };
 
     return (

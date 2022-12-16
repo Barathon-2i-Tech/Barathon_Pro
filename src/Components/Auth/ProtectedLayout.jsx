@@ -1,4 +1,5 @@
 import { Navigate, useOutlet } from 'react-router-dom';
+import { AppBar } from '../CommonComponents/NavigationPro/AppBar';
 import { useAuth } from '../Hooks/useAuth';
 
 export const ProtectedLayout = () => {
@@ -9,5 +10,14 @@ export const ProtectedLayout = () => {
         return <Navigate to="/" />;
     }
 
-    return <div>{outlet}</div>;
+    return(<div>
+        <AppBar 
+        pages={[
+            {label: 'Dashboard', path: "dashboard" }
+            ]}
+        />
+        {outlet}
+    </div>
+    );
+    
 };

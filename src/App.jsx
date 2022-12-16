@@ -6,6 +6,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
 import Dashboard from './Page/Professional/Dashboard';
+import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
                 <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
+                <Route path="/unauthorizedlogin" element={<UnauthorizedLogin/>}></Route>
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
                     <Route path="register" element={<Register />}></Route>
