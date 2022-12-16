@@ -33,7 +33,6 @@ export default function Register() {
     const handleFormSubmit = (values) => {
         const data = { ...formData, ...values };
         setFormData(data);
-        console.log(data);
         setActiveStepIndex(activeStepIndex + 1);
     };
 

@@ -15,8 +15,7 @@ export default function Register() {
     const handleChange = (event) => {
         setSelected(event.target.value);
     };
-    const switcherClick = (event) => {
-        console.log(event.target.value);
+    const switcherClick = () => {
         var buttonStyleCustom = document.getElementById('container-form');
         if (selected === 'no') {
             buttonStyleCustom.classList.add('style-orange');

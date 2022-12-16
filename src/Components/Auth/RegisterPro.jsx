@@ -24,7 +24,6 @@ export default function RegisterPro() {
     const handleFormSubmit = (values) => {
         const dataValues = { ...formData, ...values };
         setFormData(dataValues);
-        console.log(dataValues);
 
         Axios.api
             .post('/register/owner', dataValues, {

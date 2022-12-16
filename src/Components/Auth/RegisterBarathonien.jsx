@@ -33,7 +33,6 @@ export default function RegisterBarathonien() {
     const handleFormSubmit = (values) => {
         const dataValues = { ...formData, ...values };
         setFormData(dataValues);
-        console.log(dataValues);
 
         Axios.api
             .post(
@@ -56,8 +55,7 @@ export default function RegisterBarathonien() {
                     },
                 },
             )
-            .then((response) => {
-                console.log(response.data);
+            .then(() => {
                 sucessRegister();
             })
             .catch((e) => {
