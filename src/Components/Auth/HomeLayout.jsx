@@ -9,9 +9,5 @@ export const HomeLayout = () => {
         return <Navigate to="/pro/dashboard" replace />;
     }
 
-    return (
-        <div>
-            {outlet}
-        </div>
-    );
+    return <div>{outlet}</div>;
 };

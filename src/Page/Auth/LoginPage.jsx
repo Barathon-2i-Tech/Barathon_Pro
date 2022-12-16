@@ -29,7 +29,7 @@ export default function LoginPage() {
                 },
                 {
                     headers: {
-                        'accept': 'application/vnd.api+json',
+                        accept: 'application/vnd.api+json',
                         'Content-Type': 'application/vnd.api+json',
                     },
                 },

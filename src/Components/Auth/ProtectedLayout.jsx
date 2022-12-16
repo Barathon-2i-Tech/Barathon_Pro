@@ -9,9 +9,5 @@ export const ProtectedLayout = () => {
         return <Navigate to="/" />;
     }
 
-    return (
-        <div>
-            {outlet}
-        </div>
-    );
+    return <div>{outlet}</div>;
 };

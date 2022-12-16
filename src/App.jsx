@@ -10,22 +10,18 @@ import Dashboard from './Page/Professional/Dashboard';
 function App() {
     return (
         <div className="App">
-
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
-                <Route element={<HomeLayout />}> 
+                <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
                     <Route path="register" element={<Register />}></Route>
                 </Route>
 
                 <Route path="/pro" element={<ProtectedLayout />}>
-                    <Route path="dashboard" element={<Dashboard/>}></Route>
+                    <Route path="dashboard" element={<Dashboard />}></Route>
                     <Route path="registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
                 </Route>
             </Routes>
-
-
-
         </div>
     );
 }
