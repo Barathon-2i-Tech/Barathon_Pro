@@ -1,5 +1,5 @@
 import { useContext, useEffect } from 'react';
-import { FormContext } from '../Auth/RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 
 function Stepper() {
     const { activeStepIndex } = useContext(FormContext);

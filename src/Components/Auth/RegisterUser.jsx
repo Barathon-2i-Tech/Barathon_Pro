@@ -4,7 +4,7 @@ import { Box, TextField } from '@mui/material';
 //import axios from 'axios';
 //import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
-import { FormContext } from './RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 import '../../css/Auth/Register.css';
 
 export default function Register() {

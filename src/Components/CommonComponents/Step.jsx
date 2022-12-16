@@ -1,6 +1,6 @@
 // Step.js
 import { useContext } from 'react';
-import { FormContext } from '../Auth/RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 
 import RegisterUser from '../Auth/RegisterUser';
 import RegisterPro from '../Auth/RegisterPro';

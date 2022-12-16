@@ -1,9 +1,9 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
-import ApplicationLogo from '../CommonComponents/ApplicationLigo';
+import ApplicationLogo from '../../Components/CommonComponents/ApplicationLigo';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../Hooks/useAuth';
+import { useAuth } from '../../Components/Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
 //import { useState } from 'react';
 
@@ -29,7 +29,7 @@ export default function LoginPage() {
                 },
                 {
                     headers: {
-                        accept: 'application/vnd.api+json',
+                        'accept': 'application/vnd.api+json',
                         'Content-Type': 'application/vnd.api+json',
                     },
                 },

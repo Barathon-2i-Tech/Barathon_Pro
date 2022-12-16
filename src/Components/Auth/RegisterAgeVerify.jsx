@@ -3,7 +3,7 @@ import * as yup from 'yup';
 import { Box, TextField } from '@mui/material';
 import moment from 'moment';
 import { useContext } from 'react';
-import { FormContext } from './RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 import '../../css/Auth/Register.css';
 
 export default function RegisterAgeVerify() {

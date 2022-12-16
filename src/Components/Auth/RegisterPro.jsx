@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, TextField } from '@mui/material';
 import { useContext } from 'react';
-import { FormContext } from './RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 import { useAuth } from '../Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
 

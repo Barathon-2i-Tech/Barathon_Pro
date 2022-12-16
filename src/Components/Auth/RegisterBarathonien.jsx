@@ -5,7 +5,7 @@ import { Box, TextField } from '@mui/material';
 import axios from 'axios';
 //import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
-import { FormContext } from './RegisterHome';
+import { FormContext } from '../../Page/Auth/RegisterHome';
 
 export default function RegisterBarathonien() {
     const { formData, setFormData } = useContext(FormContext);
