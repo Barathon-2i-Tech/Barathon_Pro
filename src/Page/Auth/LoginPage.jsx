@@ -16,15 +16,14 @@ const userSchema = yup.object().shape({
     password: yup.string().min(8, 'Minimum 8 characteres').required('obligatoire'),
 });
 
-
-
 export default function LoginPage() {
-    const notify = () => toast(
-        "This toast is super big. I don't think anyone could eat it in one bite.\n\nIt's larger than you expected. You eat it but it does not seem to get smaller.",
-        {
-          duration: 6000,
-        }
-      );
+    const notify = () =>
+        toast(
+            "This toast is super big. I don't think anyone could eat it in one bite.\n\nIt's larger than you expected. You eat it but it does not seem to get smaller.",
+            {
+                duration: 6000,
+            },
+        );
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -38,7 +37,6 @@ export default function LoginPage() {
     // const unauthorizedLog = () => {
     //     navigate('/unauthorizedlogin');
     // };
-
 
     const { login } = useAuth();
 
@@ -69,8 +67,6 @@ export default function LoginPage() {
                 alert('Une erreur est survenue. Merci de réessayer');
             });
     };
-
-    
 
     return (
         <div className="mx-auto max-w-screen-2xl ">

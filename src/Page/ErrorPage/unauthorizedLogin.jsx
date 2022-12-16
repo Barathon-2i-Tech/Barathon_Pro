@@ -1,19 +1,11 @@
-
-
 function UnauthorizedLogin() {
-  return (
-    <div>
+    return (
         <div>
-        Vous n etes pas un utilisateur Professionel
+            <div>Vous n etes pas un utilisateur Professionel</div>
+
+            <div>TELECHARGEZ L application pour accedez a votre compte BARATHONIEN</div>
         </div>
-        
-    
-        <div>
-            TELECHARGEZ L application pour accedez a votre compte BARATHONIEN
-        </div>
-    
-    </div>
-  )
+    );
 }
 
-export default UnauthorizedLogin
+export default UnauthorizedLogin;

@@ -10,14 +10,10 @@ export const ProtectedLayout = () => {
         return <Navigate to="/" />;
     }
 
-    return(<div>
-        <AppBar 
-        pages={[
-            {label: 'Dashboard', path: "dashboard" }
-            ]}
-        />
-        {outlet}
-    </div>
+    return (
+        <div>
+            <AppBar pages={[{ label: 'Dashboard', path: 'dashboard' }]} />
+            {outlet}
+        </div>
     );
-    
 };

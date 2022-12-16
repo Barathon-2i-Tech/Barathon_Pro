@@ -14,7 +14,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
                 <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
-                <Route path="/unauthorizedlogin" element={<UnauthorizedLogin/>}></Route>
+                <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
                     <Route path="register" element={<Register />}></Route>
