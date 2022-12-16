@@ -5,7 +5,6 @@ import ApplicationLogo from '../../Components/CommonComponents/ApplicationLigo';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
-//import { useState } from 'react';
 
 const initialValues = {
     email: '',

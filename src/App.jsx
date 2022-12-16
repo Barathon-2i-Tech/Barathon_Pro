@@ -12,6 +12,7 @@ function App() {
         <div className="App">
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
+                <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
                     <Route path="register" element={<Register />}></Route>
@@ -19,7 +20,6 @@ function App() {
 
                 <Route path="/pro" element={<ProtectedLayout />}>
                     <Route path="dashboard" element={<Dashboard />}></Route>
-                    <Route path="registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
                 </Route>
             </Routes>
         </div>

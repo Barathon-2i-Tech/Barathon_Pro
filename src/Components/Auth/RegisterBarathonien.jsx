@@ -2,25 +2,24 @@ import { useNavigate } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, TextField } from '@mui/material';
-import axios from 'axios';
-//import Stepper from "../CommonComponents/Stepper";
 import { useContext } from 'react';
 import { FormContext } from '../../Page/Auth/RegisterHome';
+import Axios from '../../utils/axiosUrl';
+
+const initialValues = {
+    address: '',
+    postal_code: '',
+    city: '',
+};
+
+const barathonienSchema = yup.object().shape({
+    address: yup.string().required('adresse obligatoire'),
+    postal_code: yup.string().required('code postal obligatoire'),
+    city: yup.string().required('Ville Obligatoire'),
+});
 
 export default function RegisterBarathonien() {
     const { formData, setFormData } = useContext(FormContext);
-
-    const initialValues = {
-        address: '',
-        postal_code: '',
-        city: '',
-    };
-
-    const barathonienSchema = yup.object().shape({
-        address: yup.string().required('adresse obligatoire'),
-        postal_code: yup.string().required('code postal obligatoire'),
-        city: yup.string().required('Ville Obligatoire'),
-    });
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -31,20 +30,39 @@ export default function RegisterBarathonien() {
         navigate('/registersucess');
     };
 
-    const handleFormSubmit = (values, actions) => {
-        const data = { ...formData, ...values };
-        setFormData(data);
-        console.log(data);
+    const handleFormSubmit = (values) => {
+        const dataValues = { ...formData, ...values };
+        setFormData(dataValues);
+        console.log(dataValues);
 
-        axios
-            .post('http://localhost/api/register/barathonien', data)
+        Axios.api
+            .post(
+                '/register/barathonien',
+                {
+                    address: dataValues.address,
+                    birthday: dataValues.birthday,
+                    city: dataValues.city,
+                    email: dataValues.email,
+                    first_name: dataValues.first_name,
+                    last_name: dataValues.last_name,
+                    password: dataValues.password,
+                    password_confirmation: dataValues.password_confirmation,
+                    postal_code: dataValues.postal_code,
+                },
+                {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                    },
+                },
+            )
             .then((response) => {
                 console.log(response.data);
-                actions.resetForm();
                 sucessRegister();
             })
-            .catch((err) => {
-                if (err & err.response) console.log('Error: ', err);
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
             });
     };
 
