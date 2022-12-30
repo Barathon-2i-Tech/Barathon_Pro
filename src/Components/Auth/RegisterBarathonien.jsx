@@ -5,6 +5,7 @@ import { Box, TextField } from '@mui/material';
 import { useContext } from 'react';
 import { FormContext } from '../../Page/Auth/RegisterHome';
 import Axios from '../../utils/axiosUrl';
+import toast, { Toaster } from 'react-hot-toast';
 
 const initialValues = {
     address: '',
@@ -20,6 +21,10 @@ const barathonienSchema = yup.object().shape({
 
 export default function RegisterBarathonien() {
     const { formData, setFormData } = useContext(FormContext);
+
+    const notify = () => {
+        toast.success('Bien enregistré !');
+    };
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -56,16 +61,18 @@ export default function RegisterBarathonien() {
                 },
             )
             .then(() => {
+                notify();
                 sucessRegister();
             })
             .catch((e) => {
                 console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
+                toast.error("Cela n'a pas abouti. \n\n Retournez à l'acceuil et ressayez");
             });
     };
 
     return (
         <div className="w-full min-h-screen flex flex-col justify-start items-center sm:pt-0 registerWrapper">
+            <Toaster />
             <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
                 <Box m="20px">
                     <Formik

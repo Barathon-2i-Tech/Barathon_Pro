@@ -17,13 +17,14 @@ const userSchema = yup.object().shape({
 });
 
 export default function LoginPage() {
-    const notify = () =>
+    const notify = () => {
         toast(
-            "This toast is super big. I don't think anyone could eat it in one bite.\n\nIt's larger than you expected. You eat it but it does not seem to get smaller.",
+            "🛑 Vous n'etes pas un utilisateur Professionel \n\n 📲 Veuillez télécharger l'application pour accedez à votre espace",
             {
-                duration: 6000,
+                duration: 8000,
             },
         );
+    };
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -64,7 +65,12 @@ export default function LoginPage() {
             })
             .catch((e) => {
                 console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
+                toast(
+                    "🛑 Vous n'avez pas creer de compte ou vos identifiants / mots de passe sont mauvais.",
+                    {
+                        duration: 8000,
+                    },
+                );
             });
     };
 
