@@ -1,0 +1,54 @@
+.banner-ImgListInfos__img-container .banner-ImgListInfos__img {
+  max-height: 300px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  border-radius: 20px;
+  width: auto;
+}
+
+.sec-banner-ImgListInfos__card-content {
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
+  margin-bottom: 30px;
+  padding: 30px;
+}
+
+.sec-banner-ImgListInfos ul,
+.sec-banner-ImgListInfos ol {
+  list-style: none;
+  padding-top: 15px;
+}
+
+.sec-banner-ImgListInfos ul li,
+.sec-banner-ImgListInfos ol li {
+  margin-bottom: 1.2em;
+  position: relative;
+}
+
+/* ul */
+.sec-banner-ImgListInfos ul {
+  padding-left: 15px;
+}
+
+.sec-banner-ImgListInfos ul li {
+  padding-left: calc(1.2em + 7px);
+}
+
+.sec-banner-ImgListInfos ul li:before {
+  background: url('https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/ASSET-bulletpoint.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+}
+
+@media screen and (min-width: 991px) {
+  .banner-ImgListInfos__img-container .banner-ImgListInfos__img {
+    max-height: 550px;
+    width: auto;
+  }
+}
