@@ -57,7 +57,7 @@ export default function LoginPage() {
                 },
             )
             .then((response) => {
-                if (response.data.data.user.owner_id != null) {
+                if (response.data.data.userLogged.owner_id != null) {
                     login(response.data.data);
                 } else {
                     notify();

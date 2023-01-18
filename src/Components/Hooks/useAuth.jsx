@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from './UseLocalStorage';
 import Axios from '../../utils/axiosUrl';
 
 const AuthContext = createContext();
