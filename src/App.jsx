@@ -16,7 +16,7 @@ function App() {
                 <Route path="/" element={<Welcome />}></Route>
                 <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
                 <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
-                
+
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
                     <Route path="register" element={<Register />}></Route>
@@ -26,7 +26,7 @@ function App() {
                     <Route path="dashboard" element={<Dashboard />}></Route>
                 </Route>
 
-                <Route path="*" element={<NotFoundPage/>} />
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </div>
     );
