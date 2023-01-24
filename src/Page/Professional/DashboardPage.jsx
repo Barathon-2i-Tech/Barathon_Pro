@@ -1,4 +1,4 @@
-export default function Dashboard() {
+export default function DashboardPage() {
     return (
         <>
             <div className="relative items-top sm:pt-0 overflow-hidden">

@@ -5,9 +5,16 @@ import LoginPage from './Page/Auth/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
-import Dashboard from './Page/Professional/Dashboard';
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
+import { DashboardPage } from './Page/Professional/DashboardPage';
+import { ProfilePage } from './Page/Professional/ProfilePage';
+import { EstablishmentsPage } from './Page/Professional/EstablishmentsPage';
+import { EventsPage } from './Page/Professional/EventsPage';
+import { TagsPage } from './Page/Professional/TagsPage';
+import { EmployeesPage } from './Page/Professional/EmployeesPage';
+import { ContactPage } from '@mui/icons-material';
+import { TermsOfUsePage } from './Page/Professional/TermsOfUse';
 
 function App() {
     return (
@@ -23,7 +30,14 @@ function App() {
                 </Route>
 
                 <Route path="/pro" element={<ProtectedLayout />}>
-                    <Route path="dashboard" element={<Dashboard />}></Route>
+                    <Route path="dashboard" element={<DashboardPage />} />
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="etablissements" element={<EstablishmentsPage />} />
+                    <Route path="evenements" element={<EventsPage />} />
+                    <Route path="tags" element={<TagsPage />} />
+                    <Route path="emplyés" element={<EmployeesPage />} />
+                    <Route path="contact" element={<ContactPage />} />
+                    <Route path="cgu" element={<TermsOfUsePage />} />
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
