@@ -6,6 +6,16 @@ import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
 import DashboardPage from './Page/Professional/Dashboard';
+import ProfilePage from './Page/Professional/Profile';
+import CGUPage from './Page/Professional/CGU';
+
+import ContactPage from './Page/Professional/Contact';
+import EmployeePage from './Page/Professional/Employee';
+import EstablishmentPage from './Page/Professional/Establishment';
+import EventPage from './Page/Professional/Event';
+import NotificationPage from './Page/Professional/Notification';
+import TagPage from './Page/Professional/Tag';
+
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 
@@ -24,6 +34,16 @@ export default function App() {
 
                 <Route path="/pro" element={<ProtectedLayout />}>
                     <Route path="dashboard" element={<DashboardPage />}></Route>
+                    <Route path="profile" element={<ProfilePage />}></Route>
+                    <Route path="cgu" element={<CGUPage />}></Route>
+
+                    <Route path="contact" element={<ContactPage />}></Route>
+
+                    <Route path="employee" element={<EmployeePage />}></Route>
+                    <Route path="establishment" element={<EstablishmentPage />}></Route>
+                    <Route path="event" element={<EventPage />}></Route>
+                    <Route path="notification" element={<NotificationPage />}></Route>
+                    <Route path="tag" element={<TagPage />}></Route>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
