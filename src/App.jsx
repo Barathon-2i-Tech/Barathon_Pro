@@ -5,11 +5,11 @@ import LoginPage from './Page/Auth/LoginPage';
 import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
-import Dashboard from './Page/Professional/Dashboard';
+import DashboardPage from './Page/Professional/Dashboard';
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 
-function App() {
+export default function App() {
     return (
         <div className="App">
             <Routes>
@@ -23,7 +23,7 @@ function App() {
                 </Route>
 
                 <Route path="/pro" element={<ProtectedLayout />}>
-                    <Route path="dashboard" element={<Dashboard />}></Route>
+                    <Route path="dashboard" element={<DashboardPage />}></Route>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
@@ -31,5 +31,3 @@ function App() {
         </div>
     );
 }
-
-export default App;

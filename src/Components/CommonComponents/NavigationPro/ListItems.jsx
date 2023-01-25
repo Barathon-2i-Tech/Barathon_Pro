@@ -13,44 +13,44 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton href="/admin/dashboard">
+        <ListItemButton href="/pro/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton href="/admin/utilisateurs">
+        <ListItemButton href="/pro/utilisateurs">
             <ListItemIcon>
                 <GroupIcon />
             </ListItemIcon>
             <ListItemText primary="Utilisateurs" />
         </ListItemButton>
-        <ListItemButton href="/admin/etablissements">
+        <ListItemButton href="/pro/etablissements">
             <ListItemIcon>
                 <HomeWorkIcon />
             </ListItemIcon>
             <ListItemText primary="Etablissements" />
         </ListItemButton>
-        <ListItemButton href="/admin/evenements">
+        <ListItemButton href="/pro/evenements">
             <ListItemIcon>
                 <ConfirmationNumberIcon />
             </ListItemIcon>
             <ListItemText primary="Evenements" />
         </ListItemButton>
-        <ListItemButton href="/admin/tags">
+        <ListItemButton href="/pro/tags">
             <ListItemIcon>
                 <TagIcon />
             </ListItemIcon>
             <ListItemText primary="Tags" />
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
-        <ListItemButton href="/admin/messagerie">
+        <ListItemButton href="/pro/messagerie">
             <ListItemIcon>
                 <EmailIcon />
             </ListItemIcon>
             <ListItemText primary="Messagerie" />
         </ListItemButton>
-        <ListItemButton href="/admin/profile">
+        <ListItemButton href="/pro/profile">
             <ListItemIcon>
                 <PermContactCalendarIcon />
             </ListItemIcon>

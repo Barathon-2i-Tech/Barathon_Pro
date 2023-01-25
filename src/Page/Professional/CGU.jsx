@@ -2,7 +2,7 @@ import { BasicPage } from '../../Components/CommonComponents/BasicPage';
 import Person from '@mui/icons-material/Person';
 import Paper from '@mui/material/Paper';
 
-export default function DashboardPage() {
+export default function CGUPage() {
     return (
         <Paper
             sx={{
@@ -12,7 +12,7 @@ export default function DashboardPage() {
                 width: '100%',
             }}
         >
-            <BasicPage title="Dashboard Page" icon={<Person />} />
+            <BasicPage title="CGU Page" icon={<Person />} />
         </Paper>
     );
 }
