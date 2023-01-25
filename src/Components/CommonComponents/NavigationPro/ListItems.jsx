@@ -19,42 +19,55 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton href="/pro/utilisateurs">
+        <ListItemButton href="/pro/profile">
             <ListItemIcon>
                 <GroupIcon />
             </ListItemIcon>
-            <ListItemText primary="Utilisateurs" />
+            <ListItemText primary="Profile" />
         </ListItemButton>
-        <ListItemButton href="/pro/etablissements">
+        <ListItemButton href="/pro/establishment">
             <ListItemIcon>
                 <HomeWorkIcon />
             </ListItemIcon>
             <ListItemText primary="Etablissements" />
         </ListItemButton>
-        <ListItemButton href="/pro/evenements">
+        <ListItemButton href="/pro/event">
             <ListItemIcon>
                 <ConfirmationNumberIcon />
             </ListItemIcon>
             <ListItemText primary="Evenements" />
         </ListItemButton>
-        <ListItemButton href="/pro/tags">
+        <ListItemButton href="/pro/tag">
             <ListItemIcon>
                 <TagIcon />
             </ListItemIcon>
-            <ListItemText primary="Tags" />
+            <ListItemText primary="Demander un Tag" />
+        </ListItemButton>
+        <ListItemButton href="/pro/employee">
+            <ListItemIcon>
+                <TagIcon />
+            </ListItemIcon>
+            <ListItemText primary="Mes employ&eacute;s" />
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
-        <ListItemButton href="/pro/messagerie">
-            <ListItemIcon>
-                <EmailIcon />
-            </ListItemIcon>
-            <ListItemText primary="Messagerie" />
-        </ListItemButton>
-        <ListItemButton href="/pro/profile">
+
+        <ListItemButton href="/pro/notification">
             <ListItemIcon>
                 <PermContactCalendarIcon />
             </ListItemIcon>
-            <ListItemText primary="Profile" />
+            <ListItemText primary="Notifications" />
+        </ListItemButton>
+        <ListItemButton href="/pro/contact">
+            <ListItemIcon>
+                <EmailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Nous Contacter" />
+        </ListItemButton>
+        <ListItemButton href="/pro/cgu">
+            <ListItemIcon>
+                <EmailIcon />
+            </ListItemIcon>
+            <ListItemText primary="Conditions d'utilisation" />
         </ListItemButton>
     </React.Fragment>
 );
