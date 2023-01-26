@@ -4,24 +4,20 @@ import Link from '@mui/material/Link';
 export const ButtonLink = ({ allClass, link, text, icon }) => {
     return (
         <div className={allClass}>
-        <Link sx={{
-            color: 'inherit',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center'
-            }}
-            className="break-word"
-             href={link}>
-        
-                <div className="w-full">
-                    {icon}
-                </div>
-                <div className="w-full">
-                            {text}
-                </div>
-            
+            <Link
+                sx={{
+                    color: 'inherit',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    alignItems: 'center',
+                }}
+                className="break-word"
+                href={link}
+            >
+                <div className="w-full">{icon}</div>
+                <div className="w-full">{text}</div>
             </Link>
-            </div>
+        </div>
     );
 };
 
