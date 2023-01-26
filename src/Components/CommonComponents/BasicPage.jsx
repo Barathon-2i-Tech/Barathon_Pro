@@ -15,7 +15,7 @@ export const BasicPage = ({ title, icon }) => {
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>{icon}</Avatar>
+                <Avatar sx={{ m: 1, bgcolor: 'black' }}>{icon}</Avatar>
                 <Typography component="h1" variant="h5">
                     {title}
                 </Typography>

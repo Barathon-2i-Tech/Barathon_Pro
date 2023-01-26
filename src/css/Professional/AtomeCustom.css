@@ -1,0 +1,22 @@
+.card-shadow {
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 9px;
+}
+
+
+/*to swipe or scroll*/
+.swipe {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+}
+.swipe .swipe-item {
+    height: 100%;
+    white-space: normal;
+}
+.break-word{
+    word-break: break-word;
+}
