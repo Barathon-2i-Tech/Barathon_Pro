@@ -13,9 +13,6 @@ export default function ContactPage() {
             }}
         >
             <BasicPage title="Contactez nous" icon={<Person />} />
-
-            
-
         </Paper>
     );
 }
