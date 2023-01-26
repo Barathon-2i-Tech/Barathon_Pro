@@ -12,7 +12,7 @@ export default function ContactPage() {
                 width: '100%',
             }}
         >
-            <BasicPage title="Contact Page" icon={<Person />} />
+            <BasicPage title="Contactez nous" icon={<Person />} />
         </Paper>
     );
 }
