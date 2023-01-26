@@ -16,12 +16,13 @@ export default function EstablishmentPage() {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                height: '80vh',
+                height: '100%',
+                minHeight: '80vh',
                 width: '100%',
             }}
         >
             <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
-            <section className="container relative sm:py-11 md:py-20 px-4 z-10">
+            <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
                 <div className="flex swipe items-center">
                     <div className=" text-sm flex mr-3">
                         <div className="min-100px-min">
