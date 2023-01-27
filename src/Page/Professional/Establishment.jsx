@@ -23,7 +23,7 @@ export default function EstablishmentPage() {
         >
             <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
-                <div className="flex swipe items-center">
+                <div className="flex swipe items-center justify-between">
                     <div className=" text-sm flex mr-3">
                         <div className="min-100px-min">
                             <img
@@ -42,24 +42,24 @@ export default function EstablishmentPage() {
                     </div>
                     <ButtonLink
                         link="/"
-                        allClass="swipe-item min-100px-min text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3 max-w-xs"
+                        allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3 max-w-xs"
                         text="Modifier"
                         icon={<EditIcon />}
                     />
                     <ButtonLink
                         link="/"
-                        allClass="swipe-item min-100px-min text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3"
+                        allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3"
                         text="www.openBar.com"
                         icon={<LanguageIcon />}
                     />
 
-                    <div className="swipe-item text-center min-100px-min flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
+                    <div className="swipe-item text-center min-100px-min min-w-button-establishement flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
                         <div className="w-full">
                             <PhoneIcon />
                         </div>
                         <div className="w-full font-bold">0688007700</div>
                     </div>
-                    <div className="swipe-item text-center min-100px-min flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
+                    <div className="swipe-item text-center min-100px-min min-w-button-establishement flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
                         <div className="w-full">
                             <BookmarkBorderIcon />
                         </div>

@@ -3,3 +3,8 @@
   min-width: 100px;
   min-height: 100px;
 }
+@media screen and (min-width: 1260px) {
+  .min-w-button-establishement {
+    min-width: 150px;
+  }
+}
