@@ -19,6 +19,7 @@ import TagPage from './Page/Professional/Tag';
 
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
+import EstablishmentFormPage from './Page/Professional/EstablishmentForm';
 
 export default function App() {
     return (
@@ -42,6 +43,7 @@ export default function App() {
 
                     <Route path="employee" element={<EmployeePage />}></Route>
                     <Route path="establishment" element={<EstablishmentPage />}></Route>
+                    <Route path="establishmentForm" element={<EstablishmentFormPage />}></Route>
                     <Route path="event" element={<EventPage />}></Route>
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>

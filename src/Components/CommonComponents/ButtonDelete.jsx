@@ -14,5 +14,5 @@ export const ButtonDelete = ({ allClass, functionDelete }) => {
 
 ButtonDelete.propTypes = {
     allClass: PropTypes.string,
-    functionDelete: PropTypes.function,
+    functionDelete: PropTypes.func,
 };
