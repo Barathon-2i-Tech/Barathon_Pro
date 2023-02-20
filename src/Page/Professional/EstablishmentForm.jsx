@@ -11,33 +11,36 @@ import Paper from '@mui/material/Paper';
 import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../../Components/Hooks/useAuth';
 
 export default function EstablishmentFormPage() {
+    const { user } = useAuth();
     const [establishments, setEstablishments] = useState([]);
+    const { id } = useParams();
+    const token = user.token;
+    const ownerId = user.userLogged.owner_id;
 
-    const getEstablishments = () => {
+    const getEstablishment = () => {
         Axios.api
-            .get(`/pro/1/establishment`, {
+            .get(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
-                    Authorization: 'Bearer ' + '12|f1fsRWQX5sSyBrn7eImTPtsN22ytqphYquZiprAc',
+                    Authorization: `Bearer ${token}`,
                 },
             })
             .then((response) => {
-                //console.log(response.data.data + "ceci est le premier");
                 setEstablishments(response.data.data);
-                console.log(establishments);
-                console.log('test');
+                console.log(response.data.data);
             })
             .catch((error) => {
                 console.log(error);
-                console.log('il y a une erreur');
             });
     };
 
     useEffect(() => {
-        getEstablishments();
+        getEstablishment();
     }, []);
 
     return (
@@ -56,7 +59,9 @@ export default function EstablishmentFormPage() {
                 <section
                     key={establishment.establishment_id}
                     className="container relative sm:pt-6 md:pt-11 px-4 z-10"
-                ></section>
+                >
+                    <div></div>
+                </section>
             ))}
         </Paper>
     );

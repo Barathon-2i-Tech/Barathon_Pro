@@ -11,9 +11,12 @@ import { ButtonDelete } from '../../Components/CommonComponents/ButtonDelete';
 import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../Components/Hooks/useAuth';
 
 export default function EstablishmentPage() {
+    const { user } = useAuth();
     const [establishments, setEstablishments] = useState([]);
+    const token = user.token;
 
     const getEstablishments = () => {
         Axios.api
@@ -21,7 +24,7 @@ export default function EstablishmentPage() {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
-                    Authorization: 'Bearer ' + '12|f1fsRWQX5sSyBrn7eImTPtsN22ytqphYquZiprAc',
+                    Authorization: `Bearer ${token}`,
                 },
             })
             .then((response) => {
@@ -69,7 +72,7 @@ export default function EstablishmentPage() {
                 width: '100%',
             }}
         >
-            <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
+            <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
 
             {establishments.map((establishment) => (
                 <section
@@ -94,13 +97,13 @@ export default function EstablishmentPage() {
                             </div>
                         </div>
                         <ButtonLink
-                            link="/pro/establishmentForm"
+                            link={`/pro/establishmentForm/${establishment.establishment_id}`}
                             allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3 max-w-xs"
                             text="Modifier"
                             icon={<EditIcon />}
                         />
                         <ButtonLink
-                            link="/"
+                            link={establishment.website}
                             allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3"
                             text={establishment.website}
                             icon={<LanguageIcon />}

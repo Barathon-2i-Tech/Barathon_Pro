@@ -43,7 +43,7 @@ export default function App() {
 
                     <Route path="employee" element={<EmployeePage />}></Route>
                     <Route path="establishment" element={<EstablishmentPage />}></Route>
-                    <Route path="establishmentForm" element={<EstablishmentFormPage />}></Route>
+                    <Route path="establishmentForm/:id" element={<EstablishmentFormPage />}></Route>
                     <Route path="event" element={<EventPage />}></Route>
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>
