@@ -1,13 +1,6 @@
 import { BasicPage } from '../../Components/CommonComponents/BasicPage';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
-// import EditIcon from '@mui/icons-material/Edit';
-// import LanguageIcon from '@mui/icons-material/Language';
-// import PhoneIcon from '@mui/icons-material/Phone';
-// import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-// import Divider from '@mui/material/Divider';
-// import { ButtonLink } from '../../Components/CommonComponents/ButtonLink';
-// import { ButtonDelete } from '../../Components/CommonComponents/ButtonDelete';
 import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
@@ -24,17 +17,34 @@ export default function EstablishmentFormPage() {
     const { id } = useParams();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+    const [opening, setOpening] = useState({});
+    const openingJson = JSON.stringify(
+        Object.entries(opening).reduce(
+            (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
+            {},
+        ),
+    );
 
-    // const initialValues = {
-    //     logo: '',
-    //     trade_name: '',
-    //     address:'',
-    //     city: '',
-    //     postal_code:'',
-    //     phone:'',
-    //     opening:'',
-    //     website:'',
-    // };
+    const initialValuesOpening = {
+        lundi: '',
+        mardi: '',
+        mercredi: '',
+        jeudi: '',
+        vendredi: '',
+        samedi: '',
+        dimanche: '',
+    };
+
+    const openingSchema = yup.object().shape({
+        lundi: yup.string(),
+        mardi: yup.string(),
+        mercredi: yup.string(),
+        jeudi: yup.string(),
+        vendredi: yup.string(),
+        samedi: yup.string(),
+        dimanche: yup.string(),
+    });
+
     const establishmentSchema = yup.object().shape({
         trade_name: yup.string().required('obligatoire'),
         address: yup.string().required('obligatoire'),
@@ -44,7 +54,7 @@ export default function EstablishmentFormPage() {
         phone: yup.string().required('obligatoire'),
         email: yup.string().required('obligatoire'),
         website: yup.string().required('obligatoire'),
-        opening: yup.object().required('obligatoire'),
+        // opening: yup.object().required('obligatoire'),
     });
 
     const getEstablishment = () => {
@@ -58,6 +68,7 @@ export default function EstablishmentFormPage() {
             })
             .then((response) => {
                 setEstablishments(response.data.data);
+
                 console.log(response.data.data);
             })
             .catch((error) => {
@@ -69,6 +80,24 @@ export default function EstablishmentFormPage() {
         getEstablishment();
     }, []);
 
+    const handleFormSubmitOpening = (values) => {
+        const notify = () => {
+            toast('✅ Horraire Bien enregistré ! SAUVEGARDER pour valider vos modifications !!', {
+                duration: 8000,
+            });
+        };
+
+        const dataValuesOpening = { ...values };
+        setOpening(dataValuesOpening);
+        notify();
+        console.log(opening);
+        console.log(establishments);
+        console.log(openingJson);
+    };
+    useEffect(() => {
+        console.log(opening);
+    }, [opening]);
+
     const handleFormSubmit = (values) => {
         const notify = () => {
             toast('✅ Bien enregistré !', {
@@ -76,7 +105,7 @@ export default function EstablishmentFormPage() {
             });
         };
 
-        const dataValues = { ...values };
+        const dataValues = { ...values, opening: openingJson };
 
         Axios.api
             .post(`/pro/${ownerId}/establishment/${id}/update`, dataValues, {
@@ -93,6 +122,7 @@ export default function EstablishmentFormPage() {
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
+                console.log(dataValues);
             });
     };
 
@@ -109,13 +139,134 @@ export default function EstablishmentFormPage() {
             <Toaster />
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
-            {establishments.map((establishment) => (
-                <section
-                    key={establishment.establishment_id}
-                    className="container relative sm:pt-6 md:pt-11 px-4 z-10"
-                >
-                    <Box m="20px">
+            <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
+                <Box m="20px">
+                    <Formik
+                        initialValues={initialValuesOpening}
+                        onSubmit={handleFormSubmitOpening}
+                        validationSchema={openingSchema}
+                    >
+                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <Box
+                                    display="grid"
+                                    gap="30px"
+                                    gridTemplateColumns="repeat(4, minmax(0,1 fr))"
+                                >
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Lundi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.lundi}
+                                        name="lundi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.lundi && !!errors.lundi}
+                                        helperText={touched.lundi && errors.lundi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="mardi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.mardi}
+                                        name="mardi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.mardi && !!errors.mardi}
+                                        helperText={touched.mardi && errors.mardi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="mercredi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.mercredi}
+                                        name="mercredi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.mercredi && !!errors.mercredi}
+                                        helperText={touched.mercredi && errors.mercredi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="jeudi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.jeudi}
+                                        name="jeudi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.jeudi && !!errors.jeudi}
+                                        helperText={touched.jeudi && errors.jeudi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="vendredi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.vendredi}
+                                        name="vendredi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.vendredi && !!errors.vendredi}
+                                        helperText={touched.vendredi && errors.vendredi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="samedi"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.samedi}
+                                        name="samedi"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.samedi && !!errors.samedi}
+                                        helperText={touched.samedi && errors.samedi}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="dimanche"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.dimanche}
+                                        name="dimanche"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.dimanche && !!errors.dimanche}
+                                        helperText={touched.dimanche && errors.dimanche}
+                                        sx={{ gridColumn: 'span 4' }}
+                                    />
+                                </Box>
+                                <Box display="flex" justifyContent="end" mt="20px">
+                                    <button
+                                        type="submit"
+                                        className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                    >
+                                        Enregistrer mes nouveaux horraires
+                                    </button>
+                                </Box>
+                            </form>
+                        )}
+                    </Formik>
+
+                    {establishments.map((establishment) => (
                         <Formik
+                            key={establishment.establishment_id}
                             initialValues={{
                                 logo: establishment.logo || '',
                                 trade_name: establishment.trade_name || '',
@@ -124,7 +275,6 @@ export default function EstablishmentFormPage() {
                                 postal_code: establishment.postal_code || '',
                                 phone: establishment.phone || '',
                                 email: establishment.email || '',
-                                opening: establishment.opening || '',
                                 website: establishment.website || '',
                             }}
                             onSubmit={handleFormSubmit}
@@ -242,20 +392,7 @@ export default function EstablishmentFormPage() {
                                             helperText={touched.email && errors.email}
                                             sx={{ gridColumn: 'span 2' }}
                                         />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="json"
-                                            label="Horraires"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.opening}
-                                            name="opening"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.opening && !!errors.opening}
-                                            helperText={touched.opening && errors.opening}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
+
                                         <TextField
                                             fullWidth
                                             variant="filled"
@@ -282,9 +419,9 @@ export default function EstablishmentFormPage() {
                                 </form>
                             )}
                         </Formik>
-                    </Box>
-                </section>
-            ))}
+                    ))}
+                </Box>
+            </section>
         </Paper>
     );
 }

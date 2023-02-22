@@ -95,8 +95,8 @@ export default function EstablishmentPage() {
                                 </div>
                                 <div className="pl-3">
                                     <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">adresse test test test</div>
-                                    <div className="">69000</div>
+                                    <div className="">{establishment.address}</div>
+                                    <div className="">{establishment.postal_code}</div>
                                 </div>
                             </div>
                             <div className="flex justify-between w-full">
@@ -158,8 +158,8 @@ export default function EstablishmentPage() {
                                 </div>
                                 <div className="pl-3">
                                     <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">adresse test test test</div>
-                                    <div className="">69000</div>
+                                    <div className="">{establishment.address}</div>
+                                    <div className="">{establishment.postal_code}</div>
                                 </div>
                             </div>
                             <div className="standby bg-red-300 w-full rounded-lg h-full flex justify-center items-center">
@@ -188,8 +188,8 @@ export default function EstablishmentPage() {
                                 </div>
                                 <div className="pl-3">
                                     <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">adresse test test test</div>
-                                    <div className="">69000</div>
+                                    <div className="">{establishment.address}</div>
+                                    <div className="">{establishment.postal_code}</div>
                                 </div>
                             </div>
                             <div className="standby bg-orange-200 w-full rounded-lg h-full flex justify-center items-center">
