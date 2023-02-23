@@ -12,6 +12,7 @@ import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
+import { Loader } from '../../Components/CommonComponents/Loader';
 //import Button from '@mui/material/Button';
 
 export default function EstablishmentPage() {
@@ -20,23 +21,25 @@ export default function EstablishmentPage() {
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
 
-    const getEstablishments = () => {
-        Axios.api
-            .get(`/pro/${ownerId}/establishment`, {
+    async function getEstablishments() {
+        try {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            .then((response) => {
-                setEstablishments(response.data.data);
-                console.log(response.data.data);
-            })
-            .catch((error) => {
-                console.log(error);
             });
-    };
+            setEstablishments(response.data.data);
+            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('display');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const deleteEstablishment = (id) => {
         Axios.api
@@ -76,7 +79,7 @@ export default function EstablishmentPage() {
             }}
         >
             <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
-
+            <Loader allClass={'loading display pt-20 pb-20'} />
             {establishments.map((establishment) =>
                 establishment.status_id === 4 ? (
                     <section

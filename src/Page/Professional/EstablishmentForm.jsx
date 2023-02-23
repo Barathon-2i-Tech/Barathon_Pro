@@ -69,16 +69,6 @@ export default function EstablishmentFormPage() {
         navigate('/pro/establishment');
     };
 
-    //LOADER
-    //  const loader = document.getElementById('loader');
-    //  function hideLoading() {
-    //     if (loader) {
-    //         loader.classList.remove('display');
-    //       } else {
-    //         setTimeout(hideLoading, 100);
-    //       }
-    //  }
-
     async function getEstablishment() {
         try {
             const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {

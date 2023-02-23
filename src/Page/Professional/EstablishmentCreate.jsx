@@ -82,40 +82,6 @@ export default function EstablishmentCreatePage() {
         navigate('/pro/establishment');
     };
 
-    //LOADER
-    //  const loader = document.getElementById('loader');
-    //  function hideLoading() {
-    //     if (loader) {
-    //         loader.classList.remove('display');
-    //       } else {
-    //         setTimeout(hideLoading, 100);
-    //       }
-    //  }
-
-    // async function getEstablishment() {
-    //     try {
-    //         const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
-    //             headers: {
-    //                 accept: 'application/vnd.api+json',
-    //                 'Content-Type': 'application/vnd.api+json',
-    //                 Authorization: `Bearer ${token}`,
-    //             },
-    //         });
-    //         setEstablishments(response.data.data);
-    //         await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
-    //         const loader = document.getElementById('loader');
-    //         if (loader) {
-    //             loader.classList.remove('display');
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     getEstablishment();
-    // }, []);
-
     const handleFormSubmitOpening = (values) => {
         const notify = () => {
             toast('✅ Horraire Bien enregistré ! SAUVEGARDER pour valider vos modifications !!', {
