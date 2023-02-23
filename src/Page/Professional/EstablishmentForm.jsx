@@ -1,7 +1,9 @@
 import { BasicPage } from '../../Components/CommonComponents/BasicPage';
+import { Loader } from '../../Components/CommonComponents/Loader';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import '../../css/Professional/Establishment.css';
+import '../../css/Professional/Loader.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -10,6 +12,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, TextField } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 export default function EstablishmentFormPage() {
     const { user } = useAuth();
@@ -36,13 +39,13 @@ export default function EstablishmentFormPage() {
     };
 
     const openingSchema = yup.object().shape({
-        lundi: yup.string(),
-        mardi: yup.string(),
-        mercredi: yup.string(),
-        jeudi: yup.string(),
-        vendredi: yup.string(),
-        samedi: yup.string(),
-        dimanche: yup.string(),
+        lundi: yup.string().required('obligatoire'),
+        mardi: yup.string().required('obligatoire'),
+        mercredi: yup.string().required('obligatoire'),
+        jeudi: yup.string().required('obligatoire'),
+        vendredi: yup.string().required('obligatoire'),
+        samedi: yup.string().required('obligatoire'),
+        dimanche: yup.string().required('obligatoire'),
     });
 
     const establishmentSchema = yup.object().shape({
@@ -57,24 +60,44 @@ export default function EstablishmentFormPage() {
         // opening: yup.object().required('obligatoire'),
     });
 
-    const getEstablishment = () => {
-        Axios.api
-            .get(`/pro/${ownerId}/establishment/${id}`, {
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
+
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goBack = () => {
+        navigate('/pro/establishment');
+    };
+
+    //LOADER
+    //  const loader = document.getElementById('loader');
+    //  function hideLoading() {
+    //     if (loader) {
+    //         loader.classList.remove('display');
+    //       } else {
+    //         setTimeout(hideLoading, 100);
+    //       }
+    //  }
+
+    async function getEstablishment() {
+        try {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            .then((response) => {
-                setEstablishments(response.data.data);
-
-                console.log(response.data.data);
-            })
-            .catch((error) => {
-                console.log(error);
             });
-    };
+            setEstablishments(response.data.data);
+            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('display');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         getEstablishment();
@@ -136,10 +159,14 @@ export default function EstablishmentFormPage() {
                 width: '100%',
             }}
         >
-            <Toaster />
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
+                <Toaster />
+                <div className="mx-6 font-bold">
+                    Si vous souhaitez en premier changer vos horraires, modifier tous les champs de
+                    la semaine et enregister, puis sauvegarder.
+                </div>
                 <Box m="20px">
                     <Formik
                         initialValues={initialValuesOpening}
@@ -252,7 +279,7 @@ export default function EstablishmentFormPage() {
                                         sx={{ gridColumn: 'span 4' }}
                                     />
                                 </Box>
-                                <Box display="flex" justifyContent="end" mt="20px">
+                                <Box display="flex" justifyContent="end" mt="20px" mb="20px">
                                     <button
                                         type="submit"
                                         className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
@@ -264,6 +291,7 @@ export default function EstablishmentFormPage() {
                         )}
                     </Formik>
 
+                    <Loader allClass={'loading display'} />
                     {establishments.map((establishment) => (
                         <Formik
                             key={establishment.establishment_id}
@@ -409,6 +437,14 @@ export default function EstablishmentFormPage() {
                                         />
                                     </Box>
                                     <Box display="flex" justifyContent="end" mt="20px">
+                                        <div className="w-fit inline-block text-white lg:text-xl">
+                                            <button
+                                                onClick={goBack}
+                                                className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
+                                            >
+                                                Annuler
+                                            </button>
+                                        </div>
                                         <button
                                             type="submit"
                                             className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
