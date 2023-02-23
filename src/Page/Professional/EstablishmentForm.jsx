@@ -164,8 +164,9 @@ export default function EstablishmentFormPage() {
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
                 <Toaster />
                 <div className="mx-6 font-bold">
-                ETAPE 1 (facultative): modifier tous les champs de
-                la semaine et enregister, puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la prochaine étape.
+                    ETAPE 1 (facultative): modifier tous les champs de la semaine et enregister,
+                    puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la
+                    prochaine étape.
                 </div>
                 <Box m="20px">
                     <Formik
@@ -292,8 +293,8 @@ export default function EstablishmentFormPage() {
                     </Formik>
 
                     <div className="pb-4 font-bold">
-                ETAPE 2 (facultative): modifier tous les champs puis sauvegarder.
-                </div>
+                        ETAPE 2 (facultative): modifier tous les champs puis sauvegarder.
+                    </div>
 
                     <Loader allClass={'loading display'} />
                     {establishments.map((establishment) => (

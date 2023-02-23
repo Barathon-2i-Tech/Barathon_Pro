@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 //import Button from '@mui/material/Button';
 
-
 export default function EstablishmentPage() {
     const { user } = useAuth();
     const [establishments, setEstablishments] = useState([]);
@@ -205,11 +204,10 @@ export default function EstablishmentPage() {
                 ) : null,
             )}
             <div className="flex justify-center">
-            <button  className="custom-button-teal">
-                <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
-            </button>
+                <button className="custom-button-teal">
+                    <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
+                </button>
             </div>
-            
         </Paper>
     );
 }

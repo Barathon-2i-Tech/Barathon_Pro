@@ -138,9 +138,12 @@ export default function EstablishmentCreatePage() {
 
     const handleFormSubmit = (values) => {
         const notify = () => {
-            toast('✅ Votre demande a bien été envoyé ! Votre etablissement sera en attente le temps de validation des documents fournis', {
-                duration: 8000,
-            });
+            toast(
+                '✅ Votre demande a bien été envoyé ! Votre etablissement sera en attente le temps de validation des documents fournis',
+                {
+                    duration: 8000,
+                },
+            );
         };
 
         const dataValues = { ...values, opening: openingFormat };
@@ -178,10 +181,10 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
-                
                 <div className="mx-6 font-bold">
-                    1ere ETAPE (facultative): modifier tous les champs de
-                    la semaine et enregister, puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la prochaine étape.
+                    1ere ETAPE (facultative): modifier tous les champs de la semaine et enregister,
+                    puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la
+                    prochaine étape.
                 </div>
                 <Box m="20px">
                     <Formik
@@ -310,174 +313,167 @@ export default function EstablishmentCreatePage() {
                     {/* <Loader allClass={'loading display'} /> */}
 
                     <div className="pb-4 font-bold">
-                ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
-                </div>
-                        <Formik
-                            initialValues={{initialValuesForm}}
-                            onSubmit={handleFormSubmit}
-                            validationSchema={establishmentSchema}
-                        >
-                            {({
-                                values,
-                                errors,
-                                touched,
-                                handleChange,
-                                handleBlur,
-                                handleSubmit,
-                            }) => (
-                                <form onSubmit={handleSubmit}>
-                                    <Box
-                                        display="grid"
-                                        gap="30px"
-                                        gridTemplateColumns="repeat(4, minmax(0,1 fr))"
-                                    >
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Logo"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.logo}
-                                            name="logo"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.logo && !!errors.logo}
-                                            helperText={touched.logo && errors.logo}
-                                            sx={{ gridColumn: 'span 4' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Nom de l'etablissement"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.trade_name}
-                                            name="trade_name"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.trade_name && !!errors.trade_name}
-                                            helperText={touched.trade_name && errors.trade_name}
-                                            sx={{ gridColumn: 'span 4' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Siret"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.siret}
-                                            name="siret"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.siret && !!errors.siret}
-                                            helperText={touched.siret && errors.siret}
-                                            sx={{ gridColumn: 'span 4' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Adresse"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.address}
-                                            name="address"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.address && !!errors.address}
-                                            helperText={touched.address && errors.address}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Ville"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.city}
-                                            name="city"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.city && !!errors.city}
-                                            helperText={touched.city && errors.city}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Code postal"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.postal_code}
-                                            name="postal_code"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.postal_code && !!errors.postal_code}
-                                            helperText={touched.postal_code && errors.postal_code}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Telephone"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.phone}
-                                            name="phone"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.phone && !!errors.phone}
-                                            helperText={touched.phone && errors.phone}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="email"
-                                            label="Email"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.email}
-                                            name="email"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.email && !!errors.email}
-                                            helperText={touched.email && errors.email}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
+                        ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
+                    </div>
+                    <Formik
+                        initialValues={{ initialValuesForm }}
+                        onSubmit={handleFormSubmit}
+                        validationSchema={establishmentSchema}
+                    >
+                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <Box
+                                    display="grid"
+                                    gap="30px"
+                                    gridTemplateColumns="repeat(4, minmax(0,1 fr))"
+                                >
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Logo"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.logo}
+                                        name="logo"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.logo && !!errors.logo}
+                                        helperText={touched.logo && errors.logo}
+                                        sx={{ gridColumn: 'span 4' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Nom de l'etablissement"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.trade_name}
+                                        name="trade_name"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.trade_name && !!errors.trade_name}
+                                        helperText={touched.trade_name && errors.trade_name}
+                                        sx={{ gridColumn: 'span 4' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Siret"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.siret}
+                                        name="siret"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.siret && !!errors.siret}
+                                        helperText={touched.siret && errors.siret}
+                                        sx={{ gridColumn: 'span 4' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Adresse"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.address}
+                                        name="address"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.address && !!errors.address}
+                                        helperText={touched.address && errors.address}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Ville"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.city}
+                                        name="city"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.city && !!errors.city}
+                                        helperText={touched.city && errors.city}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Code postal"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.postal_code}
+                                        name="postal_code"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.postal_code && !!errors.postal_code}
+                                        helperText={touched.postal_code && errors.postal_code}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Telephone"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.phone}
+                                        name="phone"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.phone && !!errors.phone}
+                                        helperText={touched.phone && errors.phone}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="email"
+                                        label="Email"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.email}
+                                        name="email"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.email && !!errors.email}
+                                        helperText={touched.email && errors.email}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
 
-                                        <TextField
-                                            fullWidth
-                                            variant="filled"
-                                            type="text"
-                                            label="Site Web"
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.website}
-                                            name="website"
-                                            //convert to boolean using !! operator
-                                            error={!!touched.website && !!errors.website}
-                                            helperText={touched.website && errors.website}
-                                            sx={{ gridColumn: 'span 2' }}
-                                        />
-                                    </Box>
-                                    <Box display="flex" justifyContent="end" mt="20px">
-                                        <div className="w-fit inline-block text-white lg:text-xl">
-                                            <button
-                                                onClick={goBack}
-                                                className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
-                                            >
-                                                Annuler
-                                            </button>
-                                        </div>
+                                    <TextField
+                                        fullWidth
+                                        variant="filled"
+                                        type="text"
+                                        label="Site Web"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values.website}
+                                        name="website"
+                                        //convert to boolean using !! operator
+                                        error={!!touched.website && !!errors.website}
+                                        helperText={touched.website && errors.website}
+                                        sx={{ gridColumn: 'span 2' }}
+                                    />
+                                </Box>
+                                <Box display="flex" justifyContent="end" mt="20px">
+                                    <div className="w-fit inline-block text-white lg:text-xl">
                                         <button
-                                            type="submit"
-                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                            onClick={goBack}
+                                            className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
                                         >
-                                            Envoyer ma demande
+                                            Annuler
                                         </button>
-                                    </Box>
-                                </form>
-                            )}
-                        </Formik>
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                    >
+                                        Envoyer ma demande
+                                    </button>
+                                </Box>
+                            </form>
+                        )}
+                    </Formik>
                 </Box>
             </section>
         </Paper>

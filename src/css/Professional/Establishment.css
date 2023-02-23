@@ -20,7 +20,7 @@
   padding: 0.75rem 1rem;
   transition: all 0.2s ease-in-out;
 }
-.custom-button-teal a{
+.custom-button-teal a {
   color: #047857;
 }
 .custom-button-teal:hover {
@@ -28,7 +28,7 @@
   color: white;
 }
 .custom-button-teal:hover a {
-  color: white!important;
+  color: white !important;
 }
 
 @media screen and (min-width: 1260px) {
