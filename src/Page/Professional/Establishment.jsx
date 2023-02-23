@@ -12,6 +12,8 @@ import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
+//import Button from '@mui/material/Button';
+
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -202,6 +204,12 @@ export default function EstablishmentPage() {
                     </section>
                 ) : null,
             )}
+            <div className="flex justify-center">
+            <button  className="custom-button-teal">
+                <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
+            </button>
+            </div>
+            
         </Paper>
     );
 }

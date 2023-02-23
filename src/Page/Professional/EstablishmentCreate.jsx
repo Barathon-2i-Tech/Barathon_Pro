@@ -1,12 +1,12 @@
 import { BasicPage } from '../../Components/CommonComponents/BasicPage';
-import { Loader } from '../../Components/CommonComponents/Loader';
+// import { Loader } from '../../Components/CommonComponents/Loader';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -14,13 +14,14 @@ import { Box, TextField } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
-export default function EstablishmentFormPage() {
+export default function EstablishmentCreatePage() {
     const { user } = useAuth();
-    const [establishments, setEstablishments] = useState([]);
-    const { id } = useParams();
+    //const [establishments, setEstablishments] = useState([]);
+    //const { id } = useParams();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
+    const [openingFormat, setOpeningFormat] = useState({});
     const openingJson = JSON.stringify(
         Object.entries(opening).reduce(
             (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
@@ -37,6 +38,17 @@ export default function EstablishmentFormPage() {
         samedi: '',
         dimanche: '',
     };
+    const initialValuesForm = {
+        logo: '',
+        siret: '',
+        trade_name: '',
+        address: '',
+        city: '',
+        postal_code: '',
+        phone: '',
+        email: '',
+        website: '',
+    };
 
     const openingSchema = yup.object().shape({
         lundi: yup.string().required('obligatoire'),
@@ -50,6 +62,7 @@ export default function EstablishmentFormPage() {
 
     const establishmentSchema = yup.object().shape({
         trade_name: yup.string().required('obligatoire'),
+        siret: yup.string().required('obligatoire'),
         address: yup.string().required('obligatoire'),
         city: yup.string().required('obligatoire'),
         postal_code: yup.string().required('obligatoire'),
@@ -79,29 +92,29 @@ export default function EstablishmentFormPage() {
     //       }
     //  }
 
-    async function getEstablishment() {
-        try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setEstablishments(response.data.data);
-            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.classList.remove('display');
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // async function getEstablishment() {
+    //     try {
+    //         const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
+    //             headers: {
+    //                 accept: 'application/vnd.api+json',
+    //                 'Content-Type': 'application/vnd.api+json',
+    //                 Authorization: `Bearer ${token}`,
+    //             },
+    //         });
+    //         setEstablishments(response.data.data);
+    //         await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+    //         const loader = document.getElementById('loader');
+    //         if (loader) {
+    //             loader.classList.remove('display');
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
 
-    useEffect(() => {
-        getEstablishment();
-    }, []);
+    // useEffect(() => {
+    //     getEstablishment();
+    // }, []);
 
     const handleFormSubmitOpening = (values) => {
         const notify = () => {
@@ -113,25 +126,27 @@ export default function EstablishmentFormPage() {
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
         notify();
-        console.log(opening);
-        console.log(establishments);
-        console.log(openingJson);
+        //console.log(opening);
+        //console.log(establishments);
+        //console.log(openingJson);
     };
     useEffect(() => {
         console.log(opening);
+        setOpeningFormat(openingJson);
+        console.log(openingJson);
     }, [opening]);
 
     const handleFormSubmit = (values) => {
         const notify = () => {
-            toast('✅ Bien enregistré !', {
+            toast('✅ Votre demande a bien été envoyé ! Votre etablissement sera en attente le temps de validation des documents fournis', {
                 duration: 8000,
             });
         };
 
-        const dataValues = { ...values, opening: openingJson };
+        const dataValues = { ...values, opening: openingFormat };
 
         Axios.api
-            .post(`/pro/${ownerId}/establishment/${id}/update`, dataValues, {
+            .post(`/pro/${ownerId}/establishment/create`, dataValues, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -159,13 +174,14 @@ export default function EstablishmentFormPage() {
                 width: '100%',
             }}
         >
-            <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
+            <Toaster />
+            <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
-                <Toaster />
+                
                 <div className="mx-6 font-bold">
-                ETAPE 1 (facultative): modifier tous les champs de
-                la semaine et enregister, puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la prochaine étape.
+                    1ere ETAPE (facultative): modifier tous les champs de
+                    la semaine et enregister, puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la prochaine étape.
                 </div>
                 <Box m="20px">
                     <Formik
@@ -291,24 +307,13 @@ export default function EstablishmentFormPage() {
                         )}
                     </Formik>
 
-                    <div className="pb-4 font-bold">
-                ETAPE 2 (facultative): modifier tous les champs puis sauvegarder.
-                </div>
+                    {/* <Loader allClass={'loading display'} /> */}
 
-                    <Loader allClass={'loading display'} />
-                    {establishments.map((establishment) => (
+                    <div className="pb-4 font-bold">
+                ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
+                </div>
                         <Formik
-                            key={establishment.establishment_id}
-                            initialValues={{
-                                logo: establishment.logo || '',
-                                trade_name: establishment.trade_name || '',
-                                address: establishment.address || '',
-                                city: establishment.city || '',
-                                postal_code: establishment.postal_code || '',
-                                phone: establishment.phone || '',
-                                email: establishment.email || '',
-                                website: establishment.website || '',
-                            }}
+                            initialValues={{initialValuesForm}}
                             onSubmit={handleFormSubmit}
                             validationSchema={establishmentSchema}
                         >
@@ -352,6 +357,20 @@ export default function EstablishmentFormPage() {
                                             //convert to boolean using !! operator
                                             error={!!touched.trade_name && !!errors.trade_name}
                                             helperText={touched.trade_name && errors.trade_name}
+                                            sx={{ gridColumn: 'span 4' }}
+                                        />
+                                        <TextField
+                                            fullWidth
+                                            variant="filled"
+                                            type="text"
+                                            label="Siret"
+                                            onBlur={handleBlur}
+                                            onChange={handleChange}
+                                            value={values.siret}
+                                            name="siret"
+                                            //convert to boolean using !! operator
+                                            error={!!touched.siret && !!errors.siret}
+                                            helperText={touched.siret && errors.siret}
                                             sx={{ gridColumn: 'span 4' }}
                                         />
                                         <TextField
@@ -453,13 +472,12 @@ export default function EstablishmentFormPage() {
                                             type="submit"
                                             className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
                                         >
-                                            Sauvegarder
+                                            Envoyer ma demande
                                         </button>
                                     </Box>
                                 </form>
                             )}
                         </Formik>
-                    ))}
                 </Box>
             </section>
         </Paper>
