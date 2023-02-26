@@ -282,7 +282,7 @@ export default function EstablishmentCreatePage() {
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
                     <Formik
-                        initialValues={{ initialValuesForm }}
+                        initialValues={initialValuesForm}
                         onSubmit={handleFormSubmit}
                         validationSchema={establishmentSchema}
                     >
