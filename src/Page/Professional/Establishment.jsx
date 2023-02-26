@@ -87,7 +87,7 @@ export default function EstablishmentPage() {
                         className="container relative sm:pt-6 md:pt-11 px-4 z-10"
                     >
                         <div className="flex swipe items-center ">
-                            <div className=" text-sm flex mr-3">
+                            <div className=" text-sm flex mr-3 min-300px-min-max">
                                 <div className="min-100px-min">
                                     <img
                                         className=""
@@ -150,7 +150,7 @@ export default function EstablishmentPage() {
                         className="container relative sm:pt-6 md:pt-11 px-4 z-10 h-full"
                     >
                         <div className="establishment_content flex swipe items-center relative h-full">
-                            <div className="text-sm flex mr-3">
+                            <div className="text-sm flex mr-3 min-300px-min-max">
                                 <div className="min-100px-min">
                                     <img
                                         className=""
@@ -180,7 +180,7 @@ export default function EstablishmentPage() {
                         className="container relative sm:pt-6 md:pt-11 px-4 z-10 h-full"
                     >
                         <div className="establishment_content flex swipe items-center relative h-full">
-                            <div className="text-sm flex mr-3">
+                            <div className="text-sm flex mr-3 min-300px-min-max">
                                 <div className="min-100px-min">
                                     <img
                                         className=""
