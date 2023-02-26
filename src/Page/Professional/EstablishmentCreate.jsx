@@ -1,12 +1,10 @@
 import { BasicPage } from '../../Components/CommonComponents/BasicPage';
-// import { Loader } from '../../Components/CommonComponents/Loader';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
-// import { useParams } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -16,8 +14,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function EstablishmentCreatePage() {
     const { user } = useAuth();
-    //const [establishments, setEstablishments] = useState([]);
-    //const { id } = useParams();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
@@ -92,9 +88,6 @@ export default function EstablishmentCreatePage() {
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
         notify();
-        //console.log(opening);
-        //console.log(establishments);
-        //console.log(openingJson);
     };
     useEffect(() => {
         console.log(opening);
@@ -275,8 +268,6 @@ export default function EstablishmentCreatePage() {
                             </form>
                         )}
                     </Formik>
-
-                    {/* <Loader allClass={'loading display'} /> */}
 
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
