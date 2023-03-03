@@ -206,7 +206,7 @@ export default function EstablishmentPage() {
                     </section>
                 ) : null,
             )}
-            <div className="flex justify-center">
+            <div className="flex justify-center pb-4">
                 <button className="custom-button-teal">
                     <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
                 </button>
