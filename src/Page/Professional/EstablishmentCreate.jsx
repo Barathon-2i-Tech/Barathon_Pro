@@ -7,7 +7,8 @@ import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+import { EstablishmentSchemaOpening } from '../../utils/FormSchemaValidation';
+import { establishmentSchema } from '../../utils/FormSchemaValidation';
 import { Box, Grid } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -46,29 +47,6 @@ export default function EstablishmentCreatePage() {
         email: '',
         website: '',
     };
-
-    const openingSchema = yup.object().shape({
-        lundi: yup.string().required('obligatoire'),
-        mardi: yup.string().required('obligatoire'),
-        mercredi: yup.string().required('obligatoire'),
-        jeudi: yup.string().required('obligatoire'),
-        vendredi: yup.string().required('obligatoire'),
-        samedi: yup.string().required('obligatoire'),
-        dimanche: yup.string().required('obligatoire'),
-    });
-
-    const establishmentSchema = yup.object().shape({
-        trade_name: yup.string().required('obligatoire'),
-        siret: yup.string().required('obligatoire'),
-        address: yup.string().required('obligatoire'),
-        city: yup.string().required('obligatoire'),
-        postal_code: yup.string().required('obligatoire'),
-        logo: yup.string().required('obligatoire'),
-        phone: yup.string().required('obligatoire'),
-        email: yup.string().required('obligatoire'),
-        website: yup.string().required('obligatoire'),
-        // opening: yup.object().required('obligatoire'),
-    });
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -150,7 +128,7 @@ export default function EstablishmentCreatePage() {
                     <Formik
                         initialValues={initialValuesOpening}
                         onSubmit={handleFormSubmitOpening}
-                        validationSchema={openingSchema}
+                        validationSchema={EstablishmentSchemaOpening}
                     >
                         {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                             <form onSubmit={handleSubmit}>
