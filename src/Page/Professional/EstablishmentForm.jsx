@@ -6,15 +6,14 @@ import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Formik } from 'formik';
 import { Box, Grid } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
-import { EstablishmentSchemaOpening } from '../../utils/FormSchemaValidation';
-import { establishmentSchema } from '../../utils/FormSchemaValidation';
+import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
 import { FormFieldModel } from '../../Components/CommonComponents/FormFieldModel';
+import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 
 export default function EstablishmentFormPage() {
     const { user } = useAuth();
@@ -29,16 +28,6 @@ export default function EstablishmentFormPage() {
             {},
         ),
     );
-
-    const initialValuesOpening = {
-        lundi: '',
-        mardi: '',
-        mercredi: '',
-        jeudi: '',
-        vendredi: '',
-        samedi: '',
-        dimanche: '',
-    };
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -140,7 +129,7 @@ export default function EstablishmentFormPage() {
                 </div>
                 <Box m="20px">
                     <Formik
-                        initialValues={initialValuesOpening}
+                        initialValues={FormInitialValuesOpening}
                         onSubmit={handleFormSubmitOpening}
                         validationSchema={EstablishmentSchemaOpening}
                     >
@@ -152,76 +141,26 @@ export default function EstablishmentFormPage() {
                                     gridTemplateColumns="repeat(4, minmax(0,1 fr))"
                                 >
                                     <Grid container spacing={2}>
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.lundi}
-                                            name={'lundi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.lundi && !!errors.lundi}
-                                            helperText={touched.lundi && errors.lundi}
-                                        />
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.mardi}
-                                            name={'mardi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.mardi && !!errors.mardi}
-                                            helperText={touched.mardi && errors.mardi}
-                                        />
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.mercredi}
-                                            name={'mercredi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.mercredi && !!errors.mercredi}
-                                            helperText={touched.mercredi && errors.mercredi}
-                                        />
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.jeudi}
-                                            name={'jeudi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.jeudi && !!errors.jeudi}
-                                            helperText={touched.jeudi && errors.jeudi}
-                                        />
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.vendredi}
-                                            name={'vendredi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.vendredi && !!errors.vendredi}
-                                            helperText={touched.vendredi && errors.vendredi}
-                                        />
-                                        <FormFieldModel
-                                            grid={6}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.samedi}
-                                            name={'samedi'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.samedi && !!errors.samedi}
-                                            helperText={touched.samedi && errors.samedi}
-                                        />
-                                        <FormFieldModel
-                                            grid={12}
-                                            onBlur={handleBlur}
-                                            onChange={handleChange}
-                                            value={values.dimanche}
-                                            name={'dimanche'}
-                                            //convert to boolean using !! operator
-                                            error={!!touched.dimanche && !!errors.dimanche}
-                                            helperText={touched.dimanche && errors.dimanche}
-                                        />
+                                        {[
+                                            'lundi',
+                                            'mardi',
+                                            'mercredi',
+                                            'jeudi',
+                                            'vendredi',
+                                            'samedi',
+                                            'dimanche',
+                                        ].map((day) => (
+                                            <FormFieldModel
+                                                key={day}
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values[day]}
+                                                name={day}
+                                                error={!!touched[day] && !!errors[day]}
+                                                helperText={touched[day] && errors[day]}
+                                            />
+                                        ))}
                                     </Grid>
                                 </Box>
                                 <Box display="flex" justifyContent="end" mt="20px" mb="20px">
