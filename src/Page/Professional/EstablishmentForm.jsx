@@ -14,6 +14,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
 import { FormFieldModel } from '../../Components/CommonComponents/FormFieldModel';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
+import { useFormik } from 'formik';
+import { FormOpening } from '../../Components/CommonComponents/FormOpening';
 
 export default function EstablishmentFormPage() {
     const { user } = useAuth();
@@ -28,6 +30,13 @@ export default function EstablishmentFormPage() {
             {},
         ),
     );
+
+    const formikOpening = useFormik({
+        initialValues: FormInitialValuesOpening,
+        enableReinitialize: true,
+        validationSchema: EstablishmentSchemaOpening,
+        onSubmit: (values) => handleFormSubmitOpening(values),
+    });
 
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -128,52 +137,7 @@ export default function EstablishmentFormPage() {
                     prochaine étape.
                 </div>
                 <Box m="20px">
-                    <Formik
-                        initialValues={FormInitialValuesOpening}
-                        onSubmit={handleFormSubmitOpening}
-                        validationSchema={EstablishmentSchemaOpening}
-                    >
-                        {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <Box
-                                    display="grid"
-                                    gap="30px"
-                                    gridTemplateColumns="repeat(4, minmax(0,1 fr))"
-                                >
-                                    <Grid container spacing={2}>
-                                        {[
-                                            'lundi',
-                                            'mardi',
-                                            'mercredi',
-                                            'jeudi',
-                                            'vendredi',
-                                            'samedi',
-                                            'dimanche',
-                                        ].map((day) => (
-                                            <FormFieldModel
-                                                key={day}
-                                                grid={6}
-                                                onBlur={handleBlur}
-                                                onChange={handleChange}
-                                                value={values[day]}
-                                                name={day}
-                                                error={!!touched[day] && !!errors[day]}
-                                                helperText={touched[day] && errors[day]}
-                                            />
-                                        ))}
-                                    </Grid>
-                                </Box>
-                                <Box display="flex" justifyContent="end" mt="20px" mb="20px">
-                                    <button
-                                        type="submit"
-                                        className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
-                                    >
-                                        Enregistrer mes nouveaux horraires
-                                    </button>
-                                </Box>
-                            </form>
-                        )}
-                    </Formik>
+                    <FormOpening formik={formikOpening} />
 
                     <div className="pb-4 font-bold">
                         ETAPE 2 (facultative): modifier tous les champs puis sauvegarder.
