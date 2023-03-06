@@ -34,7 +34,7 @@ FormFieldModel.propTypes = {
     grid: PropTypes.number.isRequired,
     label: PropTypes.string,
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired,
+    value: PropTypes.string,
     onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.bool,
