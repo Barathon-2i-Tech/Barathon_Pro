@@ -23,31 +23,108 @@ export default function EstablishmentPage() {
     const [rows, setRows] = useState([]);
     const [columns, setColumns] = useState([]);
 
+    const getStatusCell = (params) => {
+        let cell = null;
+
+        if (params.row.status_id === 4) {
+            cell = (
+                <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
+                    <CheckCircleIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">Valider</span>
+                </div>
+            );
+        } else if (params.row.status_id === 5) {
+            cell = (
+                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
+                    <CancelIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">Refuser</span>
+                </div>
+            );
+        } else if (params.row.status_id === 6) {
+            cell = (
+                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
+                    <PendingIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">En attente</span>
+                </div>
+            );
+        } else {
+            cell = <div>Erreur</div>;
+        }
+
+        return cell;
+    };
+
+    const getModifyCell = (params) => {
+        let cell = null;
+
+        if (params.row.status_id === 4) {
+            cell = (
+                <ButtonLink
+                    link={`/pro/establishmentForm/${params.row.establishment_id}`}
+                    allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-lime-500"
+                    text="Modifier"
+                    icon={<EditIcon />}
+                />
+            );
+        } else if (params.row.status_id === 5) {
+            cell = (
+                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
+                    <CancelIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">Refuser</span>
+                </div>
+            );
+        } else if (params.row.status_id === 6) {
+            cell = (
+                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
+                    <PendingIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">En attente</span>
+                </div>
+            );
+        } else {
+            cell = <div>Erreur</div>;
+        }
+
+        return cell;
+    };
+
+    const getDeleteCell = (params) => {
+        let cell = null;
+
+        if (params.row.status_id === 4) {
+            cell = (
+                <ButtonDelete
+                    functionDelete={() => deleteEstablishment(params.row.establishment_id)}
+                    allClass="text-white bg-red-700 w-full h-full rounded-none"
+                />
+            );
+        } else if (params.row.status_id === 5) {
+            cell = (
+                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
+                    <CancelIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">Refuser</span>
+                </div>
+            );
+        } else if (params.row.status_id === 6) {
+            cell = (
+                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
+                    <PendingIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">En attente</span>
+                </div>
+            );
+        } else {
+            cell = <div>Erreur</div>;
+        }
+
+        return cell;
+    };
+
     useEffect(() => {
         setColumns([
             {
                 field: 'status',
                 headerName: 'Status',
                 width: 130,
-                renderCell: (params) =>
-                    params.row.status_id === 4 ? (
-                        <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
-                            <CheckCircleIcon sx={{ marginX: 1 }} />
-                            <span className="pl-2">Valider</span>
-                        </div>
-                    ) : params.row.status_id === 5 ? (
-                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
-                            <CancelIcon sx={{ marginX: 1 }} />
-                            <span className="pl-2">Refuser</span>
-                        </div>
-                    ) : params.row.status_id === 6 ? (
-                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
-                            <PendingIcon sx={{ marginX: 1 }} />
-                            <span className="pl-2">En attente</span>
-                        </div>
-                    ) : (
-                        <div>Erreur</div>
-                    ),
+                renderCell: getStatusCell,
             },
             {
                 field: 'logo',
@@ -84,47 +161,13 @@ export default function EstablishmentPage() {
                 field: 'Modifier',
                 headerName: 'Modifier',
                 width: 150,
-                renderCell: (params) =>
-                    params.row.status_id === 4 ? (
-                        <ButtonLink
-                            link={`/pro/establishmentForm/${params.row.establishment_id}`}
-                            allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-lime-500"
-                            text="Modifier"
-                            icon={<EditIcon />}
-                        />
-                    ) : params.row.status_id === 5 ? (
-                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white">
-                            <span className="pl-2">Refuser</span>
-                        </div>
-                    ) : params.row.status_id === 6 ? (
-                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white">
-                            <span className="pl-2">En attente</span>
-                        </div>
-                    ) : (
-                        <div className=""> Pas de données</div>
-                    ),
+                renderCell: getModifyCell,
             },
             {
                 field: 'delete',
                 headerName: 'Supprimer',
                 width: 150,
-                renderCell: (params) =>
-                    params.row.status_id === 4 ? (
-                        <ButtonDelete
-                            functionDelete={() => deleteEstablishment(params.row.establishment_id)}
-                            allClass="text-white bg-red-700 w-full h-full rounded-none"
-                        />
-                    ) : params.row.status_id === 5 ? (
-                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white">
-                            Refuser
-                        </div>
-                    ) : params.row.status_id === 6 ? (
-                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white">
-                            <span className="pl-2">En attente</span>
-                        </div>
-                    ) : (
-                        <div className=""> Pas de données</div>
-                    ),
+                renderCell: getDeleteCell,
             },
         ]);
     }, [rows]);
