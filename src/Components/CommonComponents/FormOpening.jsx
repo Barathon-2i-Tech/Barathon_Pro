@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { FormFieldModel } from '../../Components/CommonComponents/FormFieldModel';
 import { Box, Grid } from '@mui/material';
-// import { FormInitialValuesOpening } from '../../utils/FormSchemaValidation';
 
 export const FormOpening = ({ formik }) => {
     return (

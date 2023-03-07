@@ -2,10 +2,6 @@ import { BasicPage } from '../../Components/CommonComponents/BasicPage';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
-import LanguageIcon from '@mui/icons-material/Language';
-import PhoneIcon from '@mui/icons-material/Phone';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import Divider from '@mui/material/Divider';
 import { ButtonLink } from '../../Components/CommonComponents/ButtonLink';
 import { ButtonDelete } from '../../Components/CommonComponents/ButtonDelete';
 import '../../css/Professional/Establishment.css';
@@ -13,13 +9,125 @@ import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Loader } from '../../Components/CommonComponents/Loader';
-//import Button from '@mui/material/Button';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import PendingIcon from '@mui/icons-material/Pending';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
-    const [establishments, setEstablishments] = useState([]);
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+
+    //dataGRID
+    const [rows, setRows] = useState([]);
+    const [columns, setColumns] = useState([]);
+
+    useEffect(() => {
+        setColumns([
+            {
+                field: 'status',
+                headerName: 'Status',
+                width: 130,
+                renderCell: (params) =>
+                    params.row.status_id === 4 ? (
+                        <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
+                            <CheckCircleIcon sx={{ marginX: 1 }} />
+                            <span className="pl-2">Valider</span>
+                        </div>
+                    ) : params.row.status_id === 5 ? (
+                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
+                            <CancelIcon sx={{ marginX: 1 }} />
+                            <span className="pl-2">Refuser</span>
+                        </div>
+                    ) : params.row.status_id === 6 ? (
+                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
+                            <PendingIcon sx={{ marginX: 1 }} />
+                            <span className="pl-2">En attente</span>
+                        </div>
+                    ) : (
+                        <div>Erreur</div>
+                    ),
+            },
+            {
+                field: 'logo',
+                headerName: 'Logo',
+                width: 100,
+                renderCell: (params) => <img src={params.value} />,
+            },
+            {
+                field: 'trade_name',
+                headerName: 'Nom commercial',
+                width: 200,
+            },
+            {
+                field: 'address',
+                headerName: 'Adresse',
+                width: 200,
+            },
+            {
+                field: 'postal_code',
+                headerName: 'Code postal',
+                width: 150,
+            },
+            {
+                field: 'website',
+                headerName: 'Site web',
+                width: 200,
+            },
+            {
+                field: 'phone',
+                headerName: 'Téléphone',
+                width: 150,
+            },
+            {
+                field: 'Modifier',
+                headerName: 'Modifier',
+                width: 150,
+                renderCell: (params) =>
+                    params.row.status_id === 4 ? (
+                        <ButtonLink
+                            link={`/pro/establishmentForm/${params.row.establishment_id}`}
+                            allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-lime-500"
+                            text="Modifier"
+                            icon={<EditIcon />}
+                        />
+                    ) : params.row.status_id === 5 ? (
+                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white">
+                            <span className="pl-2">Refuser</span>
+                        </div>
+                    ) : params.row.status_id === 6 ? (
+                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white">
+                            <span className="pl-2">En attente</span>
+                        </div>
+                    ) : (
+                        <div className=""> Pas de données</div>
+                    ),
+            },
+            {
+                field: 'delete',
+                headerName: 'Supprimer',
+                width: 150,
+                renderCell: (params) =>
+                    params.row.status_id === 4 ? (
+                        <ButtonDelete
+                            functionDelete={() => deleteEstablishment(params.row.establishment_id)}
+                            allClass="text-white bg-red-700 w-full h-full rounded-none"
+                        />
+                    ) : params.row.status_id === 5 ? (
+                        <div className="bg-red-700 w-full h-full flex justify-start items-center text-white">
+                            Refuser
+                        </div>
+                    ) : params.row.status_id === 6 ? (
+                        <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white">
+                            <span className="pl-2">En attente</span>
+                        </div>
+                    ) : (
+                        <div className=""> Pas de données</div>
+                    ),
+            },
+        ]);
+    }, [rows]);
 
     async function getEstablishments() {
         try {
@@ -30,7 +138,7 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setEstablishments(response.data.data);
+            setRows(response.data.data);
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
             if (loader) {
@@ -40,6 +148,9 @@ export default function EstablishmentPage() {
             console.log(error);
         }
     }
+    useEffect(() => {
+        getEstablishments();
+    }, []);
 
     const deleteEstablishment = (id) => {
         Axios.api
@@ -47,26 +158,17 @@ export default function EstablishmentPage() {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
-                    Authorization: 'Bearer ' + '12|f1fsRWQX5sSyBrn7eImTPtsN22ytqphYquZiprAc',
+                    Authorization: `Bearer ${token}`,
                 },
             })
             .then(() => {
                 console.log('bien effacé');
-                // Supprime l'établissement correspondant de la liste
-                setEstablishments((prevEstablishments) =>
-                    prevEstablishments.filter(
-                        (establishment) => establishment.establishment_id !== id,
-                    ),
-                );
+                getEstablishments();
             })
             .catch((error) => {
                 console.log(error);
             });
     };
-
-    useEffect(() => {
-        getEstablishments();
-    }, []);
 
     return (
         <Paper
@@ -80,132 +182,21 @@ export default function EstablishmentPage() {
         >
             <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
             <Loader allClass={'loading display pt-20 pb-20'} />
-            {establishments.map((establishment) =>
-                establishment.status_id === 4 ? (
-                    <section
-                        key={establishment.establishment_id}
-                        className="container relative sm:pt-6 md:pt-11 px-4 z-10"
-                    >
-                        <div className="flex swipe items-center ">
-                            <div className=" text-sm flex mr-3 min-300px-min-max">
-                                <div className="min-100px-min">
-                                    <img
-                                        className=""
-                                        src={establishment.logo}
-                                        alt=""
-                                        width="100"
-                                        height="100"
-                                    />
-                                </div>
-                                <div className="pl-3">
-                                    <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">{establishment.address}</div>
-                                    <div className="">{establishment.postal_code}</div>
-                                </div>
-                            </div>
-                            <div className="flex justify-between w-full">
-                                <ButtonLink
-                                    link={
-                                        establishment.status_id === 4
-                                            ? `/pro/establishmentForm/${establishment.establishment_id}`
-                                            : ''
-                                    }
-                                    allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3 max-w-xs"
-                                    text="Modifier"
-                                    icon={<EditIcon />}
-                                />
-                                <ButtonLink
-                                    link={establishment.website}
-                                    allClass="swipe-item min-100px-min min-w-button-establishement text-center flex align-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3"
-                                    text={establishment.website}
-                                    icon={<LanguageIcon />}
-                                />
-
-                                <div className="swipe-item text-center min-100px-min min-w-button-establishement flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
-                                    <div className="w-full">
-                                        <PhoneIcon />
-                                    </div>
-                                    <div className="w-full font-bold">{establishment.phone}</div>
-                                </div>
-                                <div className="swipe-item text-center min-100px-min min-w-button-establishement flex items-center justify-center flex-wrap card-shadow p-2.5 my-1 mr-3">
-                                    <div className="w-full">
-                                        <BookmarkBorderIcon />
-                                    </div>
-                                    <div className="w-full font-bold">bar à vin</div>
-                                </div>
-
-                                <ButtonDelete
-                                    functionDelete={() =>
-                                        deleteEstablishment(establishment.establishment_id)
-                                    }
-                                    allClass="swipe-item w-fit m-2  min-100px-min text-white bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
-                                />
-                            </div>
-                        </div>
-                        <Divider sx={{ my: 3 }} />
-                    </section>
-                ) : establishment.status_id === 5 ? (
-                    <section
-                        key={establishment.establishment_id}
-                        className="container relative sm:pt-6 md:pt-11 px-4 z-10 h-full"
-                    >
-                        <div className="establishment_content flex swipe items-center relative h-full">
-                            <div className="text-sm flex mr-3 min-300px-min-max">
-                                <div className="min-100px-min">
-                                    <img
-                                        className=""
-                                        src={establishment.logo}
-                                        alt=""
-                                        width="100"
-                                        height="100"
-                                    />
-                                </div>
-                                <div className="pl-3">
-                                    <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">{establishment.address}</div>
-                                    <div className="">{establishment.postal_code}</div>
-                                </div>
-                            </div>
-                            <div className="standby bg-red-300 w-full rounded-lg h-full flex justify-center items-center">
-                                <div className="">
-                                    <div>Etablissement refuser</div>
-                                </div>
-                            </div>
-                        </div>
-                        <Divider sx={{ my: 3 }} />
-                    </section>
-                ) : establishment.status_id === 6 ? (
-                    <section
-                        key={establishment.establishment_id}
-                        className="container relative sm:pt-6 md:pt-11 px-4 z-10 h-full"
-                    >
-                        <div className="establishment_content flex swipe items-center relative h-full">
-                            <div className="text-sm flex mr-3 min-300px-min-max">
-                                <div className="min-100px-min">
-                                    <img
-                                        className=""
-                                        src={establishment.logo}
-                                        alt=""
-                                        width="100"
-                                        height="100"
-                                    />
-                                </div>
-                                <div className="pl-3">
-                                    <div className="font-bold">{establishment.trade_name}</div>
-                                    <div className="">{establishment.address}</div>
-                                    <div className="">{establishment.postal_code}</div>
-                                </div>
-                            </div>
-                            <div className="standby bg-orange-200 w-full rounded-lg h-full flex justify-center items-center">
-                                <div className="">
-                                    <div>En cours de validation</div>
-                                </div>
-                            </div>
-                        </div>
-                        <Divider sx={{ my: 3 }} />
-                    </section>
-                ) : null,
-            )}
+            <DataGrid
+                getRowId={(rows) => rows.establishment_id}
+                rows={rows}
+                columns={columns}
+                components={{
+                    Toolbar: GridToolbar,
+                }}
+                autoHeight
+                disableSelectionOnClick
+                disableColumnFilter={false}
+                onFilterModelChange={(model) => console.log(model)}
+                pageSize={10}
+                rowsPerPageOptions={[10, 20, 50]}
+                sx={{ marginY: 6, marginX: 2 }}
+            />
             <div className="flex justify-center pb-4">
                 <button className="custom-button-teal">
                     <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>

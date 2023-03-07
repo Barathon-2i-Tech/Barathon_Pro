@@ -4,6 +4,18 @@ import { Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 export const FormEstablishment = ({ formik }) => {
+    const labelMap = {
+        logo: 'Logo',
+        siret: 'Numéro de SIRET',
+        trade_name: "Nom de l'établissement",
+        address: 'Adresse',
+        city: 'Ville',
+        postal_code: 'Code postal',
+        phone: 'Téléphone',
+        email: 'E-mail',
+        website: 'Site web',
+    };
+
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
 
@@ -31,7 +43,7 @@ export const FormEstablishment = ({ formik }) => {
                         <FormFieldModel
                             key={formFieldValue}
                             grid={6}
-                            label={formFieldValue}
+                            label={labelMap[formFieldValue]}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             value={formik.values[formFieldValue]}

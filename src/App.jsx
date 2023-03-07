@@ -19,7 +19,7 @@ import TagPage from './Page/Professional/Tag';
 
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
-import EstablishmentFormPage from './Page/Professional/EstablishmentForm';
+import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 
 export default function App() {
