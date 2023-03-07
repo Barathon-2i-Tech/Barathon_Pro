@@ -24,41 +24,12 @@ export default function EstablishmentPage() {
     const [columns, setColumns] = useState([]);
 
     const getStatusCell = (params) => {
-        let cell = null;
-
-        if (params.row.status_id === 4) {
-            cell = (
-                <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
-                    <CheckCircleIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">Valider</span>
-                </div>
-            );
-        } else if (params.row.status_id === 5) {
-            cell = (
-                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
-                    <CancelIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">Refuser</span>
-                </div>
-            );
-        } else if (params.row.status_id === 6) {
-            cell = (
-                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
-                    <PendingIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">En attente</span>
-                </div>
-            );
-        } else {
-            cell = <div>Erreur</div>;
-        }
-
-        return cell;
+        return getStatusElement(params, params.row.status_id);
     };
 
     const getModifyCell = (params) => {
-        let cell = null;
-
         if (params.row.status_id === 4) {
-            cell = (
+            return (
                 <ButtonLink
                     link={`/pro/establishmentForm/${params.row.establishment_id}`}
                     allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-lime-500"
@@ -66,56 +37,57 @@ export default function EstablishmentPage() {
                     icon={<EditIcon />}
                 />
             );
-        } else if (params.row.status_id === 5) {
-            cell = (
-                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
-                    <CancelIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">Refuser</span>
-                </div>
-            );
-        } else if (params.row.status_id === 6) {
-            cell = (
-                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
-                    <PendingIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">En attente</span>
-                </div>
-            );
+        } else if (params.row.status_id === 5 || params.row.status_id === 6) {
+            return getStatusElement(params, params.row.status_id);
         } else {
-            cell = <div>Erreur</div>;
+            return <div>Erreur</div>;
         }
-
-        return cell;
     };
 
     const getDeleteCell = (params) => {
-        let cell = null;
-
         if (params.row.status_id === 4) {
-            cell = (
+            return (
                 <ButtonDelete
                     functionDelete={() => deleteEstablishment(params.row.establishment_id)}
                     allClass="text-white bg-red-700 w-full h-full rounded-none"
                 />
             );
-        } else if (params.row.status_id === 5) {
-            cell = (
+        } else if (params.row.status_id === 5 || params.row.status_id === 6) {
+            return getStatusElement(params, params.row.status_id);
+        } else {
+            return <div>Erreur</div>;
+        }
+    };
+
+    const getStatusElement = (params, status_id) => {
+        let element = null;
+
+        if (status_id === 4) {
+            element = (
+                <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
+                    <CheckCircleIcon sx={{ marginX: 1 }} />
+                    <span className="pl-2">Valider</span>
+                </div>
+            );
+        } else if (status_id === 5) {
+            element = (
                 <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
                     <CancelIcon sx={{ marginX: 1 }} />
                     <span className="pl-2">Refuser</span>
                 </div>
             );
-        } else if (params.row.status_id === 6) {
-            cell = (
+        } else if (status_id === 6) {
+            element = (
                 <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
                     <PendingIcon sx={{ marginX: 1 }} />
                     <span className="pl-2">En attente</span>
                 </div>
             );
         } else {
-            cell = <div>Erreur</div>;
+            element = <div>Erreur</div>;
         }
 
-        return cell;
+        return element;
     };
 
     useEffect(() => {
