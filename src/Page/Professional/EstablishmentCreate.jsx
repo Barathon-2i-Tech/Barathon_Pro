@@ -6,7 +6,7 @@ import '../../css/Professional/Loader.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
-import { Box } from '@mui/material';
+import { Box, Alert, AlertTitle, Snackbar} from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
@@ -15,8 +15,6 @@ import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
-import { Snackbar } from '@mui/material';
-import { Alert, AlertTitle } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
