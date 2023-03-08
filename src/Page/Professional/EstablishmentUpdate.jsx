@@ -14,7 +14,7 @@ import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/For
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
-import { sendFormDataPost } from '../../utils/AxiosModel';
+import { sendFormDataPut } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 
 export default function EstablishmentFormPage() {
@@ -98,9 +98,9 @@ export default function EstablishmentFormPage() {
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingJson };
-        const urlCreate = `/pro/${ownerId}/establishment/${id}/update`;
+        const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
-        sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
+        sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);

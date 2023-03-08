@@ -169,7 +169,7 @@ export default function EstablishmentPage() {
 
     const deleteEstablishment = (id) => {
         Axios.api
-            .delete(`/pro/${ownerId}/establishment/${id}/delete`, {
+            .delete(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
