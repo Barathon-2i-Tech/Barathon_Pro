@@ -6,7 +6,7 @@ import '../../css/Professional/Loader.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
-import { Box, Alert, AlertTitle, Snackbar } from '@mui/material';
+import { Box } from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
@@ -15,10 +15,10 @@ import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
+import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 
 export default function EstablishmentCreatePage() {
+    const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const token = user.token;
@@ -37,6 +37,7 @@ export default function EstablishmentCreatePage() {
             return;
         }
         setOpenSnackbar(false);
+        setOpenSnackbarOpening(false);
     };
 
     const formikOpening = useFormik({
@@ -55,7 +56,7 @@ export default function EstablishmentCreatePage() {
 
     const handleFormSubmitOpening = (values) => {
         //toast MUI
-        setOpenSnackbar(true);
+        setOpenSnackbarOpening(true);
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
@@ -91,33 +92,18 @@ export default function EstablishmentCreatePage() {
                 width: '100%',
             }}
         >
-            <Snackbar
-                open={openSnackbar}
-                autoHideDuration={6000}
-                onClose={handleSnackbarClose}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleSnackbarClose}
-                    severity="success"
-                    sx={{ width: '100%' }}
-                    action={
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            color="inherit"
-                            onClick={handleSnackbarClose}
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
-                    }
-                >
-                    <AlertTitle>
-                        <strong>Bravo !</strong>
-                    </AlertTitle>
-                    Bien enregistré — <strong>Continuer ou sauvegargez</strong>
-                </Alert>
-            </Snackbar>
+            <ToastForm
+                openSnackbar={openSnackbarOpening}
+                handleSnackbarClose={handleSnackbarClose}
+                title={'Bravo !'}
+                message={'Bien enregisté - Continuez et enregistrez'}
+            />
+            <ToastForm
+                openSnackbar={openSnackbar}
+                handleSnackbarClose={handleSnackbarClose}
+                title={'Felicitation !'}
+                message={'Bien envoyez'}
+            />
 
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
