@@ -6,7 +6,7 @@ import '../../css/Professional/Loader.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
-import { Box, Alert, AlertTitle, Snackbar} from '@mui/material';
+import { Box, Alert, AlertTitle, Snackbar } from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
