@@ -12,9 +12,9 @@ import { Formik, useFormik } from 'formik';
 import { Box, Grid } from '@mui/material';
 import toast, { Toaster } from 'react-hot-toast';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
-import { FormFieldModel } from '../../Components/CommonComponents/FormFieldModel';
+import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
-import { FormOpening } from '../../Components/CommonComponents/FormOpening';
+import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 
 export default function EstablishmentFormPage() {
     const { user } = useAuth();

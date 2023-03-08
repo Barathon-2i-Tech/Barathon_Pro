@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import ApplicationLogo from '../CommonComponents/ApplicationLogo';
+import ApplicationLogo from '../CommonComponents/SvgComponent/ApplicationLogo';
 
 export default function HeaderWelcome() {
     return (

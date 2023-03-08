@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FormFieldModel } from '../../Components/CommonComponents/FormFieldModel';
+import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
 
 export const FormOpening = ({ formik }) => {

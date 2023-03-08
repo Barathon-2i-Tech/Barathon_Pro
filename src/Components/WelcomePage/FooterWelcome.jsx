@@ -1,4 +1,4 @@
-import { LogoAndroid, LogoApple } from '../CommonComponents/ApplicationLogoDownload';
+import { LogoAndroid, LogoApple } from '../CommonComponents/SvgComponent/ApplicationLogoDownload';
 
 export default function FooterWelcome() {
     return (

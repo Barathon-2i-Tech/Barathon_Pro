@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { createContext, useState } from 'react';
 import Stepper from '../../Components/CommonComponents/Stepper';
 import Step from '../../Components/CommonComponents/Step';
-import ApplicationLogo from '../../Components/CommonComponents/ApplicationLogo';
+import ApplicationLogo from '../../Components/CommonComponents/SvgComponent/ApplicationLogo';
 
 export const FormContext = createContext();
 

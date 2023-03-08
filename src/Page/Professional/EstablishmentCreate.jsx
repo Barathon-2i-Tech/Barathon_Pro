@@ -14,8 +14,8 @@ import {
     FormInitialValuesEstablishment,
 } from '../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-import { FormOpening } from '../../Components/CommonComponents/FormOpening';
-import { FormEstablishment } from '../../Components/CommonComponents/FormEstablishment';
+import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
+import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 
 export default function EstablishmentCreatePage() {
     const { user } = useAuth();
