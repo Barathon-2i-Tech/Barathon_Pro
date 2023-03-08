@@ -10,14 +10,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { Formik, useFormik } from 'formik';
 import { Box, Grid } from '@mui/material';
-import toast, { Toaster } from 'react-hot-toast';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { sendFormDataPost } from '../../utils/AxiosModel';
+import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 
 export default function EstablishmentFormPage() {
+    const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const [establishments, setEstablishments] = useState([]);
     const { id } = useParams();
@@ -30,6 +32,14 @@ export default function EstablishmentFormPage() {
             {},
         ),
     );
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+        setOpenSnackbarOpening(false);
+    };
 
     const formikOpening = useFormik({
         initialValues: FormInitialValuesOpening,
@@ -72,15 +82,12 @@ export default function EstablishmentFormPage() {
     }, []);
 
     const handleFormSubmitOpening = (values) => {
-        const notify = () => {
-            toast('✅ Horraire Bien enregistré ! SAUVEGARDER pour valider vos modifications !!', {
-                duration: 8000,
-            });
-        };
+        //toast MUI
+        setOpenSnackbarOpening(true);
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
-        notify();
+
         console.log(opening);
         console.log(establishments);
         console.log(openingJson);
@@ -90,18 +97,13 @@ export default function EstablishmentFormPage() {
     }, [opening]);
 
     const handleFormSubmit = (values) => {
-        const notify = () => {
-            toast('✅ Bien enregistré !', {
-                duration: 8000,
-            });
-        };
-
         const dataValues = { ...values, opening: openingJson };
         const urlCreate = `/pro/${ownerId}/establishment/${id}/update`;
 
         sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
-                notify();
+                //toast MUI
+                setOpenSnackbar(true);
                 console.log(dataValues);
             })
             .catch((e) => {
@@ -121,10 +123,21 @@ export default function EstablishmentFormPage() {
                 width: '100%',
             }}
         >
+            <ToastForm
+                openSnackbar={openSnackbarOpening}
+                handleSnackbarClose={handleSnackbarClose}
+                title={'Bravo !'}
+                message={'Bien enregisté - Continuez et enregistrez'}
+            />
+            <ToastForm
+                openSnackbar={openSnackbar}
+                handleSnackbarClose={handleSnackbarClose}
+                title={'Felicitation !'}
+                message={'Bien envoyez'}
+            />
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
-                <Toaster />
                 <div className="mx-6 font-bold">
                     ETAPE 1 (facultative): modifier tous les champs de la semaine et enregister,
                     puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la

@@ -66,12 +66,12 @@ export default function EstablishmentCreatePage() {
     }, [opening]);
 
     const handleFormSubmit = (values) => {
-        //toast MUI
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/create`;
 
         sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
+                //toast MUI
                 setOpenSnackbar(true);
                 console.log(dataValues);
             })

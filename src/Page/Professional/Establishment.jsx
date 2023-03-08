@@ -32,7 +32,7 @@ export default function EstablishmentPage() {
             return (
                 <ButtonLink
                     link={`/pro/establishmentForm/${params.row.establishment_id}`}
-                    allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-lime-500"
+                    allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-teal-700"
                     text="Modifier"
                     icon={<EditIcon />}
                 />
@@ -71,14 +71,14 @@ export default function EstablishmentPage() {
             );
         } else if (status_id === 5) {
             element = (
-                <div className="bg-red-700 w-full h-full flex justify-start items-center text-white p-0">
+                <div className="bg-red-900 w-full h-full flex justify-start items-center text-white p-0 cursor-not-allowed">
                     <CancelIcon sx={{ marginX: 1 }} />
                     <span className="pl-2">Refuser</span>
                 </div>
             );
         } else if (status_id === 6) {
             element = (
-                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0">
+                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0 cursor-not-allowed">
                     <PendingIcon sx={{ marginX: 1 }} />
                     <span className="pl-2">En attente</span>
                 </div>
