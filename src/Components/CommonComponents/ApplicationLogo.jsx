@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 
 export default function ApplicationLogo({ className }) {
-    return (
+    const logoBarathon = () => (
         <svg
             className={className}
             xmlns="http://www.w3.org/2000/svg"
@@ -313,8 +313,9 @@ export default function ApplicationLogo({ className }) {
             </defs>
         </svg>
     );
+    return <div>{logoBarathon()}</div>;
 }
 
 ApplicationLogo.propTypes = {
-    className: PropTypes.any.isRequired,
+    className: PropTypes.any,
 };

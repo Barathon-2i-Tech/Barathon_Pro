@@ -1,7 +1,7 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
-import ApplicationLogo from '../../Components/CommonComponents/ApplicationLigo';
+import ApplicationLogo from '../../Components/CommonComponents/ApplicationLogo';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
