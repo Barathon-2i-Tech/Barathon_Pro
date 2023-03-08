@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { BannerLayoutTop, BannerLayoutBottom } from '../CommonComponents/SvgComponent/CommonSvg';
+import { BannerLayout } from '../CommonComponents/SvgComponent/CommonSvg';
 
 export default function SectionInfosBg({ title, description }) {
     return (
         <div className="relative">
             <div className="elementor-shape elementor-shape-top">
-                <BannerLayoutTop allClass={'elementor-shape-fill fill-orange-300'} />
+                <BannerLayout allClass={'elementor-shape-fill fill-orange-300'} />
             </div>
             <div className="banner-infos-bg__txt-container container mx-auto max-w-screen-xl px-4">
                 <div className="text-center text-cyan-900">
@@ -18,7 +18,7 @@ export default function SectionInfosBg({ title, description }) {
                 </div>
             </div>
             <div className="elementor-shape bg-orange-300 elementor-shape-bottom">
-                <BannerLayoutBottom allClass={'elementor-shape-fill fill-white'} />
+                <BannerLayout allClass={'elementor-shape-fill fill-white'} />
             </div>
         </div>
     );
