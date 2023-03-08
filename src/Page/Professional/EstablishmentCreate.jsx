@@ -7,7 +7,6 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
 import { Box } from '@mui/material';
-import toast, { Toaster } from 'react-hot-toast';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
@@ -16,8 +15,13 @@ import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
+import { Snackbar } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 export default function EstablishmentCreatePage() {
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
@@ -29,6 +33,13 @@ export default function EstablishmentCreatePage() {
             {},
         ),
     );
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     const formikOpening = useFormik({
         initialValues: FormInitialValuesOpening,
@@ -45,36 +56,24 @@ export default function EstablishmentCreatePage() {
     });
 
     const handleFormSubmitOpening = (values) => {
-        const notify = () => {
-            toast('✅ Horraire Bien enregistré ! SAUVEGARDER pour valider vos modifications !!', {
-                duration: 8000,
-            });
-        };
+        //toast MUI
+        setOpenSnackbar(true);
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
-        notify();
     };
     useEffect(() => {
         setOpeningFormat(openingJson);
     }, [opening]);
 
     const handleFormSubmit = (values) => {
-        const notify = () => {
-            toast(
-                '✅ Votre demande a bien été envoyé ! Votre etablissement sera en attente le temps de validation des documents fournis',
-                {
-                    duration: 8000,
-                },
-            );
-        };
-
+        //toast MUI
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/create`;
 
         sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
-                notify();
+                setOpenSnackbar(true);
                 console.log(dataValues);
             })
             .catch((e) => {
@@ -94,7 +93,34 @@ export default function EstablishmentCreatePage() {
                 width: '100%',
             }}
         >
-            <Toaster />
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleSnackbarClose}
+                    severity="success"
+                    sx={{ width: '100%' }}
+                    action={
+                        <IconButton
+                            size="small"
+                            aria-label="close"
+                            color="inherit"
+                            onClick={handleSnackbarClose}
+                        >
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
+                    }
+                >
+                    <AlertTitle>
+                        <strong>Bravo !</strong>
+                    </AlertTitle>
+                    Bien enregistré — <strong>Continuer ou sauvegargez</strong>
+                </Alert>
+            </Snackbar>
+
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
