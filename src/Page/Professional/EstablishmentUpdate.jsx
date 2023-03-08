@@ -15,6 +15,7 @@ import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/For
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
+import { sendFormDataPost } from '../../utils/AxiosModel';
 
 export default function EstablishmentFormPage() {
     const { user } = useAuth();
@@ -96,15 +97,9 @@ export default function EstablishmentFormPage() {
         };
 
         const dataValues = { ...values, opening: openingJson };
+        const urlCreate = `/pro/${ownerId}/establishment/${id}/update`;
 
-        Axios.api
-            .post(`/pro/${ownerId}/establishment/${id}/update`, dataValues, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+        sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 notify();
                 console.log(dataValues);

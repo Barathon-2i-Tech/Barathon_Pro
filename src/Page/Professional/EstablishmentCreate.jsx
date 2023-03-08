@@ -3,7 +3,6 @@ import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
-import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
@@ -16,6 +15,7 @@ import {
 import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
+import { sendFormDataPost } from '../../utils/AxiosModel';
 
 export default function EstablishmentCreatePage() {
     const { user } = useAuth();
@@ -70,15 +70,9 @@ export default function EstablishmentCreatePage() {
         };
 
         const dataValues = { ...values, opening: openingFormat };
+        const urlCreate = `/pro/${ownerId}/establishment/create`;
 
-        Axios.api
-            .post(`/pro/${ownerId}/establishment/create`, dataValues, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            })
+        sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 notify();
                 console.log(dataValues);
