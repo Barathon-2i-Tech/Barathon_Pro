@@ -8,11 +8,12 @@ import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
-import { Loader } from '../../Components/CommonComponents/Loader';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import PendingIcon from '@mui/icons-material/Pending';
+import PendingIcon from '@mui/icons-material/Schedule';
+import { Box } from '@mui/material';
+import { green, red, orange, grey } from '@mui/material/colors';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -20,129 +21,7 @@ export default function EstablishmentPage() {
     const ownerId = user.userLogged.owner_id;
 
     //dataGRID
-    const [rows, setRows] = useState([]);
-    const [columns, setColumns] = useState([]);
-
-    const getStatusCell = (params) => {
-        return getStatusElement(params, params.row.status_id);
-    };
-
-    const getModifyCell = (params) => {
-        if (params.row.status_id === 4) {
-            return (
-                <ButtonLink
-                    link={`/pro/establishmentForm/${params.row.establishment_id}`}
-                    allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-teal-700"
-                    text="Modifier"
-                    icon={<EditIcon />}
-                />
-            );
-        } else if (params.row.status_id === 5 || params.row.status_id === 6) {
-            return getStatusElement(params, params.row.status_id);
-        } else {
-            return <div>Erreur</div>;
-        }
-    };
-
-    const getDeleteCell = (params) => {
-        if (params.row.status_id === 4) {
-            return (
-                <ButtonDelete
-                    functionDelete={() => deleteEstablishment(params.row.establishment_id)}
-                    allClass="text-white bg-red-700 w-full h-full rounded-none"
-                />
-            );
-        } else if (params.row.status_id === 5 || params.row.status_id === 6) {
-            return getStatusElement(params, params.row.status_id);
-        } else {
-            return <div>Erreur</div>;
-        }
-    };
-
-    const getStatusElement = (params, status_id) => {
-        let element = null;
-
-        if (status_id === 4) {
-            element = (
-                <div className="bg-lime-500 w-full h-full flex justify-start items-center text-white p-0">
-                    <CheckCircleIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">Valider</span>
-                </div>
-            );
-        } else if (status_id === 5) {
-            element = (
-                <div className="bg-red-900 w-full h-full flex justify-start items-center text-white p-0 cursor-not-allowed">
-                    <CancelIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">Refuser</span>
-                </div>
-            );
-        } else if (status_id === 6) {
-            element = (
-                <div className="bg-amber-500 w-full h-full flex justify-start items-center text-white p-0 cursor-not-allowed">
-                    <PendingIcon sx={{ marginX: 1 }} />
-                    <span className="pl-2">En attente</span>
-                </div>
-            );
-        } else {
-            element = <div>Erreur</div>;
-        }
-
-        return element;
-    };
-
-    useEffect(() => {
-        setColumns([
-            {
-                field: 'status',
-                headerName: 'Status',
-                width: 130,
-                renderCell: getStatusCell,
-            },
-            {
-                field: 'logo',
-                headerName: 'Logo',
-                width: 100,
-                renderCell: (params) => <img src={params.value} />,
-            },
-            {
-                field: 'trade_name',
-                headerName: 'Nom commercial',
-                width: 200,
-            },
-            {
-                field: 'address',
-                headerName: 'Adresse',
-                width: 200,
-            },
-            {
-                field: 'postal_code',
-                headerName: 'Code postal',
-                width: 150,
-            },
-            {
-                field: 'website',
-                headerName: 'Site web',
-                width: 200,
-            },
-            {
-                field: 'phone',
-                headerName: 'Téléphone',
-                width: 150,
-            },
-            {
-                field: 'Modifier',
-                headerName: 'Modifier',
-                width: 150,
-                renderCell: getModifyCell,
-            },
-            {
-                field: 'delete',
-                headerName: 'Supprimer',
-                width: 150,
-                renderCell: getDeleteCell,
-            },
-        ]);
-    }, [rows]);
+    const [allEstablishments, setAllEstablishments] = useState([]);
 
     async function getEstablishments() {
         try {
@@ -153,19 +32,12 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setRows(response.data.data);
-            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.classList.remove('display');
-            }
+            console.log(response.data.data);
+            setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
-    useEffect(() => {
-        getEstablishments();
-    }, []);
 
     const deleteEstablishment = (id) => {
         Axios.api
@@ -185,6 +57,189 @@ export default function EstablishmentPage() {
             });
     };
 
+    const statusInfo = {
+        4: {
+            bgColor: 'bg-lime-500',
+            icon: <CheckCircleIcon sx={{ marginX: 1 }} />,
+            label: 'Valider',
+        },
+        5: {
+            bgColor: 'bg-red-900',
+            icon: <CancelIcon sx={{ marginX: 1 }} />,
+            label: 'Refuser',
+        },
+        6: {
+            bgColor: 'bg-amber-500',
+            icon: <PendingIcon sx={{ marginX: 1 }} />,
+            label: 'En attente',
+        },
+    };
+
+    const getStatusElement = (params, status_id) => {
+        const status = statusInfo[status_id];
+        if (!status) {
+            return <div>Erreur</div>;
+        }
+
+        return (
+            <div className={`text-white p-0 ${status.bgColor}`}>
+                {status.icon}
+                <span className="pl-2">{status.label}</span>
+            </div>
+        );
+    };
+
+    function getStatus(params) {
+        // console.log(params.row.status)
+        switch (params.row.status.code) {
+            case 'ESTABL_VALID':
+                return 'Validé';
+
+            case 'ESTABL_REFUSE':
+                return 'Refusé';
+
+            case 'ESTABL_PENDING':
+                return 'En attente';
+
+            default:
+        }
+
+        return 'Erreur';
+    }
+
+    const establishmentsRows = allEstablishments.map((establishment) => ({
+        key: establishment.establishment_id,
+        id: establishment.establishment_id,
+        trade_name: establishment.trade_name,
+        siret: establishment.siret,
+        logo: establishment.logo,
+        phone: establishment.phone,
+        website: establishment.website,
+        email: establishment.email,
+        status: JSON.parse(establishment.comment),
+        deleted_at: establishment.deleted_at,
+    }));
+
+    const establishmentColumns = [
+        { field: 'id', headerName: 'ID', flex: 0.1, headerAlign: 'center', align: 'center' },
+        {
+            field: 'logo',
+            headerName: 'Logo',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => <img src={params.value} />,
+        },
+        {
+            field: 'trade_name',
+            headerName: 'Nom commercial',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'address',
+            headerName: 'Adresse',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'postal_code',
+            headerName: 'Code postal',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'website',
+            headerName: 'Site web',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'phone',
+            headerName: 'Téléphone',
+            flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'status',
+            headerName: 'Status',
+            flex: 0.3,
+            headerAlign: 'center',
+            align: 'center',
+            valueGetter: getStatus,
+            renderCell: ({ row: { status } }) => {
+                let backgroundColor = null;
+                switch (status.code) {
+                    case 'ESTABL_VALID':
+                        backgroundColor = green[400];
+                        break;
+                    case 'ESTABL_PENDING':
+                        backgroundColor = orange[400];
+                        break;
+                    case 'ESTABL_REFUSE':
+                        backgroundColor = red[400];
+                        break;
+                    default:
+                        backgroundColor = grey[400];
+                        break;
+                }
+                return (
+                    <Box
+                        width="100%"
+                        m="0 auto"
+                        p="5px"
+                        display="flex"
+                        justifyContent="center"
+                        backgroundColor={backgroundColor}
+                        borderRadius="5px"
+                    >
+                        {getStatus({ row: { status } })}
+                    </Box>
+                );
+            },
+        },
+        {
+            field: 'action',
+            headerName: 'Action',
+            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+            renderCell: (params) => {
+                if (params.row.status_id === 4) {
+                    return (
+                        <>
+                            <ButtonLink
+                                link={`/pro/establishmentForm/${params.row.establishment_id}`}
+                                allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-teal-700"
+                                text="Modifier"
+                                icon={<EditIcon />}
+                            />
+                            <ButtonDelete
+                                functionDelete={() =>
+                                    deleteEstablishment(params.row.establishment_id)
+                                }
+                                allClass="text-white bg-red-700 w-full h-full rounded-none"
+                            />
+                        </>
+                    );
+                } else if (params.row.status_id === 5 || params.row.status_id === 6) {
+                    return getStatusElement(params, params.row.status_id);
+                } else {
+                    return <div>Erreur</div>;
+                }
+            },
+        },
+    ];
+
+    useEffect(() => {
+        getEstablishments();
+    }, []);
+
     return (
         <Paper
             sx={{
@@ -196,20 +251,18 @@ export default function EstablishmentPage() {
             }}
         >
             <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
-            <Loader allClass={'loading display pt-20 pb-20'} />
             <DataGrid
-                getRowId={(rows) => rows.establishment_id}
-                rows={rows}
-                columns={columns}
+                rows={establishmentsRows}
+                columns={establishmentColumns}
                 components={{
                     Toolbar: GridToolbar,
                 }}
-                autoHeight
-                disableSelectionOnClick
-                disableColumnFilter={false}
-                onFilterModelChange={(model) => console.log(model)}
-                pageSize={10}
-                rowsPerPageOptions={[10, 20, 50]}
+                /* autoHeight
+        disableSelectionOnClick
+        disableColumnFilter={false}
+        onFilterModelChange={(model) => console.log(model)}
+        pageSize={10}
+        rowsPerPageOptions={[10, 20, 50]}*/
                 sx={{ marginY: 6, marginX: 2 }}
             />
             <div className="flex justify-center pb-4">

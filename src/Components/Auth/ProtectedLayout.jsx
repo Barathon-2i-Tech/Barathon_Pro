@@ -163,7 +163,7 @@ export const ProtectedLayout = () => {
                 }}
             >
                 <Toolbar />
-                <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+                <Container maxWidth="false" sx={{ mt: 4, mb: 4 }}>
                     <Grid container spacing={1}>
                         <Outlet />
                     </Grid>

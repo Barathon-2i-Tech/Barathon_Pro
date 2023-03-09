@@ -13,6 +13,7 @@ export const ButtonLink = ({ allClass, link, disableLink, text, icon }) => {
                 }}
                 className="break-word"
                 href={link}
+                size="small"
                 onClick={disableLink}
             >
                 <div className="w-full">{icon}</div>
