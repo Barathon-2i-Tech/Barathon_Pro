@@ -2,18 +2,15 @@ import { BasicPage } from '../../Components/CommonComponents/BasicPage';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
-import { ButtonLink } from '../../Components/CommonComponents/ButtonLink';
-import { ButtonDelete } from '../../Components/CommonComponents/ButtonDelete';
 import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-// import CancelIcon from '@mui/icons-material/Cancel';
-// import PendingIcon from '@mui/icons-material/Schedule';
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { green, red, orange, grey } from '@mui/material/colors';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Link from '@mui/material/Link';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -22,6 +19,7 @@ export default function EstablishmentPage() {
 
     //dataGRID
     const [allEstablishments, setAllEstablishments] = useState([]);
+    const [reloading, setReloading] = useState(false);
 
     async function getEstablishments() {
         try {
@@ -40,6 +38,7 @@ export default function EstablishmentPage() {
     }
 
     const deleteEstablishment = (id) => {
+        console.log(id);
         Axios.api
             .delete(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
@@ -50,47 +49,20 @@ export default function EstablishmentPage() {
             })
             .then(() => {
                 console.log('bien effacé');
-                getEstablishments();
+                setReloading(true);
             })
             .catch((error) => {
                 console.log(error);
             });
+        console.log('suppression');
     };
 
-    const getStatusElement = (params, status_comment) => {
-        if (!status_comment) {
-            return <div>Erreur</div>;
+    function getRowClassName(params) {
+        if (params.row.deleted_at !== null) {
+            return 'hidden-row';
         }
-        let backgroundColor = null;
-        switch (status_comment) {
-            case 'ESTABL_VALID':
-                backgroundColor = green[400];
-                break;
-            case 'ESTABL_PENDING':
-                backgroundColor = orange[400];
-                break;
-            case 'ESTABL_REFUSE':
-                backgroundColor = red[400];
-                break;
-            default:
-                backgroundColor = grey[400];
-                break;
-        }
-
-        return (
-            <Box
-                width="100%"
-                m="0 auto"
-                p="5px"
-                display="flex"
-                justifyContent="center"
-                backgroundColor={backgroundColor}
-                borderRadius="5px"
-            >
-                {getStatus(params)}
-            </Box>
-        );
-    };
+        return '';
+    }
 
     function getStatus(params) {
         switch (params.row.status.code) {
@@ -111,10 +83,13 @@ export default function EstablishmentPage() {
     const establishmentsRows = allEstablishments.map((establishment) => ({
         key: establishment.establishment_id,
         id: establishment.establishment_id,
+        establishment_id: establishment.establishment_id,
         trade_name: establishment.trade_name,
         siret: establishment.siret,
         logo: establishment.logo,
         phone: establishment.phone,
+        address: establishment.address,
+        postal_code: establishment.postal_code,
         website: establishment.website,
         email: establishment.email,
         status: JSON.parse(establishment.comment),
@@ -122,12 +97,12 @@ export default function EstablishmentPage() {
     }));
 
     const establishmentColumns = [
-        { field: 'id', headerName: 'ID', flex: 0.1, headerAlign: 'center', align: 'center' },
         {
             field: 'logo',
             headerName: 'Logo',
-            flex: 0.5,
+            flex: 0.1,
             headerAlign: 'center',
+            minWidth: 150,
             align: 'center',
             renderCell: (params) => <img src={params.value} />,
         },
@@ -148,28 +123,28 @@ export default function EstablishmentPage() {
         {
             field: 'postal_code',
             headerName: 'Code postal',
-            flex: 0.5,
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
         },
         {
             field: 'website',
             headerName: 'Site web',
-            flex: 0.5,
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
         },
         {
             field: 'phone',
             headerName: 'Téléphone',
-            flex: 0.5,
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
         },
         {
             field: 'status',
             headerName: 'Status',
-            flex: 0.3,
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
             valueGetter: getStatus,
@@ -207,42 +182,67 @@ export default function EstablishmentPage() {
         {
             field: 'action',
             headerName: 'Action',
-            flex: 1,
+            flex: 0.5,
             headerAlign: 'center',
             align: 'center',
+            minWidth: 430,
             renderCell: (params) => {
-                if (params.row.status.code === 'ESTABL_VALID') {
-                    return (
-                        <>
-                            <ButtonLink
-                                link={`/pro/establishmentForm/${params.row.establishment_id}`}
-                                allClass="text-center flex align-center justify-center flex-wrap w-full h-full text-white bg-teal-700"
-                                text="Modifier"
-                                icon={<EditIcon />}
-                            />
-                            <ButtonDelete
-                                functionDelete={() =>
-                                    deleteEstablishment(params.row.establishment_id)
+                return (
+                    <>
+                        <Link
+                            href={
+                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.deleted_at !== null
+                                    ? ''
+                                    : `/pro/establishmentForm/${params.row.establishment_id}`
+                            }
+                            component={
+                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.deleted_at !== null
+                                    ? Box
+                                    : 'a'
+                            }
+                        >
+                            <Button
+                                sx={{ marginRight: '10px', px: '40px' }}
+                                variant="contained"
+                                color="info"
+                                size="small"
+                                startIcon={<EditIcon />}
+                                disabled={
+                                    params.row.status.code === 'ESTABL_PENDING' ||
+                                    params.row.deleted_at !== null
                                 }
-                                allClass="text-white bg-red-700 w-full h-full rounded-none"
-                            />
-                        </>
-                    );
-                } else if (
-                    params.row.status.code === 'ESTABL_PENDING' ||
-                    params.row.status.code === 'ESTABL_REFUSE'
-                ) {
-                    return getStatusElement(params, params.row.status.code);
-                } else {
-                    return <div>Erreur</div>;
-                }
+                            >
+                                Modifier
+                            </Button>
+                        </Link>
+                        <Button
+                            sx={{ marginRight: '10px', px: '40px' }}
+                            variant="contained"
+                            color="error"
+                            size="small"
+                            onClick={() => {
+                                deleteEstablishment(params.row.establishment_id);
+                            }}
+                            startIcon={<DeleteForeverIcon />}
+                            disabled={
+                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.deleted_at !== null
+                            }
+                        >
+                            Supprimer
+                        </Button>
+                    </>
+                );
             },
         },
     ];
 
     useEffect(() => {
         getEstablishments();
-    }, []);
+        setReloading(false);
+    }, [reloading]);
 
     return (
         <Paper
@@ -262,7 +262,9 @@ export default function EstablishmentPage() {
                     Toolbar: GridToolbar,
                 }}
                 sx={{ marginY: 6, marginX: 2 }}
+                getRowClassName={getRowClassName}
             />
+
             <div className="flex justify-center pb-4">
                 <button className="custom-button-teal">
                     <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
