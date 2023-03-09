@@ -9,9 +9,9 @@ import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import PendingIcon from '@mui/icons-material/Schedule';
+// import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+// import CancelIcon from '@mui/icons-material/Cancel';
+// import PendingIcon from '@mui/icons-material/Schedule';
 import { Box } from '@mui/material';
 import { green, red, orange, grey } from '@mui/material/colors';
 
@@ -57,40 +57,42 @@ export default function EstablishmentPage() {
             });
     };
 
-    const statusInfo = {
-        4: {
-            bgColor: 'bg-lime-500',
-            icon: <CheckCircleIcon sx={{ marginX: 1 }} />,
-            label: 'Valider',
-        },
-        5: {
-            bgColor: 'bg-red-900',
-            icon: <CancelIcon sx={{ marginX: 1 }} />,
-            label: 'Refuser',
-        },
-        6: {
-            bgColor: 'bg-amber-500',
-            icon: <PendingIcon sx={{ marginX: 1 }} />,
-            label: 'En attente',
-        },
-    };
-
-    const getStatusElement = (params, status_id) => {
-        const status = statusInfo[status_id];
-        if (!status) {
+    const getStatusElement = (params, status_comment) => {
+        if (!status_comment) {
             return <div>Erreur</div>;
+        }
+        let backgroundColor = null;
+        switch (status_comment) {
+            case 'ESTABL_VALID':
+                backgroundColor = green[400];
+                break;
+            case 'ESTABL_PENDING':
+                backgroundColor = orange[400];
+                break;
+            case 'ESTABL_REFUSE':
+                backgroundColor = red[400];
+                break;
+            default:
+                backgroundColor = grey[400];
+                break;
         }
 
         return (
-            <div className={`text-white p-0 ${status.bgColor}`}>
-                {status.icon}
-                <span className="pl-2">{status.label}</span>
-            </div>
+            <Box
+                width="100%"
+                m="0 auto"
+                p="5px"
+                display="flex"
+                justifyContent="center"
+                backgroundColor={backgroundColor}
+                borderRadius="5px"
+            >
+                {getStatus(params)}
+            </Box>
         );
     };
 
     function getStatus(params) {
-        // console.log(params.row.status)
         switch (params.row.status.code) {
             case 'ESTABL_VALID':
                 return 'Validé';
@@ -103,7 +105,6 @@ export default function EstablishmentPage() {
 
             default:
         }
-
         return 'Erreur';
     }
 
@@ -210,7 +211,7 @@ export default function EstablishmentPage() {
             headerAlign: 'center',
             align: 'center',
             renderCell: (params) => {
-                if (params.row.status_id === 4) {
+                if (params.row.status.code === 'ESTABL_VALID') {
                     return (
                         <>
                             <ButtonLink
@@ -227,8 +228,11 @@ export default function EstablishmentPage() {
                             />
                         </>
                     );
-                } else if (params.row.status_id === 5 || params.row.status_id === 6) {
-                    return getStatusElement(params, params.row.status_id);
+                } else if (
+                    params.row.status.code === 'ESTABL_PENDING' ||
+                    params.row.status.code === 'ESTABL_REFUSE'
+                ) {
+                    return getStatusElement(params, params.row.status.code);
                 } else {
                     return <div>Erreur</div>;
                 }
@@ -257,12 +261,6 @@ export default function EstablishmentPage() {
                 components={{
                     Toolbar: GridToolbar,
                 }}
-                /* autoHeight
-        disableSelectionOnClick
-        disableColumnFilter={false}
-        onFilterModelChange={(model) => console.log(model)}
-        pageSize={10}
-        rowsPerPageOptions={[10, 20, 50]}*/
                 sx={{ marginY: 6, marginX: 2 }}
             />
             <div className="flex justify-center pb-4">
