@@ -73,6 +73,7 @@ export default function EstablishmentPage() {
                 },
             });
             setAllEstablishments(response.data.data);
+            console.log(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -126,6 +127,7 @@ export default function EstablishmentPage() {
         id: establishment.establishment_id,
         establishment_id: establishment.establishment_id,
         trade_name: establishment.trade_name,
+        opening: JSON.parse(establishment.opening),
         siret: establishment.siret,
         logo: establishment.logo,
         phone: establishment.phone,
@@ -188,6 +190,25 @@ export default function EstablishmentPage() {
             flex: 0.3,
             headerAlign: 'center',
             align: 'center',
+        },
+        {
+            field: 'opening',
+            headerName: 'Horraire',
+            flex: 0.3,
+            headerAlign: 'center',
+            align: 'left',
+            renderCell: ({ row: { opening } }) => {
+                return (
+                    <div className="flex">
+                        {Object.entries(opening).map(([day, hours]) => (
+                            <div className="flex" key={day}>
+                                <div> | {day} : </div>
+                                <div>{hours} | </div>
+                            </div>
+                        ))}
+                    </div>
+                );
+            },
         },
         {
             field: 'status',
