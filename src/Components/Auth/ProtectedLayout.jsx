@@ -20,7 +20,6 @@ import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import Copyright from '../CommonComponents/Copyright';
 import Avatar from '@mui/material/Avatar';
 
 const drawerWidth = 240;
@@ -167,7 +166,6 @@ export const ProtectedLayout = () => {
                     <Grid container spacing={1}>
                         <Outlet />
                     </Grid>
-                    <Copyright sx={{ pt: 4 }} />
                 </Container>
             </Box>
         </Box>

@@ -1,16 +1,25 @@
-import { BasicPage } from '../../Components/CommonComponents/BasicPage';
-import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import '../../css/Professional/Establishment.css';
 import Axios from '../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import {
+    DataGrid,
+    GridToolbarContainer,
+    GridToolbarColumnsButton,
+    GridToolbarFilterButton,
+    GridToolbarExport,
+    GridToolbarDensitySelector,
+} from '@mui/x-data-grid';
 import { Box, Button } from '@mui/material';
 import { green, red, orange, grey } from '@mui/material/colors';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
+import HeaderDatagrid from '../../Components/CommonComponents/DataGrid/HeaderDataGrid';
+import Copyright from '../../Components/CommonComponents/Copyright';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -21,6 +30,39 @@ export default function EstablishmentPage() {
     const [allEstablishments, setAllEstablishments] = useState([]);
     const [reloading, setReloading] = useState(false);
 
+    const RightAlignedContainer = styled(GridToolbarContainer)({
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        '& .right-align': {
+            marginLeft: 'auto',
+        },
+    });
+
+    function establishmentCustomToolbar() {
+        return (
+            <RightAlignedContainer>
+                <div>
+                    <GridToolbarColumnsButton />
+                    <GridToolbarFilterButton />
+                    <GridToolbarDensitySelector />
+                    <GridToolbarExport />
+                </div>
+                <Link href={`/pro/${ownerId}/establishment/create`}>
+                    <Button
+                        sx={{ marginRight: '10px', px: '40px' }}
+                        variant="contained"
+                        color="info"
+                        size="small"
+                        startIcon={<AddIcon />}
+                    >
+                        Ajouter un etablissement
+                    </Button>
+                </Link>
+            </RightAlignedContainer>
+        );
+    }
+
     async function getEstablishments() {
         try {
             const response = await Axios.api.get(`/pro/${ownerId}/establishment`, {
@@ -30,7 +72,6 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data.data);
             setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
@@ -102,7 +143,7 @@ export default function EstablishmentPage() {
             headerName: 'Logo',
             flex: 0.1,
             headerAlign: 'center',
-            minWidth: 150,
+            minWidth: 60,
             align: 'center',
             renderCell: (params) => <img src={params.value} />,
         },
@@ -128,6 +169,13 @@ export default function EstablishmentPage() {
             align: 'center',
         },
         {
+            field: 'siret',
+            headerName: 'Siret',
+            flex: 0.3,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
             field: 'website',
             headerName: 'Site web',
             flex: 0.2,
@@ -137,7 +185,7 @@ export default function EstablishmentPage() {
         {
             field: 'phone',
             headerName: 'Téléphone',
-            flex: 0.2,
+            flex: 0.3,
             headerAlign: 'center',
             align: 'center',
         },
@@ -147,6 +195,7 @@ export default function EstablishmentPage() {
             flex: 0.2,
             headerAlign: 'center',
             align: 'center',
+            minWidth: 90,
             valueGetter: getStatus,
             renderCell: ({ row: { status } }) => {
                 let backgroundColor = null;
@@ -185,7 +234,7 @@ export default function EstablishmentPage() {
             flex: 0.5,
             headerAlign: 'center',
             align: 'center',
-            minWidth: 430,
+            minWidth: 400,
             renderCell: (params) => {
                 return (
                     <>
@@ -254,22 +303,18 @@ export default function EstablishmentPage() {
                 width: '100%',
             }}
         >
-            <BasicPage title="Tous mes etablissements" icon={<BusinessIcon />} />
+            <HeaderDatagrid title={'Tous mes etablissements'} />
             <DataGrid
                 rows={establishmentsRows}
                 columns={establishmentColumns}
+                density="comfortable"
                 components={{
-                    Toolbar: GridToolbar,
+                    Toolbar: establishmentCustomToolbar,
                 }}
-                sx={{ marginY: 6, marginX: 2 }}
+                sx={{ marginX: 2 }}
                 getRowClassName={getRowClassName}
             />
-
-            <div className="flex justify-center pb-4">
-                <button className="custom-button-teal">
-                    <a href={`/pro/${ownerId}/establishment/create`}>Ajouter un etablissement</a>
-                </button>
-            </div>
+            <Copyright sx={{ pt: 4, pb: 4 }} />
         </Paper>
     );
 }

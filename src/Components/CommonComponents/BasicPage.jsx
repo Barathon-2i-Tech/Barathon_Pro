@@ -9,7 +9,7 @@ export const BasicPage = ({ title, icon }) => {
         <Container component="main">
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginTop: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
