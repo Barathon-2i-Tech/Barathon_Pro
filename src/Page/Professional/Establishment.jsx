@@ -194,16 +194,16 @@ export default function EstablishmentPage() {
         {
             field: 'opening',
             headerName: 'Horraire',
-            flex: 0.3,
+            flex: 0.4,
             headerAlign: 'center',
             align: 'left',
             renderCell: ({ row: { opening } }) => {
                 return (
-                    <div className="flex">
+                    <div className="">
                         {Object.entries(opening).map(([day, hours]) => (
                             <div className="flex" key={day}>
-                                <div> | {day} : </div>
-                                <div>{hours} | </div>
+                                <div>{day} : </div>
+                                <div>{hours}</div>
                             </div>
                         ))}
                     </div>
@@ -334,6 +334,7 @@ export default function EstablishmentPage() {
                 }}
                 sx={{ marginX: 2 }}
                 getRowClassName={getRowClassName}
+                getRowHeight={() => 'auto'}
             />
             <Copyright sx={{ pt: 4, pb: 4 }} />
         </Paper>
