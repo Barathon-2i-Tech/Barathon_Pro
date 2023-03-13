@@ -25,3 +25,9 @@ export const establishmentSchema = () => {
         website: yup.string(),
     });
 };
+
+export const selectCategoriesSchema = () => {
+    return yup.object().shape({
+        categories: yup.number(),
+    });
+};
