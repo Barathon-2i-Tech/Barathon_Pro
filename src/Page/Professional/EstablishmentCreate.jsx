@@ -131,7 +131,7 @@ export default function EstablishmentCreatePage() {
                 console.log(dataValues);
             });
 
-            sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
+        sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
