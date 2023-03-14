@@ -195,6 +195,7 @@ export default function EstablishmentPage() {
             field: 'opening',
             headerName: 'Horraire',
             flex: 0.4,
+            minWidth: 200,
             headerAlign: 'center',
             align: 'left',
             renderCell: ({ row: { opening } }) => {

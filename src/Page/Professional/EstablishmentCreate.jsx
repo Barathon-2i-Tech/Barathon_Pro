@@ -109,11 +109,15 @@ export default function EstablishmentCreatePage() {
     useEffect(() => {
         getEstablishmentsCategories();
         setOpeningFormat(openingJson);
+        console.log(establishmentsCategories);
     }, [opening]);
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
-        const urlCreate = `/pro/${ownerId}/establishment/create`;
+        const urlCreate = `/pro/${ownerId}/establishment`;
+
+        const dataValuesCategories = { establishmentsCategories };
+        const urlCreateCategories = `/pro/${ownerId}/categories/test`;
 
         sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
@@ -125,6 +129,18 @@ export default function EstablishmentCreatePage() {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
                 console.log(dataValues);
+            });
+
+            sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
+            .then(() => {
+                //toast MUI
+                setOpenSnackbar(true);
+                console.log(dataValuesCategories);
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+                console.log(dataValuesCategories);
             });
     };
 
@@ -160,7 +176,7 @@ export default function EstablishmentCreatePage() {
                     prochaine étape.
                 </div>
                 <Box m="20px">
-                    <form onSubmit={formikCategories.handleSubmit}>
+                    <form className="py-4" onSubmit={formikCategories.handleSubmit}>
                         <InputLabel id="options-label">Options</InputLabel>
                         <Select
                             labelId="options-label"
