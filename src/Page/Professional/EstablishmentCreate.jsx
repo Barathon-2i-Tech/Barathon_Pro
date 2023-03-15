@@ -5,12 +5,8 @@ import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
-import {
-    EstablishmentSchemaOpening,
-    establishmentSchema,
-    selectCategoriesSchema,
-} from '../../utils/FormSchemaValidation';
-import { Box, InputLabel, Select, MenuItem } from '@mui/material';
+import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
+import { Box } from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
@@ -20,7 +16,6 @@ import { FormOpening } from '../../Components/CommonComponents/FormsComponent/Fo
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
-import Axios from '../../utils/axiosUrl';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -36,25 +31,6 @@ export default function EstablishmentCreatePage() {
             {},
         ),
     );
-    const [allEstablishmentsCategories, setAllEstablishmentsCategories] = useState([]);
-    const [establishmentsCategories, setEstablishmentsCategories] = useState([]);
-
-    async function getEstablishmentsCategories() {
-        console.log('coucou');
-        try {
-            const response = await Axios.api.get(`/categories/establishment`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setAllEstablishmentsCategories(response.data.data);
-            console.log(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -70,24 +46,6 @@ export default function EstablishmentCreatePage() {
         validationSchema: EstablishmentSchemaOpening,
         onSubmit: (values) => handleFormSubmitOpening(values),
     });
-
-    const formikCategories = useFormik({
-        initialValues: {
-            options: [],
-        },
-        enableReinitialize: true,
-        validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
-    });
-
-    const handleFormSubmitCategories = (values) => {
-        //toast MUI
-        setOpenSnackbarOpening(true);
-
-        const dataValuesCategories = { ...values };
-        setEstablishmentsCategories(dataValuesCategories);
-        console.log(establishmentsCategories);
-    };
 
     const formikEstablishment = useFormik({
         initialValues: FormInitialValuesEstablishment,
@@ -105,17 +63,14 @@ export default function EstablishmentCreatePage() {
     };
 
     useEffect(() => {
-        getEstablishmentsCategories();
+        // getEstablishmentsCategories();
         setOpeningFormat(openingJson);
-        console.log(establishmentsCategories);
+        // console.log(establishmentsCategories);
     }, [opening]);
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment`;
-
-        const dataValuesCategories = { establishmentsCategories };
-        const urlCreateCategories = `/pro/${ownerId}/categories/test`;
 
         sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
@@ -127,18 +82,6 @@ export default function EstablishmentCreatePage() {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
                 console.log(dataValues);
-            });
-
-        sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
-            .then(() => {
-                //toast MUI
-                setOpenSnackbar(true);
-                console.log(dataValuesCategories);
-            })
-            .catch((e) => {
-                console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
-                console.log(dataValuesCategories);
             });
     };
 
@@ -174,40 +117,6 @@ export default function EstablishmentCreatePage() {
                     prochaine étape.
                 </div>
                 <Box m="20px">
-                    <form className="py-4 sm:pb-10" onSubmit={formikCategories.handleSubmit}>
-                        <InputLabel id="options-label">Categories</InputLabel>
-                        <Select
-                            labelId="options-label"
-                            id="options"
-                            style={{ minWidth: 120 }}
-                            multiple
-                            value={formikCategories.values.options}
-                            onChange={formikCategories.handleChange}
-                            inputProps={{
-                                name: 'options',
-                            }}
-                        >
-                            {allEstablishmentsCategories.map((allEstablishment) => {
-                                const categoryDetails = JSON.parse(
-                                    allEstablishment.category_details,
-                                );
-                                return (
-                                    <MenuItem
-                                        key={allEstablishment.category_id}
-                                        value={allEstablishment.category_id}
-                                    >
-                                        {categoryDetails.label}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                        <button
-                            type="submit"
-                            className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
-                        >
-                            Enregistrer mon/mes Labels
-                        </button>
-                    </form>
                     <FormOpening formik={formikOpening} />
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
