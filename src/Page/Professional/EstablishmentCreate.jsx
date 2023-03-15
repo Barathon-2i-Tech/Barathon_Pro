@@ -36,9 +36,7 @@ export default function EstablishmentCreatePage() {
             {},
         ),
     );
-
     const [allEstablishmentsCategories, setAllEstablishmentsCategories] = useState([]);
-
     const [establishmentsCategories, setEstablishmentsCategories] = useState([]);
 
     async function getEstablishmentsCategories() {
@@ -169,18 +167,19 @@ export default function EstablishmentCreatePage() {
 
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
-            <section className="container relative sm:pt-6 md:pt-11 px-4 z-10">
+            <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
                 <div className="mx-6 font-bold">
                     1ere ETAPE (facultative): modifier tous les champs de la semaine et enregister,
                     puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la
                     prochaine étape.
                 </div>
                 <Box m="20px">
-                    <form className="py-4" onSubmit={formikCategories.handleSubmit}>
-                        <InputLabel id="options-label">Options</InputLabel>
+                    <form className="py-4 sm:pb-10" onSubmit={formikCategories.handleSubmit}>
+                        <InputLabel id="options-label">Categories</InputLabel>
                         <Select
                             labelId="options-label"
                             id="options"
+                            style={{ minWidth: 120 }}
                             multiple
                             value={formikCategories.values.options}
                             onChange={formikCategories.handleChange}
@@ -204,7 +203,7 @@ export default function EstablishmentCreatePage() {
                         </Select>
                         <button
                             type="submit"
-                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                            className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
                         >
                             Enregistrer mon/mes Labels
                         </button>
