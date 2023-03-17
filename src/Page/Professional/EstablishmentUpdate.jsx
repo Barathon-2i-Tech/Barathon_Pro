@@ -30,8 +30,8 @@ export default function EstablishmentCreatePage() {
     const [establishment, setEstablishment] = useState([]);
     const [opening, setOpening] = useState({});
     const [openingFormat, setOpeningFormat] = useState({});
-    const [allEstablishmentsCategories, setAllEstablishmentsCategories] = useState([]);
-    const [establishmentsCategories, setEstablishmentsCategories] = useState([]);
+    const [allCategories, setAllCategories] = useState([]);
+    const [establishmentCategories, setEstablishmentCategories] = useState([]);
     const openingJson = JSON.stringify(
         Object.entries(opening).reduce(
             (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
@@ -78,7 +78,7 @@ export default function EstablishmentCreatePage() {
         }
     }
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
-    async function getEstablishmentsCategories() {
+    async function getAllCategories() {
         try {
             const response = await Axios.api.get(`/categories/establishment`, {
                 headers: {
@@ -87,8 +87,8 @@ export default function EstablishmentCreatePage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setAllEstablishmentsCategories(response.data.data);
-            console.table(response.data.data);
+            setAllCategories(response.data.data);
+            // console.table(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -103,8 +103,9 @@ export default function EstablishmentCreatePage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setEstablishmentsCategories(response.data.data);
-            console.table(response.data.data);
+            //formikCategories.setValues(response.data.data);
+            setEstablishmentCategories(response.data.data);
+            // console.table(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -112,14 +113,14 @@ export default function EstablishmentCreatePage() {
 
     // This const is to initialize initial option value with the categories of establishment in DB
     const getInitialOptions = (categories) => {
-        return Array.isArray(categories) ? categories.map((category) => category.category_id) : [];
+    return categories && categories.length > 0 ? categories.map((category) => category.category_id) : [];
     };
 
     // FORMIK
     // This const is for formik shema and action to form Opening
     const formikCategories = useFormik({
         initialValues: {
-            options: getInitialOptions(establishmentsCategories),
+            options: [],
         },
         enableReinitialize: true,
         validationSchema: selectCategoriesSchema,
@@ -138,15 +139,23 @@ export default function EstablishmentCreatePage() {
     const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
+       // Mettre à jour les catégories de l'établissement
+    const updatedCategories = allCategories.filter((category) =>
+    values.options.includes(category.category_id)
+    );
+    const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
+    setEstablishmentCategories(updatedCategoryIds);
+    console.log("updatedCategories:", updatedCategories);
+    console.log("options:", values.options);
+    console.log("establishmentCategories:", establishmentCategories);
 
-        const dataValuesCategories = {
-            options: values.options.map((option) => ({
-                establishment_id: establishmentId,
-                category_id: option,
-            })),
-        };
-        setEstablishmentsCategories(dataValuesCategories);
-        console.table(establishmentsCategories);
+    // Mettre à jour les options sélectionnées dans formikCategories.values
+    const newOptions = values.options.concat(updatedCategoryIds);
+    formikCategories.setValues({
+        ...formikCategories.values,
+        options: newOptions,
+    });
+
     };
 
     // This const is to save in state opening the news opening
@@ -156,45 +165,61 @@ export default function EstablishmentCreatePage() {
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
+        console.log("OPENING establishmentCategories:", establishmentCategories);
     };
-
     useEffect(() => {
         getEstablishment();
-        getEstablishmentsCategories();
-        getEstablishmentCategory();
+        getAllCategories();
+    }, []);
+
+    useEffect(() => {
         setOpeningFormat(openingJson);
-        console.table(establishmentsCategories);
     }, [opening]);
 
+    useEffect(() => {
+        getEstablishmentCategory();
+        getInitialOptions(establishmentCategories)
+        console.table(establishmentCategories);
+    }, []);
+
+    useEffect(() => {
+        formikCategories.setValues({
+            options: getInitialOptions(establishmentCategories),
+        });
+    }, [establishmentCategories]);
+
+
+
+    
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
-        const dataValuesCategories = { establishmentsCategories };
+        const dataValuesCategories = { establishmentCategories };
         const urlCreateCategories = `/pro/${ownerId}/categories/test`;
 
         sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
-                console.table(dataValues);
+                //console.table(dataValues);
             })
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                console.table(dataValues);
+                //console.table(dataValues);
             });
 
         sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
-                console.table(dataValuesCategories);
+                // console.table(dataValuesCategories);
             })
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                console.table(dataValuesCategories);
+                // console.table(dataValuesCategories);
             });
     };
 
@@ -221,7 +246,7 @@ export default function EstablishmentCreatePage() {
                 message={'Bien envoyez'}
             />
 
-            <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
+            <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
                 <div className="mx-6 font-bold">
@@ -243,7 +268,7 @@ export default function EstablishmentCreatePage() {
                                 name: 'options',
                             }}
                         >
-                            {allEstablishmentsCategories.map((allEstablishment) => {
+                            {allCategories.map((allEstablishment) => {
                                 const categoryDetails = JSON.parse(
                                     allEstablishment.category_details,
                                 );
