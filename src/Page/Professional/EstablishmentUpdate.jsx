@@ -141,16 +141,20 @@ export default function EstablishmentCreatePage() {
     const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
+
         // Mettre à jour les catégories de l'établissement
         const updatedCategories = allCategories.filter((category) =>
             values.options.includes(category.category_id),
         );
         const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-        setEstablishmentCategories(updatedCategoryIds);
+
         console.log('updatedCategories:', updatedCategories);
         console.log('options:', values.options);
         console.log('establishmentCategories:', establishmentCategories);
 
+        // Créer l'objet avec la propriété "option"
+        const optionObj = { option: updatedCategoryIds };
+        setEstablishmentCategories(optionObj);
         // Mettre à jour les options sélectionnées dans formikCategories.values
         const newOptions = values.options.concat(updatedCategoryIds);
         formikCategories.setValues({
