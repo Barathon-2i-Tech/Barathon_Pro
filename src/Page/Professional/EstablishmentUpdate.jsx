@@ -41,12 +41,23 @@ export default function EstablishmentCreatePage() {
     const { id } = useParams();
     const establishmentId = parseInt(id);
     const navigate = useNavigate();
+
     // This function is used to navigate to the home page
     // It will be called when the button is clicked
     const goBack = () => {
         navigate('/pro/establishment');
     };
+    // This function is used to close toast
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+        setOpenSnackbarOpening(false);
+    };
 
+    // AXIOS GET
+    // This function is used to get the establishment to update by his ID
     async function getEstablishment() {
         try {
             const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
@@ -66,7 +77,7 @@ export default function EstablishmentCreatePage() {
             console.log(error);
         }
     }
-
+    // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     async function getEstablishmentsCategories() {
         try {
             const response = await Axios.api.get(`/categories/establishment`, {
@@ -82,7 +93,7 @@ export default function EstablishmentCreatePage() {
             console.log(error);
         }
     }
-
+    // This function is used to get All categories of The establishment to update
     async function getEstablishmentCategory() {
         try {
             const response = await Axios.api.get(`/categories/establishment/${establishmentId}`, {
@@ -99,14 +110,22 @@ export default function EstablishmentCreatePage() {
         }
     }
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackbar(false);
-        setOpenSnackbarOpening(false);
+    // This const is to initialize initial option value with the categories of establishment in DB
+    const getInitialOptions = (categories) => {
+        return Array.isArray(categories) ? categories.map((category) => category.category_id) : [];
     };
 
+    // FORMIK
+    // This const is for formik shema and action to form Opening
+    const formikCategories = useFormik({
+        initialValues: {
+            options: getInitialOptions(establishmentsCategories),
+        },
+        enableReinitialize: true,
+        validationSchema: selectCategoriesSchema,
+        onSubmit: (values) => handleFormSubmitCategories(values),
+    });
+    // This const is for formik shema and action to form Opening
     const formikOpening = useFormik({
         initialValues: FormInitialValuesOpening,
         enableReinitialize: true,
@@ -114,15 +133,8 @@ export default function EstablishmentCreatePage() {
         onSubmit: (values) => handleFormSubmitOpening(values),
     });
 
-    const formikCategories = useFormik({
-        initialValues: {
-            options: [],
-        },
-        enableReinitialize: true,
-        validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
-    });
-
+    // FUNCTION SUBMIT
+    // This const is to save in state establishmentsCategories the news categories
     const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
@@ -137,6 +149,7 @@ export default function EstablishmentCreatePage() {
         console.table(establishmentsCategories);
     };
 
+    // This const is to save in state opening the news opening
     const handleFormSubmitOpening = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
