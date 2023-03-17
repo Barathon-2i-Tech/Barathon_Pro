@@ -113,7 +113,9 @@ export default function EstablishmentCreatePage() {
 
     // This const is to initialize initial option value with the categories of establishment in DB
     const getInitialOptions = (categories) => {
-    return categories && categories.length > 0 ? categories.map((category) => category.category_id) : [];
+        return categories && categories.length > 0
+            ? categories.map((category) => category.category_id)
+            : [];
     };
 
     // FORMIK
@@ -139,23 +141,22 @@ export default function EstablishmentCreatePage() {
     const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
-       // Mettre à jour les catégories de l'établissement
-    const updatedCategories = allCategories.filter((category) =>
-    values.options.includes(category.category_id)
-    );
-    const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-    setEstablishmentCategories(updatedCategoryIds);
-    console.log("updatedCategories:", updatedCategories);
-    console.log("options:", values.options);
-    console.log("establishmentCategories:", establishmentCategories);
+        // Mettre à jour les catégories de l'établissement
+        const updatedCategories = allCategories.filter((category) =>
+            values.options.includes(category.category_id),
+        );
+        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
+        setEstablishmentCategories(updatedCategoryIds);
+        console.log('updatedCategories:', updatedCategories);
+        console.log('options:', values.options);
+        console.log('establishmentCategories:', establishmentCategories);
 
-    // Mettre à jour les options sélectionnées dans formikCategories.values
-    const newOptions = values.options.concat(updatedCategoryIds);
-    formikCategories.setValues({
-        ...formikCategories.values,
-        options: newOptions,
-    });
-
+        // Mettre à jour les options sélectionnées dans formikCategories.values
+        const newOptions = values.options.concat(updatedCategoryIds);
+        formikCategories.setValues({
+            ...formikCategories.values,
+            options: newOptions,
+        });
     };
 
     // This const is to save in state opening the news opening
@@ -165,7 +166,7 @@ export default function EstablishmentCreatePage() {
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
-        console.log("OPENING establishmentCategories:", establishmentCategories);
+        console.log('OPENING establishmentCategories:', establishmentCategories);
     };
     useEffect(() => {
         getEstablishment();
@@ -178,7 +179,7 @@ export default function EstablishmentCreatePage() {
 
     useEffect(() => {
         getEstablishmentCategory();
-        getInitialOptions(establishmentCategories)
+        getInitialOptions(establishmentCategories);
         console.table(establishmentCategories);
     }, []);
 
@@ -188,9 +189,6 @@ export default function EstablishmentCreatePage() {
         });
     }, [establishmentCategories]);
 
-
-
-    
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
