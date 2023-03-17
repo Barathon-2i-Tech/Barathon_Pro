@@ -10,18 +10,16 @@ import {
     establishmentSchema,
     selectCategoriesSchema,
 } from '../../utils/FormSchemaValidation';
-import { Box, InputLabel, Select, MenuItem } from '@mui/material';
-import {
-    FormInitialValuesOpening,
-    FormInitialValuesEstablishment,
-} from '../../utils/FormInitialValue';
-import { useFormik } from 'formik';
+import { Grid, Box, InputLabel, Select, MenuItem } from '@mui/material';
+import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
+import { useFormik, Formik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
-import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
-import { sendFormDataPost } from '../../utils/AxiosModel';
+import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
+import { sendFormDataPost, sendFormDataPut } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Loader } from '../../Components/CommonComponents/Loader';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -29,6 +27,7 @@ export default function EstablishmentCreatePage() {
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+    const [establishments, setEstablishments] = useState([]);
     const [opening, setOpening] = useState({});
     const [openingFormat, setOpeningFormat] = useState({});
     const [allEstablishmentsCategories, setAllEstablishmentsCategories] = useState([]);
@@ -41,9 +40,34 @@ export default function EstablishmentCreatePage() {
     );
     const { id } = useParams();
     const establishmentId = parseInt(id);
+    const navigate = useNavigate();
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goBack = () => {
+        navigate('/pro/establishment');
+    };
+
+    async function getEstablishment() {
+        try {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setEstablishments(response.data.data);
+            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('display');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     async function getEstablishmentsCategories() {
-        console.log('coucou');
         try {
             const response = await Axios.api.get(`/categories/establishment`, {
                 headers: {
@@ -53,7 +77,23 @@ export default function EstablishmentCreatePage() {
                 },
             });
             setAllEstablishmentsCategories(response.data.data);
-            console.log(response.data.data);
+            console.table(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async function getEstablishmentCategory() {
+        try {
+            const response = await Axios.api.get(`/categories/establishment/${establishmentId}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setEstablishmentsCategories(response.data.data);
+            console.table(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -94,15 +134,8 @@ export default function EstablishmentCreatePage() {
             })),
         };
         setEstablishmentsCategories(dataValuesCategories);
-        console.log(establishmentsCategories);
+        console.table(establishmentsCategories);
     };
-
-    const formikEstablishment = useFormik({
-        initialValues: FormInitialValuesEstablishment,
-        enableReinitialize: true,
-        validationSchema: establishmentSchema,
-        onSubmit: (values) => handleFormSubmit(values),
-    });
 
     const handleFormSubmitOpening = (values) => {
         //toast MUI
@@ -113,40 +146,42 @@ export default function EstablishmentCreatePage() {
     };
 
     useEffect(() => {
+        getEstablishment();
         getEstablishmentsCategories();
+        getEstablishmentCategory();
         setOpeningFormat(openingJson);
-        console.log(establishmentsCategories);
+        console.table(establishmentsCategories);
     }, [opening]);
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
-        const urlCreate = `/pro/${ownerId}/establishment`;
+        const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
         const dataValuesCategories = { establishmentsCategories };
         const urlCreateCategories = `/pro/${ownerId}/categories/test`;
 
-        sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
+        sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
-                console.log(dataValues);
+                console.table(dataValues);
             })
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                console.log(dataValues);
+                console.table(dataValues);
             });
 
         sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
-                console.log(dataValuesCategories);
+                console.table(dataValuesCategories);
             })
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                console.log(dataValuesCategories);
+                console.table(dataValuesCategories);
             });
     };
 
@@ -220,7 +255,158 @@ export default function EstablishmentCreatePage() {
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
-                    <FormEstablishment formik={formikEstablishment} />
+                    <Loader allClass={'loading display'} />
+                    {establishments.map((establishment) => (
+                        <Formik
+                            key={establishment.establishment_id}
+                            initialValues={{
+                                logo: establishment.logo || '',
+                                trade_name: establishment.trade_name || '',
+                                siret: establishment.siret || '',
+                                address: establishment.address || '',
+                                city: establishment.city || '',
+                                postal_code: establishment.postal_code || '',
+                                phone: establishment.phone || '',
+                                email: establishment.email || '',
+                                website: establishment.website || '',
+                            }}
+                            onSubmit={handleFormSubmit}
+                            validationSchema={establishmentSchema}
+                        >
+                            {({
+                                values,
+                                errors,
+                                touched,
+                                handleChange,
+                                handleBlur,
+                                handleSubmit,
+                            }) => (
+                                <form onSubmit={handleSubmit}>
+                                    <Box
+                                        display="grid"
+                                        gap="30px"
+                                        gridTemplateColumns="repeat(4, minmax(0,1 fr))"
+                                    >
+                                        <Grid container spacing={2}>
+                                            <FormFieldModel
+                                                grid={12}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.logo}
+                                                name={'logo'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.logo && !!errors.logo}
+                                                helperText={touched.logo && errors.logo}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                label="Nom de l'etablissement"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.trade_name}
+                                                name={'trade_name'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.trade_name && !!errors.trade_name}
+                                                helperText={touched.trade_name && errors.trade_name}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.siret}
+                                                name={'siret'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.siret && !!errors.siret}
+                                                helperText={touched.siret && errors.siret}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.address}
+                                                name={'address'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.address && !!errors.address}
+                                                helperText={touched.address && errors.address}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.city}
+                                                name={'city'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.city && !!errors.city}
+                                                helperText={touched.city && errors.city}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                label="Code postal"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.postal_code}
+                                                name={'postal_code'}
+                                                //convert to boolean using !! operator
+                                                error={
+                                                    !!touched.postal_code && !!errors.postal_code
+                                                }
+                                                helperText={
+                                                    touched.postal_code && errors.postal_code
+                                                }
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.phone}
+                                                name={'phone'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.phone && !!errors.phone}
+                                                helperText={touched.phone && errors.phone}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.email}
+                                                name={'email'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.email && !!errors.email}
+                                                helperText={touched.email && errors.email}
+                                            />
+
+                                            <FormFieldModel
+                                                grid={6}
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.website}
+                                                name={'website'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.website && !!errors.website}
+                                                helperText={touched.website && errors.website}
+                                            />
+                                        </Grid>
+                                    </Box>
+                                    <Box display="flex" justifyContent="end" mt="20px">
+                                        <div className="w-fit inline-block text-white lg:text-xl">
+                                            <button
+                                                onClick={goBack}
+                                                className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
+                                            >
+                                                Annuler
+                                            </button>
+                                        </div>
+                                        <button
+                                            type="submit"
+                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                        >
+                                            Sauvegarder
+                                        </button>
+                                    </Box>
+                                </form>
+                            )}
+                        </Formik>
+                    ))}
                 </Box>
             </section>
         </Paper>
