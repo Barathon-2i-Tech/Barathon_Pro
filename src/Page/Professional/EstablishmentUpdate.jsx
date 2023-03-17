@@ -27,7 +27,7 @@ export default function EstablishmentCreatePage() {
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
-    const [establishments, setEstablishments] = useState([]);
+    const [establishment, setEstablishment] = useState([]);
     const [opening, setOpening] = useState({});
     const [openingFormat, setOpeningFormat] = useState({});
     const [allEstablishmentsCategories, setAllEstablishmentsCategories] = useState([]);
@@ -56,7 +56,7 @@ export default function EstablishmentCreatePage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setEstablishments(response.data.data);
+            setEstablishment(response.data.data);
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
             if (loader) {
@@ -256,7 +256,7 @@ export default function EstablishmentCreatePage() {
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
                     <Loader allClass={'loading display'} />
-                    {establishments.map((establishment) => (
+                    {establishment.map((establishment) => (
                         <Formik
                             key={establishment.establishment_id}
                             initialValues={{
