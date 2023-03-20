@@ -45,6 +45,12 @@
 .MuiDataGrid-row.hidden-row {
   display: none !important;
 }
+/*Establishment list categories */
+.categories_selected-list_icon svg {
+  width: 20px;
+  height: auto;
+}
+
 @media screen and (min-width: 1260px) {
   .min-w-button-establishement {
     min-width: 150px;

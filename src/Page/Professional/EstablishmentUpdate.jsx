@@ -15,11 +15,12 @@ import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { useFormik, Formik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
-import { sendFormDataPost, sendFormDataPut } from '../../utils/AxiosModel';
+import { sendFormDataPut } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from '../../Components/CommonComponents/Loader';
+import Parser from 'html-react-parser';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -32,6 +33,7 @@ export default function EstablishmentCreatePage() {
     const [openingFormat, setOpeningFormat] = useState({});
     const [allCategories, setAllCategories] = useState([]);
     const [establishmentCategories, setEstablishmentCategories] = useState([]);
+    const [categoriesSelected, setCategoriesSelected] = useState([]);
     const openingJson = JSON.stringify(
         Object.entries(opening).reduce(
             (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
@@ -118,6 +120,12 @@ export default function EstablishmentCreatePage() {
             : [];
     };
 
+    // const getInitialOpening = (openings) => {
+    //     return openings && openings.length > 0
+    //         ? openings.map((day) => day.opening)
+    //         : [];
+    // };
+
     // FORMIK
     // This const is for formik shema and action to form Opening
     const formikCategories = useFormik({
@@ -152,9 +160,13 @@ export default function EstablishmentCreatePage() {
         console.log('options:', values.options);
         console.log('establishmentCategories:', establishmentCategories);
 
+        // avoir la liste des categories selectionner en state pour les lister
+        setCategoriesSelected(updatedCategories);
+
         // Créer l'objet avec la propriété "option"
         const optionObj = { option: updatedCategoryIds };
         setEstablishmentCategories(optionObj);
+
         // Mettre à jour les options sélectionnées dans formikCategories.values
         const newOptions = values.options.concat(updatedCategoryIds);
         formikCategories.setValues({
@@ -170,11 +182,12 @@ export default function EstablishmentCreatePage() {
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
-        console.log('OPENING establishmentCategories:', establishmentCategories);
+        // console.log('OPENING establishmentCategories:', establishmentCategories);
     };
     useEffect(() => {
         getEstablishment();
         getAllCategories();
+        console.log(establishment);
     }, []);
 
     useEffect(() => {
@@ -184,7 +197,7 @@ export default function EstablishmentCreatePage() {
     useEffect(() => {
         getEstablishmentCategory();
         getInitialOptions(establishmentCategories);
-        console.table(establishmentCategories);
+        // console.table(establishmentCategories);
     }, []);
 
     useEffect(() => {
@@ -197,9 +210,12 @@ export default function EstablishmentCreatePage() {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
-        const dataValuesCategories = { establishmentCategories };
-        const urlCreateCategories = `/pro/${ownerId}/categories/test`;
+        const dataValuesCategories = { ...establishmentCategories };
+        const urlCreateCategories = `/pro/establishment/${id}/category`;
+        console.log('dataValuesCategories post:', dataValuesCategories);
+        console.log('establishmentCategories post:', establishmentCategories);
 
+        console.log(dataValues);
         sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 //toast MUI
@@ -212,7 +228,7 @@ export default function EstablishmentCreatePage() {
                 //console.table(dataValues);
             });
 
-        sendFormDataPost(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
+        sendFormDataPut(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
@@ -251,19 +267,23 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <div className="mx-6 font-bold">
+                <div className="mx-6 font-bold text-xl">
                     1ere ETAPE (facultative): modifier tous les champs de la semaine et enregister,
                     puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la
                     prochaine étape.
                 </div>
                 <Box m="20px">
-                    <form className="py-4 sm:pb-10" onSubmit={formikCategories.handleSubmit}>
+                    <div className="categorie-title text-2xl text-teal-700 font-bold">
+                        CATEGORIES DE VOTRE ETABLISSMENT :
+                    </div>
+                    <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
                         <InputLabel id="options-label">Categories</InputLabel>
                         <Select
                             labelId="options-label"
                             id="options"
                             style={{ minWidth: 120 }}
                             multiple
+                            defaultValue={formikCategories.initialValues.options}
                             value={formikCategories.values.options}
                             onChange={formikCategories.handleChange}
                             inputProps={{
@@ -274,6 +294,7 @@ export default function EstablishmentCreatePage() {
                                 const categoryDetails = JSON.parse(
                                     allEstablishment.category_details,
                                 );
+
                                 return (
                                     <MenuItem
                                         key={allEstablishment.category_id}
@@ -288,12 +309,40 @@ export default function EstablishmentCreatePage() {
                             type="submit"
                             className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
                         >
-                            Enregistrer mon/mes Labels
+                            Enregistrer mon/mes Categories
                         </button>
                     </form>
+                    <div className="categories_selected-container flex sm:pb-10">
+                        <div className="font-bold pr-4 text-base">CATEGORIES ENREGISTRÉES : </div>
+                        {categoriesSelected.map((allCategoriesSelected) => {
+                            const categoryDetails = JSON.parse(
+                                allCategoriesSelected.category_details,
+                            );
+                            return (
+                                <div
+                                    key={allCategoriesSelected.category_id}
+                                    value={allCategoriesSelected.category_id}
+                                    className="categories_selected-list flex pr-4"
+                                >
+                                    <div className="categories_selected-list_icon pr-2">
+                                        {Parser(categoryDetails.icon)}
+                                    </div>
+                                    <div className="categories_selected-list_label">
+                                        {categoryDetails.label}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="opening-title text-2xl text-teal-700 font-bold pb-6">
+                        HORRAIRES DE VOTRE ETABLISSMENT :
+                    </div>
                     <FormOpening formik={formikOpening} />
-                    <div className="pb-4 font-bold">
+                    <div className="pb-4 font-bold text-xl">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
+                    </div>
+                    <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">
+                        INFORMATIONS DE VOTRE ETABLISSMENT :
                     </div>
                     <Loader allClass={'loading display'} />
                     {establishment.map((establishment) => (
