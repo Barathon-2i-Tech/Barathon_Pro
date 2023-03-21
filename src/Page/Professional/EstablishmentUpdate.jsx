@@ -29,6 +29,7 @@ export default function EstablishmentCreatePage() {
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const [establishment, setEstablishment] = useState([]);
+    const [isOpeningInitialized, setIsOpeningInitialized] = useState(false);
     const [opening, setOpening] = useState({});
     const [openingFormat, setOpeningFormat] = useState({});
     const [allCategories, setAllCategories] = useState([]);
@@ -120,11 +121,16 @@ export default function EstablishmentCreatePage() {
             : [];
     };
 
-    // const getInitialOpening = (openings) => {
-    //     return openings && openings.length > 0
-    //         ? openings.map((day) => day.opening)
-    //         : [];
-    // };
+    const getInitialOpening = (establishment) => {
+        if (establishment && establishment.length > 0) {
+            const openingObj = establishment[0].opening;
+            return Object.entries(openingObj).reduce(
+                (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
+                FormInitialValuesOpening,
+            );
+        }
+        return FormInitialValuesOpening;
+    };
 
     // FORMIK
     // This const is for formik shema and action to form Opening
@@ -138,7 +144,7 @@ export default function EstablishmentCreatePage() {
     });
     // This const is for formik shema and action to form Opening
     const formikOpening = useFormik({
-        initialValues: FormInitialValuesOpening,
+        initialValues: isOpeningInitialized ? opening : getInitialOpening(),
         enableReinitialize: true,
         validationSchema: EstablishmentSchemaOpening,
         onSubmit: (values) => handleFormSubmitOpening(values),
@@ -184,19 +190,29 @@ export default function EstablishmentCreatePage() {
         setOpening(dataValuesOpening);
         // console.log('OPENING establishmentCategories:', establishmentCategories);
     };
+
     useEffect(() => {
         getEstablishment();
         getAllCategories();
-        console.log(establishment);
+        console.log('initial opening ', opening);
     }, []);
+    //Assurer que l'état opening est mis à jour lorsque l'on recois les données de l'établissement.
+    useEffect(() => {
+        console.log('establishment ', establishment);
+        setOpening(getInitialOpening(establishment));
+        setIsOpeningInitialized(true); // Ajoutez cette ligne
+        console.log('initial opening 2', opening);
+    }, [establishment]);
 
     useEffect(() => {
         setOpeningFormat(openingJson);
+        console.log('initial opening 3', opening);
     }, [opening]);
 
     useEffect(() => {
         getEstablishmentCategory();
         getInitialOptions(establishmentCategories);
+        console.log(establishment);
         // console.table(establishmentCategories);
     }, []);
 
@@ -337,7 +353,9 @@ export default function EstablishmentCreatePage() {
                     <div className="opening-title text-2xl text-teal-700 font-bold pb-6">
                         HORRAIRES DE VOTRE ETABLISSMENT :
                     </div>
+
                     <FormOpening formik={formikOpening} />
+
                     <div className="pb-4 font-bold text-xl">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
