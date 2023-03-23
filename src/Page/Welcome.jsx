@@ -14,7 +14,6 @@ import '../css/WelcomePage/SectionInfos.css';
 import '../css/WelcomePage/SectionCardHover.css';
 import '../css/WelcomePage/SectionInfosList.css';
 
-
 export default function Welcome() {
     return (
         <>

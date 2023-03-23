@@ -191,7 +191,7 @@ export default function EstablishmentCreatePage() {
     //Assurer que l'état opening est mis à jour lorsque l'on recois les données de l'établissement.
     useEffect(() => {
         setOpening(getInitialOpening(establishment));
-        setIsOpeningInitialized(true); 
+        setIsOpeningInitialized(true);
     }, [establishment]);
 
     useEffect(() => {
@@ -326,14 +326,13 @@ export default function EstablishmentCreatePage() {
                                     className="categories_selected-list flex items-center pr-4"
                                 >
                                     <div className="categories_selected-list_icon-container p-4 flex bg-gray-100 rounded-lg">
-                                    <div className="categories_selected-list_icon pr-2">
-                                        {Parser(categoryDetails.icon)}
+                                        <div className="categories_selected-list_icon pr-2">
+                                            {Parser(categoryDetails.icon)}
+                                        </div>
+                                        <div className="categories_selected-list_label">
+                                            {categoryDetails.label}
+                                        </div>
                                     </div>
-                                    <div className="categories_selected-list_label">
-                                        {categoryDetails.label}
-                                    </div>
-                                    </div>
-                                    
                                 </div>
                             );
                         })}

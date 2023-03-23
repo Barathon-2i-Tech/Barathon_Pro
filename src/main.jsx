@@ -7,7 +7,6 @@ import './index.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import './css/TypoCustom.css';
 
-
 const theme = createTheme({
     palette: {
         primary: {

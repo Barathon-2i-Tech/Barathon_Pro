@@ -22,7 +22,6 @@ import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 
-
 export default function App() {
     return (
         <div className="App">
