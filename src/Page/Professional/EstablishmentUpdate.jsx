@@ -284,9 +284,9 @@ export default function EstablishmentCreatePage() {
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
                 <div className="mx-6 font-bold text-xl">
-                    1ere ETAPE (facultative): modifier tous les champs de la semaine et enregister,
-                    puis sauvegarder si vous modifiez uniquement les horaires, sinon passez à la
-                    prochaine étape.
+                    1ere ETAPE (facultative): modifier tous les champs de la semaine et/ou vos
+                    categories, puis enregister. Enregistrer les categories et horaires, puis passez
+                    à la prochaine étape.
                 </div>
                 <Box m="20px">
                     <div className="categorie-title text-2xl text-teal-700 font-bold">
@@ -357,7 +357,7 @@ export default function EstablishmentCreatePage() {
                     <FormOpening formik={formikOpening} />
 
                     <div className="pb-4 font-bold text-xl">
-                        ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
+                        ETAPE 2 : Remplissez tous les champs puis envoyez votre demande de création.
                     </div>
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">
                         INFORMATIONS DE VOTRE ETABLISSMENT :
