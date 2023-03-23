@@ -21,6 +21,7 @@ import Axios from '../../utils/axiosUrl';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader } from '../../Components/CommonComponents/Loader';
 import Parser from 'html-react-parser';
+// import '../../css/';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -91,7 +92,6 @@ export default function EstablishmentCreatePage() {
                 },
             });
             setAllCategories(response.data.data);
-            // console.table(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -106,9 +106,7 @@ export default function EstablishmentCreatePage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            //formikCategories.setValues(response.data.data);
             setEstablishmentCategories(response.data.data);
-            // console.table(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -162,16 +160,12 @@ export default function EstablishmentCreatePage() {
         );
         const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
 
-        console.log('updatedCategories:', updatedCategories);
-        console.log('options:', values.options);
-        console.log('establishmentCategories:', establishmentCategories);
-
         // avoir la liste des categories selectionner en state pour les lister
         setCategoriesSelected(updatedCategories);
 
         // Créer l'objet avec la propriété "option"
-        const optionObj = { option: updatedCategoryIds };
-        setEstablishmentCategories(optionObj);
+        // const optionObj = { option: updatedCategoryIds };
+        setEstablishmentCategories(updatedCategoryIds);
 
         // Mettre à jour les options sélectionnées dans formikCategories.values
         const newOptions = values.options.concat(updatedCategoryIds);
@@ -188,32 +182,25 @@ export default function EstablishmentCreatePage() {
 
         const dataValuesOpening = { ...values };
         setOpening(dataValuesOpening);
-        // console.log('OPENING establishmentCategories:', establishmentCategories);
     };
 
     useEffect(() => {
         getEstablishment();
         getAllCategories();
-        console.log('initial opening ', opening);
     }, []);
     //Assurer que l'état opening est mis à jour lorsque l'on recois les données de l'établissement.
     useEffect(() => {
-        console.log('establishment ', establishment);
         setOpening(getInitialOpening(establishment));
-        setIsOpeningInitialized(true); // Ajoutez cette ligne
-        console.log('initial opening 2', opening);
+        setIsOpeningInitialized(true); 
     }, [establishment]);
 
     useEffect(() => {
         setOpeningFormat(openingJson);
-        console.log('initial opening 3', opening);
     }, [opening]);
 
     useEffect(() => {
         getEstablishmentCategory();
         getInitialOptions(establishmentCategories);
-        console.log(establishment);
-        // console.table(establishmentCategories);
     }, []);
 
     useEffect(() => {
@@ -226,10 +213,8 @@ export default function EstablishmentCreatePage() {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
-        const dataValuesCategories = { ...establishmentCategories };
+        const dataValuesCategories = { options: establishmentCategories };
         const urlCreateCategories = `/pro/establishment/${id}/category`;
-        console.log('dataValuesCategories post:', dataValuesCategories);
-        console.log('establishmentCategories post:', establishmentCategories);
 
         console.log(dataValues);
         sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
@@ -289,7 +274,7 @@ export default function EstablishmentCreatePage() {
                     à la prochaine étape.
                 </div>
                 <Box m="20px">
-                    <div className="categorie-title text-2xl text-teal-700 font-bold">
+                    <div className="categorie-title text-2xl text-teal-700 font-bold pt-10">
                         CATEGORIES DE VOTRE ETABLISSMENT :
                     </div>
                     <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
@@ -328,7 +313,7 @@ export default function EstablishmentCreatePage() {
                             Enregistrer mon/mes Categories
                         </button>
                     </form>
-                    <div className="categories_selected-container flex sm:pb-10">
+                    <div className="categories_selected-container flex items-center sm:pb-10">
                         <div className="font-bold pr-4 text-base">CATEGORIES ENREGISTRÉES : </div>
                         {categoriesSelected.map((allCategoriesSelected) => {
                             const categoryDetails = JSON.parse(
@@ -338,25 +323,28 @@ export default function EstablishmentCreatePage() {
                                 <div
                                     key={allCategoriesSelected.category_id}
                                     value={allCategoriesSelected.category_id}
-                                    className="categories_selected-list flex pr-4"
+                                    className="categories_selected-list flex items-center pr-4"
                                 >
+                                    <div className="categories_selected-list_icon-container p-4 flex bg-gray-100 rounded-lg">
                                     <div className="categories_selected-list_icon pr-2">
                                         {Parser(categoryDetails.icon)}
                                     </div>
                                     <div className="categories_selected-list_label">
                                         {categoryDetails.label}
                                     </div>
+                                    </div>
+                                    
                                 </div>
                             );
                         })}
                     </div>
-                    <div className="opening-title text-2xl text-teal-700 font-bold pb-6">
+                    <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
                         HORRAIRES DE VOTRE ETABLISSMENT :
                     </div>
 
                     <FormOpening formik={formikOpening} />
 
-                    <div className="pb-4 font-bold text-xl">
+                    <div className="pb-4 font-bold text-xl pt-10 pb-10">
                         ETAPE 2 : Remplissez tous les champs puis envoyez votre demande de création.
                     </div>
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">

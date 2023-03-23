@@ -13,7 +13,7 @@ import '../css/WelcomePage/SectionCardIcon.css';
 import '../css/WelcomePage/SectionInfos.css';
 import '../css/WelcomePage/SectionCardHover.css';
 import '../css/WelcomePage/SectionInfosList.css';
-import '../css/WelcomePage/TypoCustom.css';
+
 
 export default function Welcome() {
     return (
