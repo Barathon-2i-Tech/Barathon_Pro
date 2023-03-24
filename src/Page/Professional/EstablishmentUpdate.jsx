@@ -72,6 +72,7 @@ export default function EstablishmentCreatePage() {
                 },
             });
             setEstablishment(response.data.data);
+            console.log(response.data.data.establishment_id);
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
             if (loader) {

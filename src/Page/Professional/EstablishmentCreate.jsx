@@ -5,8 +5,12 @@ import '../../css/Professional/Establishment.css';
 import '../../css/Professional/Loader.css';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
-import { EstablishmentSchemaOpening, establishmentSchema } from '../../utils/FormSchemaValidation';
-import { Box } from '@mui/material';
+import {
+    EstablishmentSchemaOpening,
+    establishmentSchema,
+    selectCategoriesSchema,
+} from '../../utils/FormSchemaValidation';
+import { Box, InputLabel, Select, MenuItem } from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
@@ -14,10 +18,16 @@ import {
 import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
-import { sendFormDataPost } from '../../utils/AxiosModel';
+import { sendFormDataPost, sendFormDataPut } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
+import Axios from '../../utils/axiosUrl';
+import Parser from 'html-react-parser';
 
 export default function EstablishmentCreatePage() {
+    const [allCategories, setAllCategories] = useState([]);
+    const [establishmentCategories, setEstablishmentCategories] = useState([]);
+    const [categoriesSelected, setCategoriesSelected] = useState([]);
+
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
@@ -32,6 +42,22 @@ export default function EstablishmentCreatePage() {
         ),
     );
 
+    // This function is used to get All categories in database (who has sub_category ALL and Establishment)
+    async function getAllCategories() {
+        try {
+            const response = await Axios.api.get(`/categories/establishment`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setAllCategories(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
@@ -39,6 +65,17 @@ export default function EstablishmentCreatePage() {
         setOpenSnackbar(false);
         setOpenSnackbarOpening(false);
     };
+
+    // FORMIK
+    // This const is for formik shema and action to form Opening
+    const formikCategories = useFormik({
+        initialValues: {
+            options: [],
+        },
+        enableReinitialize: true,
+        validationSchema: selectCategoriesSchema,
+        onSubmit: (values) => handleFormSubmitCategories(values),
+    });
 
     const formikOpening = useFormik({
         initialValues: FormInitialValuesOpening,
@@ -54,6 +91,31 @@ export default function EstablishmentCreatePage() {
         onSubmit: (values) => handleFormSubmit(values),
     });
 
+    const handleFormSubmitCategories = (values) => {
+        //toast MUI
+        setOpenSnackbarOpening(true);
+
+        // Mettre à jour les catégories de l'établissement
+        const updatedCategories = allCategories.filter((category) =>
+            values.options.includes(category.category_id),
+        );
+        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
+
+        // avoir la liste des categories selectionner en state pour les lister
+        setCategoriesSelected(updatedCategories);
+
+        // Créer l'objet avec la propriété "option"
+        // const optionObj = { option: updatedCategoryIds };
+        setEstablishmentCategories(updatedCategoryIds);
+
+        // Mettre à jour les options sélectionnées dans formikCategories.values
+        const newOptions = values.options.concat(updatedCategoryIds);
+        formikCategories.setValues({
+            ...formikCategories.values,
+            options: newOptions,
+        });
+    };
+
     const handleFormSubmitOpening = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
@@ -63,25 +125,51 @@ export default function EstablishmentCreatePage() {
     };
 
     useEffect(() => {
+        getAllCategories();
+    }, []);
+
+    useEffect(() => {
         // getEstablishmentsCategories();
         setOpeningFormat(openingJson);
         // console.log(establishmentsCategories);
+        console.log('opening USEEFFECT', opening);
     }, [opening]);
+
+    useEffect(() => {
+        console.log('establ cat USEEFFECT', establishmentCategories);
+    }, [establishmentCategories]);
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment`;
 
-        sendFormDataPost(urlCreate, token, dataValues) // Appel de la fonction
-            .then(() => {
-                //toast MUI
-                setOpenSnackbar(true);
-                console.log(dataValues);
+        // Create the establishment
+        sendFormDataPost(urlCreate, token, dataValues)
+            .then((response) => {
+                // Get the newly created establishment ID
+                const newEstablishmentId = response.data.data[0].establishment_id;
+
+                // Associate categories to the new establishment
+                const dataValuesCategories = { options: establishmentCategories };
+                const urlCreateCategories = `/pro/establishment/${newEstablishmentId}/category`;
+
+                sendFormDataPut(urlCreateCategories, token, dataValuesCategories)
+                    .then(() => {
+                        // Show success message
+                        setOpenSnackbar(true);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                        console.error(e.response.data);
+                        alert('Une erreur ');
+                    });
             })
             .catch((e) => {
                 console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
-                console.log(dataValues);
+                console.error(e.response.data);
+                alert(
+                    "Une erreur est survenue lors de la création de l'établissement. Merci de réessayer",
+                );
             });
     };
 
@@ -117,6 +205,69 @@ export default function EstablishmentCreatePage() {
                     prochaine étape.
                 </div>
                 <Box m="20px">
+                    <div className="categorie-title text-2xl text-teal-700 font-bold pt-10">
+                        CATEGORIES DE VOTRE ETABLISSMENT :
+                    </div>
+                    <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
+                        <InputLabel id="options-label">Categories</InputLabel>
+                        <Select
+                            labelId="options-label"
+                            id="options"
+                            style={{ minWidth: 120 }}
+                            multiple
+                            defaultValue={formikCategories.initialValues.options}
+                            value={formikCategories.values.options}
+                            onChange={formikCategories.handleChange}
+                            inputProps={{
+                                name: 'options',
+                            }}
+                        >
+                            {allCategories.map((allEstablishment) => {
+                                const categoryDetails = JSON.parse(
+                                    allEstablishment.category_details,
+                                );
+
+                                return (
+                                    <MenuItem
+                                        key={allEstablishment.category_id}
+                                        value={allEstablishment.category_id}
+                                    >
+                                        {categoryDetails.label}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Select>
+                        <button
+                            type="submit"
+                            className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                        >
+                            Enregistrer mon/mes Categories
+                        </button>
+                    </form>
+                    <div className="categories_selected-container flex items-center sm:pb-10">
+                        <div className="font-bold pr-4 text-base">CATEGORIES ENREGISTRÉES : </div>
+                        {categoriesSelected.map((allCategoriesSelected) => {
+                            const categoryDetails = JSON.parse(
+                                allCategoriesSelected.category_details,
+                            );
+                            return (
+                                <div
+                                    key={allCategoriesSelected.category_id}
+                                    value={allCategoriesSelected.category_id}
+                                    className="categories_selected-list flex items-center pr-4"
+                                >
+                                    <div className="categories_selected-list_icon-container p-4 flex bg-gray-100 rounded-lg">
+                                        <div className="categories_selected-list_icon pr-2">
+                                            {Parser(categoryDetails.icon)}
+                                        </div>
+                                        <div className="categories_selected-list_label">
+                                            {categoryDetails.label}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                     <FormOpening formik={formikOpening} />
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
