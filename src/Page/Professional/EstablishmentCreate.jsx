@@ -18,7 +18,7 @@ import {
 import { useFormik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
-import { sendFormDataPost, sendFormDataPut } from '../../utils/AxiosModel';
+import { sendFormDataPost } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
 import Parser from 'html-react-parser';
@@ -168,7 +168,7 @@ export default function EstablishmentCreatePage() {
                 const dataValuesCategories = { options: establishmentCategories };
                 const urlCreateCategories = `/pro/establishment/${newEstablishmentId}/category`;
 
-                sendFormDataPut(urlCreateCategories, token, dataValuesCategories)
+                sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
                     .then(() => {
                         // Show success message
                         setOpenSnackbar(true);
