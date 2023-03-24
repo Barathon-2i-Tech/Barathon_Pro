@@ -143,8 +143,23 @@ export default function EstablishmentCreatePage() {
         const dataValues = { ...values, opening: openingFormat };
         const urlCreate = `/pro/${ownerId}/establishment`;
 
+        console.log('submit ', dataValues);
+
+        // Créer un nouvel objet FormData
+        const formData = new FormData();
+
+        // Ajouter les paires clé-valeur au FormData
+        for (const [key, value] of Object.entries(dataValues)) {
+            if (key === 'logo' && value) {
+                // Si la clé est 'logo', ajoutez le fichier image et non son chemin
+                formData.append(key, value[0]);
+            } else {
+                formData.append(key, value);
+            }
+        }
+
         // Create the establishment
-        sendFormDataPost(urlCreate, token, dataValues)
+        sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {
                 // Get the newly created establishment ID
                 const newEstablishmentId = response.data.data[0].establishment_id;

@@ -45,8 +45,14 @@ export const FormEstablishment = ({ formik }) => {
                             grid={6}
                             label={labelMap[formFieldValue]}
                             onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                            value={formik.values[formFieldValue]}
+                            onChange={(event, fileList) => {
+                                if (fileList) {
+                                    formik.setFieldValue(formFieldValue, fileList);
+                                } else {
+                                    formik.handleChange(event);
+                                }
+                            }}
+                            value={formFieldValue === 'logo' ? '' : formik.values[formFieldValue]} // Modifiez cette ligne
                             name={formFieldValue}
                             error={
                                 !!formik.touched[formFieldValue] && !!formik.errors[formFieldValue]

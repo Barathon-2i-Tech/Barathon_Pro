@@ -11,16 +11,26 @@ export const FormFieldModel = ({
     error,
     helperText,
 }) => {
+    const isLogoField = name === 'logo';
+    const handleFileChange = (event) => {
+        if (isLogoField) {
+            const fileList = event.target.files;
+            onChange(event, fileList);
+        } else {
+            onChange(event);
+        }
+    };
+
     return (
         <Grid item xs={grid}>
             <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type={isLogoField ? 'file' : 'text'}
                 label={label || name}
                 onBlur={onBlur}
-                onChange={onChange}
-                value={value}
+                onChange={handleFileChange}
+                value={isLogoField ? undefined : value}
                 name={name}
                 //convert to boolean using !! operator
                 error={error}

@@ -129,7 +129,7 @@ export default function EstablishmentPage() {
         trade_name: establishment.trade_name,
         opening: JSON.parse(establishment.opening),
         siret: establishment.siret,
-        logo: establishment.logo,
+        logo_url: establishment.logo_url,
         phone: establishment.phone,
         address: establishment.address,
         postal_code: establishment.postal_code,
@@ -141,13 +141,16 @@ export default function EstablishmentPage() {
 
     const establishmentColumns = [
         {
-            field: 'logo',
+            field: 'logo_url',
             headerName: 'Logo',
             flex: 0.1,
             headerAlign: 'center',
             minWidth: 60,
             align: 'center',
-            renderCell: (params) => <img src={params.value} />,
+            renderCell: (params) => {
+                console.log('Logo URL: ', params.value); // Ajoutez cette ligne
+                return <img src={params.value} />;
+            },
         },
         {
             field: 'trade_name',

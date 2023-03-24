@@ -19,7 +19,7 @@ export const establishmentSchema = () => {
         address: yup.string().required('obligatoire'),
         city: yup.string().required('obligatoire'),
         postal_code: yup.string().required('obligatoire'),
-        logo: yup.string(),
+        logo: yup.mixed().required('logo is required'),
         phone: yup.string(),
         email: yup.string(),
         website: yup.string(),
