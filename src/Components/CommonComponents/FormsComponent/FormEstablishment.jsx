@@ -54,10 +54,7 @@ export const FormEstablishment = ({ formik }) => {
                     ))}
                 </Grid>
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px">
-
-                
-            </Box>
+            <Box display="flex" justifyContent="end" mt="20px"></Box>
         </>
     );
 };

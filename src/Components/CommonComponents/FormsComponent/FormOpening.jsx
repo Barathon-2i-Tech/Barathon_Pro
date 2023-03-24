@@ -3,9 +3,7 @@ import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-
 export const FormOpening = ({ formik }) => {
-
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
 
@@ -14,7 +12,6 @@ export const FormOpening = ({ formik }) => {
     const goBack = () => {
         navigate('/pro/establishment');
     };
-
 
     return (
         <>
@@ -37,7 +34,7 @@ export const FormOpening = ({ formik }) => {
                 </Grid>
             </Box>
             <Box display="flex" justifyContent="end" mt="20px" mb="20px">
-            <div className="w-fit inline-block text-white lg:text-xl">
+                <div className="w-fit inline-block text-white lg:text-xl">
                     <button
                         onClick={goBack}
                         className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
@@ -51,7 +48,7 @@ export const FormOpening = ({ formik }) => {
                 >
                     Envoyer ma demande
                 </button>
-            </Box> 
+            </Box>
         </>
     );
 };

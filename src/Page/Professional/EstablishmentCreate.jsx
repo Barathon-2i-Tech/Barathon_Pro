@@ -35,7 +35,6 @@ export default function EstablishmentCreatePage() {
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
 
-
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     async function getAllCategories() {
         try {
@@ -274,7 +273,7 @@ export default function EstablishmentCreatePage() {
                             );
                         })}
                     </div>
-                    
+
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
