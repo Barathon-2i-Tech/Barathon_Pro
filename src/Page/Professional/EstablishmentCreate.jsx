@@ -34,13 +34,7 @@ export default function EstablishmentCreatePage() {
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
-    const [openingFormat, setOpeningFormat] = useState({});
-    const openingJson = JSON.stringify(
-        Object.entries(opening).reduce(
-            (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
-            {},
-        ),
-    );
+
 
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     async function getAllCategories() {
@@ -81,7 +75,7 @@ export default function EstablishmentCreatePage() {
         initialValues: FormInitialValuesOpening,
         enableReinitialize: true,
         validationSchema: EstablishmentSchemaOpening,
-        onSubmit: (values) => handleFormSubmitOpening(values),
+        //onSubmit: (values) => handleFormSubmitOpening(values),
     });
 
     const formikEstablishment = useFormik({
@@ -116,21 +110,13 @@ export default function EstablishmentCreatePage() {
         });
     };
 
-    const handleFormSubmitOpening = (values) => {
-        //toast MUI
-        setOpenSnackbarOpening(true);
-
-        const dataValuesOpening = { ...values };
-        setOpening(dataValuesOpening);
-    };
-
     useEffect(() => {
         getAllCategories();
     }, []);
 
     useEffect(() => {
         // getEstablishmentsCategories();
-        setOpeningFormat(openingJson);
+        // setOpeningFormat(openingJson);
         // console.log(establishmentsCategories);
         console.log('opening USEEFFECT', opening);
     }, [opening]);
@@ -140,7 +126,12 @@ export default function EstablishmentCreatePage() {
     }, [establishmentCategories]);
 
     const handleFormSubmit = (values) => {
-        const dataValues = { ...values, opening: openingFormat };
+        // Include the logic from handleFormSubmitOpening to save opening hours
+        const dataValuesOpening = { ...formikOpening.values };
+        setOpening(dataValuesOpening);
+
+        // Replace openingFormat with JSON.stringify(dataValuesOpening)
+        const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
         const urlCreate = `/pro/${ownerId}/establishment`;
 
         console.log('submit ', dataValues);
@@ -283,11 +274,20 @@ export default function EstablishmentCreatePage() {
                             );
                         })}
                     </div>
-                    <FormOpening formik={formikOpening} />
+                    
                     <div className="pb-4 font-bold">
                         ETAPE 2 : modifier tous les champs puis envoyez votre demande de création.
                     </div>
-                    <FormEstablishment formik={formikEstablishment} />
+                    <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">
+                        INFORMATIONS DE VOTRE ETABLISSMENT :
+                    </div>
+                    <form onSubmit={formikEstablishment.handleSubmit}>
+                        <FormEstablishment formik={formikEstablishment} />
+                        <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
+                            HORRAIRES DE VOTRE ETABLISSMENT :
+                        </div>
+                        <FormOpening formik={formikOpening} />
+                    </form>
                 </Box>
             </section>
         </Paper>
