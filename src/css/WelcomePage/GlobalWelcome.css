@@ -1,0 +1,85 @@
+/*----------Header---------*/
+.logo-container {
+  height: auto;
+  width: 85px;
+}
+.logo-container svg {
+  max-width: 85px;
+  height: auto;
+}
+
+/*-----atome custom------------*/
+
+.display-desktop-hard {
+  display: none;
+}
+.display-mobile-hard {
+  display: block;
+  padding-top: 20px;
+}
+
+.display-md-hard {
+  display: none;
+}
+.display-sm-hard {
+  display: block;
+  padding-top: 20px;
+}
+
+.color-filter:before {
+  content: '';
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+.color-filter.is-opacity-5:before,
+.opacity-5 {
+  opacity: 0.7;
+}
+.is-dark-blue:before {
+  background-color: #1e3d59;
+}
+/*----------BANNER NUMBER COMPANY--------------*/
+
+/*
+.sec-banner-infos .elementor-shape.elementor-shape-top svg{
+    width: calc(250% + 1.3px);
+    height: 60px;
+    transform: translateX(-66%) rotateY(180deg);
+}
+.sec-banner-infos .elementor-shape.elementor-shape-bottom svg{
+    width: calc(250% + 1.3px);
+    height: 60px;
+    transform: translateX(-80%) rotateY(180deg);
+}
+ */
+
+/*--------MEDIA QUERIES--------*/
+
+@media screen and (min-width: 991px) {
+  .display-desktop-hard {
+    display: block !important;
+  }
+  .display-mobile-hard {
+    display: none !important;
+  }
+  .logo-container {
+    height: auto;
+    width: 105px;
+  }
+  .logo-container svg {
+    max-width: 105px;
+    height: auto;
+  }
+}
+@media screen and (min-width: 500px) {
+  .display-md-hard {
+    display: block !important;
+  }
+  .display-sm-hard {
+    display: none !important;
+  }
+}

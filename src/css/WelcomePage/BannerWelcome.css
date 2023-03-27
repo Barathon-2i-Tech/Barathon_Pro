@@ -1,0 +1,33 @@
+/*-----------SECTION:BANNER WELCOME-----------*/
+
+.banner-welcome__img {
+  width: auto;
+  max-height: 200px;
+  padding: 0 10px;
+}
+
+/*--------Banner WELCOME Background--------*/
+.background-banner {
+  background-image: url('https://secretldn.com/wp-content/uploads/2016/04/shutterstock_1453468958-2.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: inline-block;
+  background-position: right;
+}
+
+.sec-banner .letter-spacing-custom {
+  letter-spacing: 0.045em;
+}
+.banner-welcome__app .banner-welcome__app-svg .background-svg {
+  fill: transparent;
+}
+.icon-download {
+  width: 169px;
+  height: 169px;
+}
+
+@media screen and (min-width: 991px) {
+  .banner-welcome__img {
+    max-height: 600px;
+  }
+}
