@@ -18,10 +18,9 @@ import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent
 import { sendFormDataPut } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Loader } from '../../Components/CommonComponents/Loader';
 import Parser from 'html-react-parser';
-// import '../../css/';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -32,25 +31,15 @@ export default function EstablishmentCreatePage() {
     const [establishment, setEstablishment] = useState([]);
     const [isOpeningInitialized, setIsOpeningInitialized] = useState(false);
     const [opening, setOpening] = useState({});
-    const [openingFormat, setOpeningFormat] = useState({});
+
     const [allCategories, setAllCategories] = useState([]);
     const [establishmentCategories, setEstablishmentCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
-    const openingJson = JSON.stringify(
-        Object.entries(opening).reduce(
-            (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
-            {},
-        ),
-    );
+
     const { id } = useParams();
     const establishmentId = parseInt(id);
-    const navigate = useNavigate();
 
-    // This function is used to navigate to the home page
-    // It will be called when the button is clicked
-    const goBack = () => {
-        navigate('/pro/establishment');
-    };
+    // ------------------------  TOAST ------------------------------------------
     // This function is used to close toast
     const handleSnackbarClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -60,6 +49,7 @@ export default function EstablishmentCreatePage() {
         setOpenSnackbarOpening(false);
     };
 
+    // ------------------------  ESTABLISHMENT ------------------------------------------
     // AXIOS GET
     // This function is used to get the establishment to update by his ID
     async function getEstablishment() {
@@ -72,7 +62,7 @@ export default function EstablishmentCreatePage() {
                 },
             });
             setEstablishment(response.data.data);
-            console.log(response.data.data.establishment_id);
+
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
             if (loader) {
@@ -82,6 +72,9 @@ export default function EstablishmentCreatePage() {
             console.log(error);
         }
     }
+
+    // ------------------------  CATEGORY ------------------------------------------
+
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     async function getAllCategories() {
         try {
@@ -119,18 +112,6 @@ export default function EstablishmentCreatePage() {
             ? categories.map((category) => category.category_id)
             : [];
     };
-
-    const getInitialOpening = (establishment) => {
-        if (establishment && establishment.length > 0) {
-            const openingObj = establishment[0].opening;
-            return Object.entries(openingObj).reduce(
-                (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
-                FormInitialValuesOpening,
-            );
-        }
-        return FormInitialValuesOpening;
-    };
-
     // FORMIK
     // This const is for formik shema and action to form Opening
     const formikCategories = useFormik({
@@ -141,15 +122,6 @@ export default function EstablishmentCreatePage() {
         validationSchema: selectCategoriesSchema,
         onSubmit: (values) => handleFormSubmitCategories(values),
     });
-    // This const is for formik shema and action to form Opening
-    const formikOpening = useFormik({
-        initialValues: isOpeningInitialized ? opening : getInitialOpening(),
-        enableReinitialize: true,
-        validationSchema: EstablishmentSchemaOpening,
-        onSubmit: (values) => handleFormSubmitOpening(values),
-    });
-
-    // FUNCTION SUBMIT
     // This const is to save in state establishmentsCategories the news categories
     const handleFormSubmitCategories = (values) => {
         //toast MUI
@@ -164,8 +136,6 @@ export default function EstablishmentCreatePage() {
         // avoir la liste des categories selectionner en state pour les lister
         setCategoriesSelected(updatedCategories);
 
-        // Créer l'objet avec la propriété "option"
-        // const optionObj = { option: updatedCategoryIds };
         setEstablishmentCategories(updatedCategoryIds);
 
         // Mettre à jour les options sélectionnées dans formikCategories.values
@@ -176,15 +146,28 @@ export default function EstablishmentCreatePage() {
         });
     };
 
-    // This const is to save in state opening the news opening
-    const handleFormSubmitOpening = (values) => {
-        //toast MUI
-        setOpenSnackbarOpening(true);
+    // ------------------------  OPENING ------------------------------------------
 
-        const dataValuesOpening = { ...values };
-        setOpening(dataValuesOpening);
+    const getInitialOpening = (establishment) => {
+        if (establishment && establishment.length > 0) {
+            const openingObj = establishment[0].opening;
+            return Object.entries(openingObj).reduce(
+                (acc, [key, value]) => ({ ...acc, [key.toLowerCase()]: value }),
+                FormInitialValuesOpening,
+            );
+        }
+        return FormInitialValuesOpening;
     };
 
+    // This const is for formik shema and action to form Opening
+    const formikOpening = useFormik({
+        initialValues: isOpeningInitialized ? opening : getInitialOpening(),
+        enableReinitialize: true,
+        validationSchema: EstablishmentSchemaOpening,
+        // onSubmit: (values) => handleFormSubmitOpening(values),
+    });
+
+    // ------------------------  USEEFFECT ------------------------------------------
     useEffect(() => {
         getEstablishment();
         getAllCategories();
@@ -194,10 +177,6 @@ export default function EstablishmentCreatePage() {
         setOpening(getInitialOpening(establishment));
         setIsOpeningInitialized(true);
     }, [establishment]);
-
-    useEffect(() => {
-        setOpeningFormat(openingJson);
-    }, [opening]);
 
     useEffect(() => {
         getEstablishmentCategory();
@@ -210,8 +189,13 @@ export default function EstablishmentCreatePage() {
         });
     }, [establishmentCategories]);
 
+    // ------------------------  SUBMIT ------------------------------------------
     const handleFormSubmit = (values) => {
-        const dataValues = { ...values, opening: openingFormat };
+        // Include the logic from handleFormSubmitOpening to save opening hours
+        const dataValuesOpening = { ...formikOpening.values };
+        setOpening(dataValuesOpening);
+
+        const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
         const dataValuesCategories = { options: establishmentCategories };
@@ -270,9 +254,8 @@ export default function EstablishmentCreatePage() {
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
                 <div className="mx-6 font-bold text-xl">
-                    1ere ETAPE (facultative): modifier tous les champs de la semaine et/ou vos
-                    categories, puis enregister. Enregistrer les categories et horaires, puis passez
-                    à la prochaine étape.
+                    1ere ETAPE (facultative): Enregistrer les categories, puis passez à la prochaine
+                    étape.
                 </div>
                 <Box m="20px">
                     <div className="categorie-title text-2xl text-teal-700 font-bold pt-10">
@@ -315,7 +298,9 @@ export default function EstablishmentCreatePage() {
                         </button>
                     </form>
                     <div className="categories_selected-container flex items-center sm:pb-10">
-                        <div className="font-bold pr-4 text-base">CATEGORIES ENREGISTRÉES : </div>
+                        <div className="font-bold pr-4 text-base">
+                            NOUVELLES CATEGORIES ENREGISTRÉES :{' '}
+                        </div>
                         {categoriesSelected.map((allCategoriesSelected) => {
                             const categoryDetails = JSON.parse(
                                 allCategoriesSelected.category_details,
@@ -338,11 +323,6 @@ export default function EstablishmentCreatePage() {
                             );
                         })}
                     </div>
-                    <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
-                        HORRAIRES DE VOTRE ETABLISSMENT :
-                    </div>
-
-                    <FormOpening formik={formikOpening} />
 
                     <div className="pb-4 font-bold text-xl pt-10 pb-10">
                         ETAPE 2 : Remplissez tous les champs puis envoyez votre demande de création.
@@ -482,22 +462,10 @@ export default function EstablishmentCreatePage() {
                                             />
                                         </Grid>
                                     </Box>
-                                    <Box display="flex" justifyContent="end" mt="20px">
-                                        <div className="w-fit inline-block text-white lg:text-xl">
-                                            <button
-                                                onClick={goBack}
-                                                className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
-                                            >
-                                                Annuler
-                                            </button>
-                                        </div>
-                                        <button
-                                            type="submit"
-                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
-                                        >
-                                            Sauvegarder
-                                        </button>
-                                    </Box>
+                                    <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
+                                        HORRAIRES DE VOTRE ETABLISSMENT :
+                                    </div>
+                                    <FormOpening formik={formikOpening} />
                                 </form>
                             )}
                         </Formik>

@@ -35,6 +35,17 @@ export default function EstablishmentCreatePage() {
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
 
+    // ------------------------  TOAST ------------------------------------------
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+        setOpenSnackbarOpening(false);
+    };
+
+    // ------------------------  CATEGORY ------------------------------------------
+
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     async function getAllCategories() {
         try {
@@ -51,15 +62,6 @@ export default function EstablishmentCreatePage() {
         }
     }
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackbar(false);
-        setOpenSnackbarOpening(false);
-    };
-
-    // FORMIK
     // This const is for formik shema and action to form Opening
     const formikCategories = useFormik({
         initialValues: {
@@ -68,20 +70,6 @@ export default function EstablishmentCreatePage() {
         enableReinitialize: true,
         validationSchema: selectCategoriesSchema,
         onSubmit: (values) => handleFormSubmitCategories(values),
-    });
-
-    const formikOpening = useFormik({
-        initialValues: FormInitialValuesOpening,
-        enableReinitialize: true,
-        validationSchema: EstablishmentSchemaOpening,
-        //onSubmit: (values) => handleFormSubmitOpening(values),
-    });
-
-    const formikEstablishment = useFormik({
-        initialValues: FormInitialValuesEstablishment,
-        enableReinitialize: true,
-        validationSchema: establishmentSchema,
-        onSubmit: (values) => handleFormSubmit(values),
     });
 
     const handleFormSubmitCategories = (values) => {
@@ -114,20 +102,32 @@ export default function EstablishmentCreatePage() {
     }, []);
 
     useEffect(() => {
-        // getEstablishmentsCategories();
-        // setOpeningFormat(openingJson);
-        // console.log(establishmentsCategories);
-        console.log('opening USEEFFECT', opening);
-    }, [opening]);
-
-    useEffect(() => {
-        console.log('establ cat USEEFFECT', establishmentCategories);
+        console.log('categorie :', establishmentCategories);
     }, [establishmentCategories]);
+
+    // ------------------------  ESTABLISHMENT ------------------------------------------
+    const formikEstablishment = useFormik({
+        initialValues: FormInitialValuesEstablishment,
+        enableReinitialize: true,
+        validationSchema: establishmentSchema,
+        onSubmit: (values) => handleFormSubmit(values),
+    });
+
+    // ------------------------  OPENING ------------------------------------------
+    const formikOpening = useFormik({
+        initialValues: FormInitialValuesOpening,
+        enableReinitialize: true,
+        validationSchema: EstablishmentSchemaOpening,
+        //onSubmit: (values) => handleFormSubmitOpening(values),
+    });
+
+    // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
         // Include the logic from handleFormSubmitOpening to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
         setOpening(dataValuesOpening);
+        console.log(opening);
 
         // Replace openingFormat with JSON.stringify(dataValuesOpening)
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
