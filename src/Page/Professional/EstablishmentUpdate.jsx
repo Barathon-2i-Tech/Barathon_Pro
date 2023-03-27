@@ -123,6 +123,12 @@ export default function EstablishmentCreatePage() {
         onSubmit: (values) => handleFormSubmitCategories(values),
     });
     // This const is to save in state establishmentsCategories the news categories
+
+    const formatCategories = (categories) => {
+        const formattedCategoryIds = categories.map((category) => category.category_id);
+        return { options: formattedCategoryIds };
+    };
+
     const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbarOpening(true);
@@ -198,10 +204,18 @@ export default function EstablishmentCreatePage() {
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
-        const dataValuesCategories = { options: establishmentCategories };
+        // Formater les catégories si elles ne sont pas déjà formatées
+        const formattedCategories =
+            Array.isArray(establishmentCategories) && typeof establishmentCategories[0] === 'object'
+                ? formatCategories(establishmentCategories)
+                : { options: establishmentCategories };
+
+        const dataValuesCategories = formattedCategories;
         const urlCreateCategories = `/pro/establishment/${id}/category`;
 
-        console.log(dataValues);
+        console.log('dataValues', dataValues);
+        console.log('dataValuesCategories :', dataValuesCategories);
+
         sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
             .then(() => {
                 //toast MUI
@@ -335,7 +349,7 @@ export default function EstablishmentCreatePage() {
                         <Formik
                             key={establishment.establishment_id}
                             initialValues={{
-                                logo: establishment.logo || '',
+                                logo: '',
                                 trade_name: establishment.trade_name || '',
                                 siret: establishment.siret || '',
                                 address: establishment.address || '',
