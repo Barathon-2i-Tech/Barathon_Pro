@@ -32,9 +32,12 @@ export const FormFieldModel = ({
                 onChange={handleFileChange}
                 value={isLogoField ? undefined : value}
                 name={name}
-                //convert to boolean using !! operator
+                // Convert to boolean using !! operator
                 error={error}
                 helperText={helperText}
+                InputProps={{
+                    accept: isLogoField ? 'image/*' : undefined,
+                }}
             />
         </Grid>
     );
@@ -44,7 +47,7 @@ FormFieldModel.propTypes = {
     grid: PropTypes.number.isRequired,
     label: PropTypes.string,
     name: PropTypes.string.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.bool,

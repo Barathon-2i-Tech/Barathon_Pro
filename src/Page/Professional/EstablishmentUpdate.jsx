@@ -199,10 +199,21 @@ export default function EstablishmentCreatePage() {
     const handleFormSubmit = (values) => {
         // Include the logic from handleFormSubmitOpening to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
-        setOpening(dataValuesOpening);
-
-        const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
+        const dataValues = { ...values };
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
+
+        const formData = new FormData();
+        Object.keys(dataValues).forEach((key) => {
+            if (key === 'logo' && values[key]) {
+                formData.append(key, values[key]);
+            } else if (key !== 'logo') {
+                formData.append(key, values[key]);
+            }
+        });
+
+        formData.append('opening', JSON.stringify(dataValuesOpening));
+
+        setOpening(dataValuesOpening);
 
         // Formater les catégories si elles ne sont pas déjà formatées
         const formattedCategories =
@@ -215,8 +226,10 @@ export default function EstablishmentCreatePage() {
 
         console.log('dataValues', dataValues);
         console.log('dataValuesCategories :', dataValuesCategories);
+        console.log('formData', formData);
+        console.log('formData', Array.from(formData.entries()));
 
-        sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
+        sendFormDataPut(urlCreate, token, formData) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
@@ -231,7 +244,7 @@ export default function EstablishmentCreatePage() {
         sendFormDataPut(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
-                setOpenSnackbar(true);
+                // setOpenSnackbar(true);
                 // console.table(dataValuesCategories);
             })
             .catch((e) => {
@@ -369,6 +382,7 @@ export default function EstablishmentCreatePage() {
                                 handleChange,
                                 handleBlur,
                                 handleSubmit,
+                                setFieldValue,
                             }) => (
                                 <form onSubmit={handleSubmit}>
                                     <Box
@@ -380,10 +394,16 @@ export default function EstablishmentCreatePage() {
                                             <FormFieldModel
                                                 grid={12}
                                                 onBlur={handleBlur}
-                                                onChange={handleChange}
+                                                onChange={(event, fileList) => {
+                                                    if (fileList) {
+                                                        setFieldValue('logo', fileList[0]);
+                                                    } else {
+                                                        handleChange(event);
+                                                    }
+                                                }}
                                                 value={values.logo}
                                                 name={'logo'}
-                                                //convert to boolean using !! operator
+                                                // Convert to boolean using !! operator
                                                 error={!!touched.logo && !!errors.logo}
                                                 helperText={touched.logo && errors.logo}
                                             />
