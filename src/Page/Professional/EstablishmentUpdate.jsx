@@ -106,6 +106,14 @@ export default function EstablishmentCreatePage() {
         }
     }
 
+    const handleCategoryChange = (event) => {
+        if (event.target.value.length <= 4) {
+            formikCategories.handleChange(event);
+        } else {
+            console.log('more to 4 categories');
+        }
+    };
+
     // This const is to initialize initial option value with the categories of establishment in DB
     const getInitialOptions = (categories) => {
         return categories && categories.length > 0
@@ -289,7 +297,9 @@ export default function EstablishmentCreatePage() {
                         CATEGORIES DE VOTRE ETABLISSMENT :
                     </div>
                     <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                        <InputLabel id="options-label">Categories</InputLabel>
+                        <InputLabel id="options-label">
+                            Categories (4 categories maximum)
+                        </InputLabel>
                         <Select
                             labelId="options-label"
                             id="options"
@@ -297,7 +307,7 @@ export default function EstablishmentCreatePage() {
                             multiple
                             defaultValue={formikCategories.initialValues.options}
                             value={formikCategories.values.options}
-                            onChange={formikCategories.handleChange}
+                            onChange={handleCategoryChange}
                             inputProps={{
                                 name: 'options',
                             }}
