@@ -26,7 +26,6 @@ export const establishmentSchema = (isCreate) => {
     });
 };
 
-
 export const selectCategoriesSchema = () => {
     return yup.object().shape({
         // establishment_id: yup.number().required('obligatoire'),

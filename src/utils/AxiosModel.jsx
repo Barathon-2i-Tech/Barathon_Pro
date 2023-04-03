@@ -22,7 +22,7 @@ export const sendFormDataPutCategory = (url, token, dataValues) => {
 
 export const sendFormDataPutMultipart = (url, token, formData) => {
     // Ajoutez le champ _method avec la valeur PUT
-    formData.append("_method", "PUT");
+    formData.append('_method', 'PUT');
 
     // Utilisez la méthode POST au lieu de PUT
     return Axios.api.post(url, formData, {

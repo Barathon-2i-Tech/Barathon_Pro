@@ -155,8 +155,8 @@ export default function EstablishmentCreatePage() {
             }
         }
 
-        console.log("formData", formData);
-        console.log("formData entries", Array.from(formData.entries()));
+        console.log('formData', formData);
+        console.log('formData entries', Array.from(formData.entries()));
 
         // Create the establishment
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
