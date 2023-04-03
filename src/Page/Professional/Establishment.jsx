@@ -148,7 +148,6 @@ export default function EstablishmentPage() {
             minWidth: 60,
             align: 'center',
             renderCell: (params) => {
-                console.log('Logo URL: ', params.value); // Ajoutez cette ligne
                 return <img src={params.value} />;
             },
         },

@@ -21,6 +21,7 @@ import Axios from '../../utils/axiosUrl';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../Components/CommonComponents/Loader';
 import Parser from 'html-react-parser';
+import { useNavigate } from 'react-router-dom';
 import '../../css/WelcomePage/TypoHome.css';
 
 export default function EstablishmentCreatePage() {
@@ -39,6 +40,15 @@ export default function EstablishmentCreatePage() {
 
     const { id } = useParams();
     const establishmentId = parseInt(id);
+
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
+
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goBack = () => {
+        navigate('/pro/establishment');
+    };
 
     // ------------------------  TOAST ------------------------------------------
     // This function is used to close toast
@@ -191,6 +201,7 @@ export default function EstablishmentCreatePage() {
     useEffect(() => {
         setOpening(getInitialOpening(establishment));
         setIsOpeningInitialized(true);
+        console.log(establishment);
     }, [establishment]);
 
     useEffect(() => {
@@ -225,15 +236,6 @@ export default function EstablishmentCreatePage() {
                 formData.append(key, value);
             }
         }
-
-        // Object.keys(dataValues).forEach((key) => {
-        //     if (key === 'logo' && values[key]) {
-        //         formData.append(key, values[key]);
-        //     } else if (key !== 'logo') {
-        //         formData.append(key, values[key]);
-        //     }
-        // });
-
         // Formater les catégories si elles ne sont pas déjà formatées
         const formattedCategories =
             Array.isArray(establishmentCategories) && typeof establishmentCategories[0] === 'object'
@@ -252,7 +254,10 @@ export default function EstablishmentCreatePage() {
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
-                //console.table(dataValues);
+                // Navigate to the home page after a delay of 1.5 seconds
+                setTimeout(() => {
+                    goBack();
+                }, 1500);
             })
             .catch((e) => {
                 console.error(e);
@@ -397,7 +402,7 @@ export default function EstablishmentCreatePage() {
                         <Formik
                             key={establishment.establishment_id}
                             initialValues={{
-                                logo: '',
+                                logo: establishment.logo || '',
                                 trade_name: establishment.trade_name || '',
                                 address: establishment.address || '',
                                 city: establishment.city || '',

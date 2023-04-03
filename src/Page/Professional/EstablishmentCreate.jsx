@@ -22,6 +22,7 @@ import { sendFormDataPost } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
 import Parser from 'html-react-parser';
+import { useNavigate } from 'react-router-dom';
 
 export default function EstablishmentCreatePage() {
     const [allCategories, setAllCategories] = useState([]);
@@ -34,6 +35,15 @@ export default function EstablishmentCreatePage() {
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
+
+    // Use this hook to programmatically navigate to another page
+    const navigate = useNavigate();
+
+    // This function is used to navigate to the home page
+    // It will be called when the button is clicked
+    const goBack = () => {
+        navigate('/pro/establishment');
+    };
 
     // ------------------------  TOAST ------------------------------------------
     const handleSnackbarClose = (event, reason) => {
@@ -172,6 +182,10 @@ export default function EstablishmentCreatePage() {
                     .then(() => {
                         // Show success message
                         setOpenSnackbar(true);
+                        // Navigate to the home page after a delay of 1.5 seconds
+                        setTimeout(() => {
+                            goBack();
+                        }, 1500);
                     })
                     .catch((e) => {
                         console.error(e);
