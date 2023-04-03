@@ -265,7 +265,7 @@ export default function EstablishmentCreatePage() {
                                 </Select>
                                 <button
                                     type="submit"
-                                    className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                    className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-white text-black font-bold"
                                 >
                                     Enregistrer mon/mes Categories
                                 </button>
