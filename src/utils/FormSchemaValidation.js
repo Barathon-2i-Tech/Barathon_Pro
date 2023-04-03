@@ -12,10 +12,10 @@ export const EstablishmentSchemaOpening = () => {
     });
 };
 
-export const establishmentSchema = () => {
+export const establishmentSchema = (isCreate) => {
     return yup.object().shape({
         trade_name: yup.string().required('obligatoire'),
-        siret: yup.string().required('obligatoire'),
+        siret: isCreate ? yup.string().required('obligatoire') : yup.string(),
         address: yup.string().required('obligatoire'),
         city: yup.string().required('obligatoire'),
         postal_code: yup.string().required('obligatoire'),
@@ -25,6 +25,7 @@ export const establishmentSchema = () => {
         website: yup.string(),
     });
 };
+
 
 export const selectCategoriesSchema = () => {
     return yup.object().shape({

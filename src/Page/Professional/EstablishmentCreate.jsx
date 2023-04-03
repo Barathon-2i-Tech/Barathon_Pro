@@ -116,7 +116,7 @@ export default function EstablishmentCreatePage() {
     const formikEstablishment = useFormik({
         initialValues: FormInitialValuesEstablishment,
         enableReinitialize: true,
-        validationSchema: establishmentSchema,
+        validationSchema: establishmentSchema(true),
         onSubmit: (values) => handleFormSubmit(values),
     });
 
@@ -155,7 +155,9 @@ export default function EstablishmentCreatePage() {
             }
         }
 
-        console.log('formData', Array.from(formData.entries()));
+        console.log("formData", formData);
+        console.log("formData entries", Array.from(formData.entries()));
+
         // Create the establishment
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {

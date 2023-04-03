@@ -15,7 +15,7 @@ import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { useFormik, Formik } from 'formik';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
-import { sendFormDataPut } from '../../utils/AxiosModel';
+import {  sendFormDataPutCategory, sendFormDataPutMultipart } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
 import { useParams } from 'react-router-dom';
@@ -207,21 +207,32 @@ export default function EstablishmentCreatePage() {
     const handleFormSubmit = (values) => {
         // Include the logic from handleFormSubmitOpening to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
-        const dataValues = { ...values };
+        setOpening(dataValuesOpening);
+        console.log(opening);
+
+        // Replace openingFormat with JSON.stringify(dataValuesOpening)
+        const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
+
         const urlCreate = `/pro/${ownerId}/establishment/${id}`;
 
         const formData = new FormData();
-        Object.keys(dataValues).forEach((key) => {
-            if (key === 'logo' && values[key]) {
-                formData.append(key, values[key]);
-            } else if (key !== 'logo') {
-                formData.append(key, values[key]);
+        for (const [key, value] of Object.entries(dataValues)) {
+            if (key === 'logo' && value) {
+                // Si la clé est 'logo', ajoutez le fichier image et non son chemin
+                formData.append(key, value[0]);
+            } else {
+                formData.append(key, value);
             }
-        });
+        }
 
-        formData.append('opening', JSON.stringify(dataValuesOpening));
+        // Object.keys(dataValues).forEach((key) => {
+        //     if (key === 'logo' && values[key]) {
+        //         formData.append(key, values[key]);
+        //     } else if (key !== 'logo') {
+        //         formData.append(key, values[key]);
+        //     }
+        // });
 
-        setOpening(dataValuesOpening);
 
         // Formater les catégories si elles ne sont pas déjà formatées
         const formattedCategories =
@@ -237,7 +248,7 @@ export default function EstablishmentCreatePage() {
         console.log('formData', formData);
         console.log('formData', Array.from(formData.entries()));
 
-        sendFormDataPut(urlCreate, token, formData) // Appel de la fonction
+        sendFormDataPutMultipart(urlCreate, token, formData) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 setOpenSnackbar(true);
@@ -249,7 +260,7 @@ export default function EstablishmentCreatePage() {
                 //console.table(dataValues);
             });
 
-        sendFormDataPut(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
+        sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
             .then(() => {
                 //toast MUI
                 // setOpenSnackbar(true);
@@ -292,20 +303,21 @@ export default function EstablishmentCreatePage() {
                     1ere ETAPE (facultative): Enregistrer les categories, puis passez à la prochaine
                     étape.
                 </div>
-                <Box m="20px">
-                    <div className="categorie-title text-2xl text-teal-700 font-bold pt-6">
+                <div className="rounded-xl bg-teal-700">
+                <Box m="20px" pt="20px" pb="20px">
+                    <div className="categorie-title text-2xl text-white font-bold pt-6">
                         CATEGORIES DE VOTRE ETABLISSMENT :
                     </div>
 
                     <div className="flex flex-wrap justify-between">
                         <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                            <InputLabel id="options-label">
+                            <InputLabel style={{color: 'white', fontWeight: 'bold', paddingBottom:'10px'}} id="options-label">
                                 Categories (4 categories maximum)
                             </InputLabel>
                             <Select
                                 labelId="options-label"
                                 id="options"
-                                style={{ minWidth: 120 }}
+                                style={{ minWidth: 120, color: 'white',  border: '1px solid white', fontWeight: 'bold' }}
                                 multiple
                                 defaultValue={formikCategories.initialValues.options}
                                 value={formikCategories.values.options}
@@ -331,13 +343,13 @@ export default function EstablishmentCreatePage() {
                             </Select>
                             <button
                                 type="submit"
-                                className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                                className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-white text-black font-bold"
                             >
                                 Enregistrer mon/mes Categories
                             </button>
                         </form>
                         <div className="categories_selected-container flex flex-col items-center justify-center px-6">
-                            <div className="font-bold pr-4 text-base">
+                            <div className="font-bold pr-4 text-base text-white">
                                 NOUVELLES CATEGORIES ENREGISTRÉES :{' '}
                             </div>
                             <div className="flex">
@@ -366,6 +378,10 @@ export default function EstablishmentCreatePage() {
                         </div>
                     </div>
 
+                    </Box>
+                    </div>
+
+                    <Box m="20px">
                     <div className="pb-4 font-bold text-xl pt-10 sm:pt-24 pb-10">
                         ETAPE 2 : Remplissez tous les champs puis envoyez votre demande de création.
                     </div>
@@ -379,7 +395,6 @@ export default function EstablishmentCreatePage() {
                             initialValues={{
                                 logo: '',
                                 trade_name: establishment.trade_name || '',
-                                siret: establishment.siret || '',
                                 address: establishment.address || '',
                                 city: establishment.city || '',
                                 postal_code: establishment.postal_code || '',
@@ -388,7 +403,7 @@ export default function EstablishmentCreatePage() {
                                 website: establishment.website || '',
                             }}
                             onSubmit={handleFormSubmit}
-                            validationSchema={establishmentSchema}
+                            validationSchema={establishmentSchema(false)}
                         >
                             {({
                                 values,
@@ -411,7 +426,7 @@ export default function EstablishmentCreatePage() {
                                                 onBlur={handleBlur}
                                                 onChange={(event, fileList) => {
                                                     if (fileList) {
-                                                        setFieldValue('logo', fileList[0]);
+                                                        setFieldValue('logo', event.target.files);
                                                     } else {
                                                         handleChange(event);
                                                     }
@@ -432,16 +447,6 @@ export default function EstablishmentCreatePage() {
                                                 //convert to boolean using !! operator
                                                 error={!!touched.trade_name && !!errors.trade_name}
                                                 helperText={touched.trade_name && errors.trade_name}
-                                            />
-                                            <FormFieldModel
-                                                grid={6}
-                                                onBlur={handleBlur}
-                                                onChange={handleChange}
-                                                value={values.siret}
-                                                name={'siret'}
-                                                //convert to boolean using !! operator
-                                                error={!!touched.siret && !!errors.siret}
-                                                helperText={touched.siret && errors.siret}
                                             />
                                             <FormFieldModel
                                                 grid={6}
