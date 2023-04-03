@@ -44,9 +44,7 @@ export const FormFieldModel = ({
                     <Box ml={2}>
                         <span>{fileName}</span>
                         {error && (
-                            <div style={{ color: 'red', marginLeft: '8px' }}>
-                                {helperText}
-                            </div>
+                            <div style={{ color: 'red', marginLeft: '8px' }}>{helperText}</div>
                         )}
                     </Box>
                 </Box>
