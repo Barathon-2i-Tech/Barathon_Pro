@@ -21,6 +21,7 @@ import Axios from '../../utils/axiosUrl';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../../Components/CommonComponents/Loader';
 import Parser from 'html-react-parser';
+import '../../css/WelcomePage/TypoHome.css';
 
 export default function EstablishmentCreatePage() {
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
@@ -298,10 +299,6 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <div className="mx-6 font-bold text-xl">
-                    1ere ETAPE (facultative): Enregistrer les categories, puis passez à la prochaine
-                    étape.
-                </div>
                 <div className="rounded-xl bg-teal-700">
                     <Box m="20px" pt="20px" pb="20px">
                         <div className="categorie-title text-2xl text-white font-bold pt-6">
@@ -392,9 +389,6 @@ export default function EstablishmentCreatePage() {
                 </div>
 
                 <Box m="20px">
-                    <div className="pb-4 font-bold text-xl pt-10 sm:pt-24 pb-10">
-                        ETAPE 2 : Remplissez tous les champs puis envoyez votre demande de création.
-                    </div>
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">
                         INFORMATIONS DE VOTRE ETABLISSMENT :
                     </div>

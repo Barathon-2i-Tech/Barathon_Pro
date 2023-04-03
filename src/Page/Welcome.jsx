@@ -13,6 +13,8 @@ import '../css/WelcomePage/SectionCardIcon.css';
 import '../css/WelcomePage/SectionInfos.css';
 import '../css/WelcomePage/SectionCardHover.css';
 import '../css/WelcomePage/SectionInfosList.css';
+// import '../css/WelcomePage/TypoCustom.css';
+import '../css/WelcomePage/TypoHome.css';
 
 export default function Welcome() {
     return (

@@ -5,7 +5,6 @@ import App from './App';
 import { AuthProvider } from './Components/Hooks/useAuth';
 import './index.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './css/TypoCustom.css';
 
 const theme = createTheme({
     palette: {
