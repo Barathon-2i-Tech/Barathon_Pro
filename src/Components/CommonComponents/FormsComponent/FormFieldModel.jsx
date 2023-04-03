@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Button, Box } from '@mui/material';
+import { useState } from 'react';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export const FormFieldModel = ({
     grid,
@@ -12,9 +14,12 @@ export const FormFieldModel = ({
     helperText,
 }) => {
     const isLogoField = name === 'logo';
+    const [fileName, setFileName] = useState('');
+
     const handleFileChange = (event) => {
         if (isLogoField) {
             const fileList = event.target.files;
+            setFileName(fileList[0].name);
             onChange(event, fileList);
         } else {
             onChange(event);
@@ -23,22 +28,42 @@ export const FormFieldModel = ({
 
     return (
         <Grid item xs={grid}>
-            <TextField
-                fullWidth
-                variant="filled"
-                type={isLogoField ? 'file' : 'text'}
-                label={label || name}
-                onBlur={onBlur}
-                onChange={handleFileChange}
-                value={isLogoField ? undefined : value}
-                name={name}
-                // Convert to boolean using !! operator
-                error={error}
-                helperText={helperText}
-                InputProps={{
-                    accept: isLogoField ? 'image/*' : undefined,
-                }}
-            />
+            {isLogoField ? (
+                <Box display="flex" alignItems="center">
+                    <Button variant="contained" component="label">
+                        <UploadIcon style={{ marginRight: '8px' }} />
+                        Téléchargez un logo
+                        <input
+                            hidden
+                            accept="image/*"
+                            type="file"
+                            name={name}
+                            onChange={handleFileChange}
+                        />
+                    </Button>
+                    <Box ml={2}>
+                        <span>{fileName}</span>
+                        {error && (
+                            <div style={{ color: 'red', marginLeft: '8px' }}>
+                                {helperText}
+                            </div>
+                        )}
+                    </Box>
+                </Box>
+            ) : (
+                <TextField
+                    fullWidth
+                    variant="filled"
+                    type="text"
+                    label={label || name}
+                    onBlur={onBlur}
+                    onChange={handleFileChange}
+                    value={value}
+                    name={name}
+                    error={error}
+                    helperText={helperText}
+                />
+            )}
         </Grid>
     );
 };
