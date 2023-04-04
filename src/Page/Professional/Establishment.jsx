@@ -30,6 +30,8 @@ export default function EstablishmentPage() {
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
         opening: false,
         siret: false,
+        address: false,
+        postal_code:false,
     });
 
     const [allEstablishments, setAllEstablishments] = useState([]);
@@ -108,7 +110,7 @@ export default function EstablishmentPage() {
         if (params.row.deleted_at !== null) {
             return 'hidden-row';
         }
-        return '';
+        return 'text-center';
     }
 
     function getStatus(params) {
@@ -183,7 +185,6 @@ export default function EstablishmentPage() {
             flex: 0.3,
             headerAlign: 'center',
             align: 'center',
-            hide: true,
         },
         {
             field: 'website',
