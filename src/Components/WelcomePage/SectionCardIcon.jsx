@@ -31,7 +31,9 @@ export default function SectionCardIcon() {
                         <div className="h6 txt-yellow w-full text-center text-cyan-900 dark:text-white">
                             {title}
                         </div>
-                        <div className="pb-22 w-full text-center text-cyan-900 dark:text-white">{text}</div>
+                        <div className="pb-22 w-full text-center text-cyan-900 dark:text-white">
+                            {text}
+                        </div>
                     </div>
                 </div>
             ))}
