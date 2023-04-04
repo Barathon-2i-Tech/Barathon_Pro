@@ -72,11 +72,18 @@ export default function EstablishmentCreatePage() {
         }
     }
 
+    //function to reset selection
+    const handleFormReset = () => {
+        formikCategories.resetForm();
+        setCategoriesSelected([]);
+    };
+
+    //function no add more 4 categories
     const handleCategoryChange = (event) => {
         if (event.target.value.length <= 4) {
             formikCategories.handleChange(event);
         } else {
-            console.log('more to 4 categories');
+            alert('Vous avez droit à 4 categories maximum');
         }
     };
     // This const is for formik shema and action to form Opening
@@ -217,12 +224,14 @@ export default function EstablishmentCreatePage() {
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Bravo !'}
                 message={'Bien enregisté - Continuez et enregistrez'}
+                severity={'success'}
             />
             <ToastForm
                 openSnackbar={openSnackbar}
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Felicitation !'}
                 message={'Bien envoyez'}
+                severity={'success'}
             />
 
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
@@ -233,91 +242,106 @@ export default function EstablishmentCreatePage() {
                         <div className="categorie-title text-2xl text-white font-bold pt-6">
                             CATEGORIES DE VOTRE ETABLISSMENT :
                         </div>
-                        <div className="flex flex-wrap justify-between">
+                        <div className="">
                             <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                                <InputLabel
-                                    id="options-label"
-                                    style={{
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        paddingBottom: '10px',
-                                    }}
-                                >
-                                    Categories (4 categories maximum)
-                                </InputLabel>
-                                <Select
-                                    labelId="options-label"
-                                    id="options"
-                                    style={{
-                                        minWidth: 120,
-                                        color: 'white',
-                                        border: '1px solid white',
-                                        fontWeight: 'bold',
-                                    }}
-                                    multiple
-                                    defaultValue={formikCategories.initialValues.options}
-                                    value={formikCategories.values.options}
-                                    onChange={handleCategoryChange}
-                                    inputProps={{
-                                        name: 'options',
-                                    }}
-                                >
-                                    {allCategories.map((allEstablishment) => {
-                                        const categoryDetails = JSON.parse(
-                                            allEstablishment.category_details,
-                                        );
+                                <div className="flex py-6 flex-wrap">
+                                    <div className="categories_selected-container flex flex-col py-4 mr-10">
+                                        <InputLabel
+                                            id="options-label"
+                                            style={{
+                                                color: 'white',
+                                                fontWeight: 'bold',
+                                                paddingBottom: '10px',
+                                            }}
+                                        >
+                                            Categories (4 categories maximum)
+                                        </InputLabel>
+                                        <Select
+                                            labelId="options-label"
+                                            id="options"
+                                            style={{
+                                                minWidth: 120,
+                                                color: 'white',
+                                                border: '1px solid white',
+                                                fontWeight: 'bold',
+                                            }}
+                                            multiple
+                                            defaultValue={formikCategories.initialValues.options}
+                                            value={formikCategories.values.options}
+                                            onChange={handleCategoryChange}
+                                            inputProps={{
+                                                name: 'options',
+                                            }}
+                                        >
+                                            {allCategories.map((allEstablishment) => {
+                                                const categoryDetails = JSON.parse(
+                                                    allEstablishment.category_details,
+                                                );
 
-                                        return (
-                                            <MenuItem
-                                                key={allEstablishment.category_id}
-                                                value={allEstablishment.category_id}
-                                            >
-                                                {categoryDetails.label}
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </Select>
-                                <button
-                                    type="submit"
-                                    className="sm:ml-7 mt-7 ml-2 sm:mt-0 mb-7 sm:mb-0 bg-white text-black font-bold"
-                                >
-                                    Enregistrer mon/mes Categories
-                                </button>
-                            </form>
-                            <div className="categories_selected-container flex flex-col justify-between pb-4 px-6">
-                                <div className="font-bold pr-4 text-base text-white">
-                                    NOUVELLES CATEGORIES ENREGISTRÉES :{' '}
-                                </div>
-                                <div className="flex">
-                                    {categoriesSelected.map((allCategoriesSelected) => {
-                                        const categoryDetails = JSON.parse(
-                                            allCategoriesSelected.category_details,
-                                        );
-                                        return (
-                                            <div
-                                                key={allCategoriesSelected.category_id}
-                                                value={allCategoriesSelected.category_id}
-                                                className="categories_selected-list flex items-center pr-4"
-                                            >
-                                                <div className="categories_selected-list_icon-container p-4 flex bg-gray-100 rounded-lg">
-                                                    <div className="categories_selected-list_icon pr-2">
-                                                        {Parser(categoryDetails.icon)}
-                                                    </div>
-                                                    <div className="categories_selected-list_label">
+                                                return (
+                                                    <MenuItem
+                                                        key={allEstablishment.category_id}
+                                                        value={allEstablishment.category_id}
+                                                    >
                                                         {categoryDetails.label}
+                                                    </MenuItem>
+                                                );
+                                            })}
+                                        </Select>
+                                    </div>
+
+                                    <div className="categories_selected-container flex flex-col justify-between py-4 px-6 bg-gray-200 rounded-xl ml-4">
+                                        <div className="font-bold pr-4 text-base text-black">
+                                            NOUVELLES CATEGORIES ENREGISTRÉES :{' '}
+                                        </div>
+                                        <div className="flex flex-wrap">
+                                            {categoriesSelected.map((allCategoriesSelected) => {
+                                                const categoryDetails = JSON.parse(
+                                                    allCategoriesSelected.category_details,
+                                                );
+                                                return (
+                                                    <div
+                                                        key={allCategoriesSelected.category_id}
+                                                        value={allCategoriesSelected.category_id}
+                                                        className="categories_selected-list flex items-center pr-4 mt-4 lg:mt-0"
+                                                    >
+                                                        <div className="categories_selected-list_icon-container p-4 flex bg-white rounded-lg">
+                                                            <div className="categories_selected-list_icon pr-2">
+                                                                {Parser(categoryDetails.icon)}
+                                                            </div>
+                                                            <div className="categories_selected-list_label">
+                                                                {categoryDetails.label}
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div className="flex md:justify-end">
+                                    <button
+                                        type="button"
+                                        className="sm:ml-7 mt-7 ml-2 sm:mt-4 mb-7 sm:mb-0 text-white bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 rounded-lg font-bold"
+                                        onClick={() => handleFormReset()}
+                                    >
+                                        Effacer ma selection
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="sm:ml-7 mt-7 ml-2 sm:mt-4 mb-7 sm:mb-0 bg-white text-black font-bold"
+                                    >
+                                        Enregistrer mon/mes Categories
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </Box>
                 </div>
 
                 <Box m="20px">
-                    <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6">
+                    <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6 pt-4">
                         INFORMATIONS DE VOTRE ETABLISSMENT :
                     </div>
                     <form onSubmit={formikEstablishment.handleSubmit}>

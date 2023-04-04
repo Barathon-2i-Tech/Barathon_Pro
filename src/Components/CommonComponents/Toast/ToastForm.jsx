@@ -3,7 +3,7 @@ import { Alert, AlertTitle, Snackbar } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-export const ToastForm = ({ openSnackbar, handleSnackbarClose, title, message }) => {
+export const ToastForm = ({ openSnackbar, handleSnackbarClose, title, message, severity }) => {
     return (
         <Snackbar
             open={openSnackbar}
@@ -13,7 +13,7 @@ export const ToastForm = ({ openSnackbar, handleSnackbarClose, title, message })
         >
             <Alert
                 onClose={handleSnackbarClose}
-                severity="success"
+                severity={severity}
                 sx={{ width: '100%' }}
                 action={
                     <IconButton
@@ -40,4 +40,5 @@ ToastForm.propTypes = {
     openSnackbar: PropTypes.bool,
     title: PropTypes.string,
     message: PropTypes.string,
+    severity: PropTypes.string,
 };
