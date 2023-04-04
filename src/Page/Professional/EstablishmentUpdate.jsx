@@ -42,6 +42,7 @@ export default function EstablishmentCreatePage() {
     const { id } = useParams();
     const establishmentId = parseInt(id);
 
+    // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
 

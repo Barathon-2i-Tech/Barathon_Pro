@@ -145,7 +145,7 @@ export default function EstablishmentPage() {
             headerName: 'Logo',
             flex: 0.1,
             headerAlign: 'center',
-            minWidth: 60,
+            minWidth: 90,
             align: 'center',
             renderCell: (params) => {
                 return <img src={params.value} />;

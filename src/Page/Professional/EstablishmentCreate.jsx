@@ -36,6 +36,7 @@ export default function EstablishmentCreatePage() {
     const ownerId = user.userLogged.owner_id;
     const [opening, setOpening] = useState({});
 
+    // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
 
