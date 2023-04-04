@@ -31,7 +31,7 @@ export default function EstablishmentPage() {
         opening: false,
         siret: false,
         address: false,
-        postal_code:false,
+        postal_code: false,
     });
 
     const [allEstablishments, setAllEstablishments] = useState([]);
