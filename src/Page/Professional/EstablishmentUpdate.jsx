@@ -10,10 +10,10 @@ import {
     establishmentSchema,
     selectCategoriesSchema,
 } from '../../utils/FormSchemaValidation';
-import { Grid, Box} from '@mui/material';
+import { Grid, Box } from '@mui/material';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { useFormik, Formik } from 'formik';
-import {FormSelectEstablishment} from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment'
+import { FormSelectEstablishment } from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { sendFormDataPutCategory, sendFormDataPutMultipart } from '../../utils/AxiosModel';
@@ -331,7 +331,7 @@ export default function EstablishmentCreatePage() {
 
                         <div className="">
                             <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                            <FormSelectEstablishment 
+                                <FormSelectEstablishment
                                     allCategories={allCategories}
                                     formikCategories={formikCategories}
                                     handleCategoryChange={handleCategoryChange}
