@@ -37,11 +37,11 @@
 }
 
 .body {
-  font-family: MontserratRegular;
+  font-family: MontserratRegular, sans-serif;
 }
 
 .font-bold {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
 }
 
 /* Headings */
@@ -63,7 +63,7 @@ h6,
 
 h1,
 .h1 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 42px;
   font-weight: 700;
   text-transform: none;
@@ -78,7 +78,7 @@ h1.banner-title {
 
 h2,
 .h2 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 30px;
   font-weight: 700;
   text-transform: none;
@@ -87,7 +87,7 @@ h2,
 
 h3,
 .h3 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 27px;
   font-weight: 700;
   text-transform: none;
@@ -112,7 +112,7 @@ h5,
 
 h6,
 .h6 {
-  font-family: MontserratMedium;
+  font-family: MontserratMedium, sans-serif;
   font-size: 16px;
   font-weight: 700;
   text-transform: none;
