@@ -27,6 +27,11 @@ export default function EstablishmentPage() {
     const ownerId = user.userLogged.owner_id;
 
     //dataGRID
+    const [columnVisibilityModel, setColumnVisibilityModel] = useState({
+        opening: false,
+        siret: false,
+    });
+
     const [allEstablishments, setAllEstablishments] = useState([]);
     const [reloading, setReloading] = useState(false);
 
@@ -178,6 +183,7 @@ export default function EstablishmentPage() {
             flex: 0.3,
             headerAlign: 'center',
             align: 'center',
+            hide: true,
         },
         {
             field: 'website',
@@ -195,14 +201,14 @@ export default function EstablishmentPage() {
         },
         {
             field: 'opening',
-            headerName: 'Horraire',
+            headerName: 'Horaires',
             flex: 0.4,
             minWidth: 200,
             headerAlign: 'center',
             align: 'left',
             renderCell: ({ row: { opening } }) => {
                 return (
-                    <div className="">
+                    <div className="pt-4 pb-4">
                         {Object.entries(opening).map(([day, hours]) => (
                             <div className="flex" key={day}>
                                 <div>{day} : </div>
@@ -332,11 +338,18 @@ export default function EstablishmentPage() {
             <DataGrid
                 rows={establishmentsRows}
                 columns={establishmentColumns}
+                columnVisibilityModel={columnVisibilityModel}
+                onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
                 density="comfortable"
                 components={{
                     Toolbar: establishmentCustomToolbar,
                 }}
-                sx={{ marginX: 2 }}
+                sx={{
+                    marginX: 2,
+                    '& .MuiDataGrid-cell': {
+                        padding: '10px',
+                    },
+                }}
                 getRowClassName={getRowClassName}
                 getRowHeight={() => 'auto'}
             />

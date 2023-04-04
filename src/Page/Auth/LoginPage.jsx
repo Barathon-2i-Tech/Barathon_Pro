@@ -77,15 +77,7 @@ export default function LoginPage() {
     return (
         <div className="mx-auto max-w-screen-2xl ">
             <Toaster />
-            <div className="w-fit inline-block text-white lg:text-xl">
-                <button
-                    onClick={goBack}
-                    className="w-fit m-2 sm:m-6 bg-orange-300 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg"
-                >
-                    Acceuil
-                </button>
-            </div>
-            <div className="min-h-screen flex flex-col items-center sm:pt-6 sm:pt-0">
+            <div className="min-h-screen flex flex-col items-center justify-center sm:pt-6 sm:pt-0">
                 <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
                     <div className="z-10 flex justify-center items-center">
                         <Link href="/">
@@ -142,10 +134,18 @@ export default function LoginPage() {
                                         />
                                     </Box>
                                     <Box display="flex" justifyContent="end" mt="20px">
+                                        <div className="w-fit inline-block text-white lg:text-xl">
+                                            <button
+                                                onClick={goBack}
+                                                className="mr-4 sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-orange-300 hover:border-white-900 rounded"
+                                            >
+                                                Accueil
+                                            </button>
+                                        </div>
                                         <Button
                                             type="submit"
                                             variant="contained"
-                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base"
+                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base lg:text-xl"
                                         >
                                             Se connecter
                                         </Button>

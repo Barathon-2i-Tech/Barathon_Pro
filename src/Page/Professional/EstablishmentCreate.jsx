@@ -135,7 +135,7 @@ export default function EstablishmentCreatePage() {
     const formikEstablishment = useFormik({
         initialValues: FormInitialValuesEstablishment,
         enableReinitialize: true,
-        validationSchema: establishmentSchema(true),
+        validationSchema: establishmentSchema,
         onSubmit: (values) => handleFormSubmit(values),
     });
 
@@ -262,7 +262,7 @@ export default function EstablishmentCreatePage() {
                     <form onSubmit={formikEstablishment.handleSubmit}>
                         <FormEstablishment formik={formikEstablishment} />
                         <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
-                            HORRAIRES DE VOTRE ETABLISSMENT :
+                            HORAIRES DE VOTRE ETABLISSMENT :
                         </div>
                         <FormOpening formik={formikOpening} />
                     </form>

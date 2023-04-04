@@ -19,7 +19,7 @@ export default function HeaderWelcome() {
                                     className="h-full hover:text-white flex items-center text-white"
                                 >
                                     <div className="bg-teal-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg">
-                                        Connexion Pro
+                                        Connexion
                                     </div>
                                 </Link>
                             </li>
@@ -29,7 +29,7 @@ export default function HeaderWelcome() {
                                     className="h-full flex hover:text-white items-center text-white"
                                 >
                                     <div className="bg-orange-300 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg">
-                                        S enregistrer
+                                        S&apos;enregistrer
                                     </div>
                                 </Link>
                             </li>

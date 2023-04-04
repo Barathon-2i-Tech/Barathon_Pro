@@ -342,6 +342,7 @@ export default function EstablishmentCreatePage() {
                             key={establishment.establishment_id}
                             initialValues={{
                                 logo: establishment.logo || '',
+                                siret: establishment.siret || '',
                                 trade_name: establishment.trade_name || '',
                                 address: establishment.address || '',
                                 city: establishment.city || '',
@@ -351,7 +352,7 @@ export default function EstablishmentCreatePage() {
                                 website: establishment.website || '',
                             }}
                             onSubmit={handleFormSubmit}
-                            validationSchema={establishmentSchema(false)}
+                            validationSchema={establishmentSchema}
                         >
                             {({
                                 values,
@@ -384,6 +385,17 @@ export default function EstablishmentCreatePage() {
                                                 // Convert to boolean using !! operator
                                                 error={!!touched.logo && !!errors.logo}
                                                 helperText={touched.logo && errors.logo}
+                                            />
+                                            <FormFieldModel
+                                                grid={6}
+                                                label="Siret"
+                                                onBlur={handleBlur}
+                                                onChange={handleChange}
+                                                value={values.siret}
+                                                name={'siret'}
+                                                //convert to boolean using !! operator
+                                                error={!!touched.siret && !!errors.siret}
+                                                helperText={touched.siret && errors.siret}
                                             />
                                             <FormFieldModel
                                                 grid={6}
@@ -465,7 +477,7 @@ export default function EstablishmentCreatePage() {
                                         </Grid>
                                     </Box>
                                     <div className="opening-title text-2xl text-teal-700 font-bold pb-6 pt-10">
-                                        HORRAIRES DE VOTRE ETABLISSMENT :
+                                        HORAIRES DE VOTRE ETABLISSMENT :
                                     </div>
                                     <FormOpening formik={formikOpening} />
                                 </form>

@@ -12,15 +12,23 @@ export const EstablishmentSchemaOpening = () => {
     });
 };
 
-export const establishmentSchema = (isCreate) => {
+export const establishmentSchema = () => {
     return yup.object().shape({
         trade_name: yup.string().required('obligatoire'),
-        siret: isCreate ? yup.string().required('obligatoire') : yup.string(),
+        siret: yup
+            .string()
+            .required('obligatoire')
+            .matches(/^[0-9]{14}$/, 'Le siret doit comporter exactement 14 chiffres')
+            .test(
+                'is-siret-valid',
+                'Le siret doit comporter exactement 14 chiffres',
+                (val) => val && val.length === 14,
+            ),
         address: yup.string().required('obligatoire'),
         city: yup.string().required('obligatoire'),
         postal_code: yup.string().required('obligatoire'),
         logo: yup.mixed().required('logo is required'),
-        phone: yup.string(),
+        phone: yup.string().required('Téléphone is required'),
         email: yup.string(),
         website: yup.string(),
     });
