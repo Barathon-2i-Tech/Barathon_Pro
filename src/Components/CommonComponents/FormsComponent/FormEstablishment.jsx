@@ -32,7 +32,7 @@ export const FormEstablishment = ({ formik }) => {
                     ].map((formFieldValue) => (
                         <FormFieldModel
                             key={formFieldValue}
-                            grid={6}
+                            grid={formFieldValue === 'logo' ? 12 : 6}
                             label={labelMap[formFieldValue]}
                             onBlur={formik.handleBlur}
                             onChange={(event, fileList) => {
