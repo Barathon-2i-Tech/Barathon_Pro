@@ -28,10 +28,10 @@ export default function SectionCardIcon() {
                         <div className="card-icon__container-icon w-full flex align-items-center justify-center">
                             <img className="" src={logo} alt="" width="300" height="100" />
                         </div>
-                        <div className="h6 txt-yellow w-full text-center text-cyan-900">
+                        <div className="h6 txt-yellow w-full text-center text-cyan-900 dark:text-white">
                             {title}
                         </div>
-                        <div className="pb-22 w-full text-center text-cyan-900">{text}</div>
+                        <div className="pb-22 w-full text-center text-cyan-900 dark:text-white">{text}</div>
                     </div>
                 </div>
             ))}

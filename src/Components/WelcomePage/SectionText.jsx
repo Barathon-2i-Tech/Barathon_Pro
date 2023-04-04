@@ -4,7 +4,7 @@ export default function SectionText({ title, description }) {
     return (
         <div className="relative">
             <div className="banner-infos-bg__txt-container container mx-auto max-w-screen-xl px-4">
-                <div className="text-center text-cyan-900">
+                <div className="text-center text-cyan-900 dark:text-white">
                     <div className="">
                         <div className="h4 w-full text-center">{title}</div>
                     </div>

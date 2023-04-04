@@ -50,7 +50,7 @@ export default function Register() {
             </div>
 
             <div className="flex justify-center">
-                <div className="wrapper max-w-2xl inline-flex  bg-white items-center justify-center  border-xs sm:p-8 p-5 w-full">
+                <div className="wrapper max-w-2xl inline-flex dark:bg-transparent bg-white items-center justify-center  border-xs sm:p-8 p-5 w-full">
                     <div className="relative">
                         <input
                             type="radio"
