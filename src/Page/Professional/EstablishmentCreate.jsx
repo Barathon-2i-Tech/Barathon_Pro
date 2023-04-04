@@ -10,25 +10,25 @@ import {
     establishmentSchema,
     selectCategoriesSchema,
 } from '../../utils/FormSchemaValidation';
-import { Box, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box} from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
 } from '../../utils/FormInitialValue';
 import { useFormik } from 'formik';
+import {FormSelectEstablishment} from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment'
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
 import { ToastForm } from '../../Components/CommonComponents/Toast/ToastForm';
 import Axios from '../../utils/axiosUrl';
-import Parser from 'html-react-parser';
 import { useNavigate } from 'react-router-dom';
 
 export default function EstablishmentCreatePage() {
     const [allCategories, setAllCategories] = useState([]);
     const [establishmentCategories, setEstablishmentCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
-
+    const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
     const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
@@ -53,6 +53,7 @@ export default function EstablishmentCreatePage() {
         }
         setOpenSnackbar(false);
         setOpenSnackbarOpening(false);
+        setOpenSnackbarCategoryError(false);
     };
 
     // ------------------------  CATEGORY ------------------------------------------
@@ -84,7 +85,7 @@ export default function EstablishmentCreatePage() {
         if (event.target.value.length <= 4) {
             formikCategories.handleChange(event);
         } else {
-            alert('Vous avez droit à 4 categories maximum');
+            setOpenSnackbarCategoryError(true);
         }
     };
     // This const is for formik shema and action to form Opening
@@ -221,6 +222,13 @@ export default function EstablishmentCreatePage() {
             }}
         >
             <ToastForm
+                openSnackbar={openSnackbarCategoryError}
+                handleSnackbarClose={handleSnackbarClose}
+                title={'Attention!'}
+                message={'Vous avez droit à 4 categories maximum'}
+                severity={'error'}
+            />
+            <ToastForm
                 openSnackbar={openSnackbarOpening}
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Bravo !'}
@@ -245,97 +253,13 @@ export default function EstablishmentCreatePage() {
                         </div>
                         <div className="">
                             <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                                <div className="flex py-6 flex-wrap">
-                                    <div className="categories_selected-container flex flex-col py-4 mr-10">
-                                        <InputLabel
-                                            id="options-label"
-                                            style={{
-                                                color: 'white',
-                                                fontWeight: 'bold',
-                                                paddingBottom: '10px',
-                                            }}
-                                        >
-                                            Categories (4 categories maximum)
-                                        </InputLabel>
-                                        <Select
-                                            labelId="options-label"
-                                            id="options"
-                                            style={{
-                                                minWidth: 120,
-                                                color: 'white',
-                                                border: '1px solid white',
-                                                fontWeight: 'bold',
-                                            }}
-                                            multiple
-                                            defaultValue={formikCategories.initialValues.options}
-                                            value={formikCategories.values.options}
-                                            onChange={handleCategoryChange}
-                                            inputProps={{
-                                                name: 'options',
-                                            }}
-                                        >
-                                            {allCategories.map((allEstablishment) => {
-                                                const categoryDetails = JSON.parse(
-                                                    allEstablishment.category_details,
-                                                );
-
-                                                return (
-                                                    <MenuItem
-                                                        key={allEstablishment.category_id}
-                                                        value={allEstablishment.category_id}
-                                                    >
-                                                        {categoryDetails.label}
-                                                    </MenuItem>
-                                                );
-                                            })}
-                                        </Select>
-                                    </div>
-
-                                    <div className="categories_selected-container flex flex-col justify-between py-4 px-6 bg-gray-200 rounded-xl ml-4">
-                                        <div className="font-bold pr-4 text-base text-black">
-                                            NOUVELLES CATEGORIES ENREGISTRÉES :{' '}
-                                        </div>
-                                        <div className="flex flex-wrap">
-                                            {categoriesSelected.map((allCategoriesSelected) => {
-                                                const categoryDetails = JSON.parse(
-                                                    allCategoriesSelected.category_details,
-                                                );
-                                                return (
-                                                    <div
-                                                        key={allCategoriesSelected.category_id}
-                                                        value={allCategoriesSelected.category_id}
-                                                        className="categories_selected-list flex items-center pr-4 mt-4 lg:mt-0"
-                                                    >
-                                                        <div className="categories_selected-list_icon-container p-4 flex bg-white rounded-lg">
-                                                            <div className="categories_selected-list_icon pr-2">
-                                                                {Parser(categoryDetails.icon)}
-                                                            </div>
-                                                            <div className="categories_selected-list_label">
-                                                                {categoryDetails.label}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex md:justify-end">
-                                    <button
-                                        type="button"
-                                        className="sm:ml-7 mt-7 ml-2 sm:mt-4 mb-7 sm:mb-0 text-white bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 rounded-lg font-bold"
-                                        onClick={() => handleFormReset()}
-                                    >
-                                        Effacer ma selection
-                                    </button>
-                                    <button
-                                        type="submit"
-                                        className="sm:ml-7 mt-7 ml-2 sm:mt-4 mb-7 sm:mb-0 bg-white text-black font-bold"
-                                    >
-                                        Enregistrer mon/mes Categories
-                                    </button>
-                                </div>
+                                <FormSelectEstablishment 
+                                    allCategories={allCategories}
+                                    formikCategories={formikCategories}
+                                    handleCategoryChange={handleCategoryChange}
+                                    categoriesSelected={categoriesSelected}
+                                    handleFormReset={handleFormReset}
+                                />
                             </form>
                         </div>
                     </Box>
