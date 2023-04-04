@@ -323,25 +323,14 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <div className="rounded-xl bg-teal-700">
-                    <Box m="20px" pt="20px" pb="20px">
-                        <div className="categorie-title text-2xl text-white font-bold pt-6">
-                            CATEGORIES DE VOTRE ETABLISSMENT :
-                        </div>
-
-                        <div className="">
-                            <form className="py-4 sm:pb-4" onSubmit={formikCategories.handleSubmit}>
-                                <FormSelectEstablishment
-                                    allCategories={allCategories}
-                                    formikCategories={formikCategories}
-                                    handleCategoryChange={handleCategoryChange}
-                                    categoriesSelected={categoriesSelected}
-                                    handleFormReset={handleFormReset}
-                                />
-                            </form>
-                        </div>
-                    </Box>
-                </div>
+                <FormSelectEstablishment
+                    allCategories={allCategories}
+                    formikCategories={formikCategories}
+                    handleCategoryChange={handleCategoryChange}
+                    categoriesSelected={categoriesSelected}
+                    handleFormReset={handleFormReset}
+                    handleSubmit={formikCategories.handleSubmit}
+                />
 
                 <Box m="20px">
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6 pt-4">
