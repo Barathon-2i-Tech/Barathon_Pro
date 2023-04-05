@@ -21,13 +21,14 @@ import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
+import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 
 export default function App() {
     return (
         <div className="App">
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
-                <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
+                <Route path="/registersucess" element={<EndRegisterLogin />}></Route>
                 <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
 
                 <Route element={<HomeLayout />}>
