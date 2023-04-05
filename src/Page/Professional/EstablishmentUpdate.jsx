@@ -254,10 +254,6 @@ export default function EstablishmentCreatePage() {
             }
         }
 
-        console.log('dataValues', dataValues);
-        console.log('formData', formData);
-        console.log('formData', Array.from(formData.entries()));
-
         sendFormDataPutMultipart(urlCreate, token, formData) // Appel de la fonction
             .then(() => {
                 //toast MUI
