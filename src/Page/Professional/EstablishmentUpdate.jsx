@@ -151,12 +151,6 @@ export default function EstablishmentCreatePage() {
         validationSchema: selectCategoriesSchema,
         onSubmit: (values) => handleFormSubmitCategories(values),
     });
-    // This const is to save in state establishmentsCategories the news categories
-
-    const formatCategories = (categories) => {
-        const formattedCategoryIds = categories.map((category) => category.category_id);
-        return { options: formattedCategoryIds };
-    };
 
     const handleFormSubmitCategories = (values) => {
         //toast MUI
@@ -179,6 +173,20 @@ export default function EstablishmentCreatePage() {
             ...formikCategories.values,
             options: newOptions,
         });
+
+        // Envoi des données de catégories formatées
+        const urlCreateCategories = `/pro/establishment/${id}/category`;
+        const dataValuesCategories = { options: updatedCategoryIds };
+
+        sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
+            .then(() => {
+                console.log('mise a jours des category');
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+                // console.table(dataValuesCategories);
+            });
     };
 
     // ------------------------  OPENING ------------------------------------------
@@ -199,7 +207,6 @@ export default function EstablishmentCreatePage() {
         initialValues: isOpeningInitialized ? opening : getInitialOpening(),
         enableReinitialize: true,
         validationSchema: EstablishmentSchemaOpening,
-        // onSubmit: (values) => handleFormSubmitOpening(values),
     });
 
     // ------------------------  USEEFFECT ------------------------------------------
@@ -227,7 +234,7 @@ export default function EstablishmentCreatePage() {
 
     // ------------------------  SUBMIT ------------------------------------------
     const handleFormSubmit = (values) => {
-        // Include the logic from handleFormSubmitOpening to save opening hours
+        // Include the logic to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
         setOpening(dataValuesOpening);
         console.log(opening);
@@ -246,17 +253,8 @@ export default function EstablishmentCreatePage() {
                 formData.append(key, value);
             }
         }
-        // Formater les catégories si elles ne sont pas déjà formatées
-        const formattedCategories =
-            Array.isArray(establishmentCategories) && typeof establishmentCategories[0] === 'object'
-                ? formatCategories(establishmentCategories)
-                : { options: establishmentCategories };
-
-        const dataValuesCategories = formattedCategories;
-        const urlCreateCategories = `/pro/establishment/${id}/category`;
 
         console.log('dataValues', dataValues);
-        console.log('dataValuesCategories :', dataValuesCategories);
         console.log('formData', formData);
         console.log('formData', Array.from(formData.entries()));
 
@@ -273,18 +271,6 @@ export default function EstablishmentCreatePage() {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
                 //console.table(dataValues);
-            });
-
-        sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories) // Appel de la fonction
-            .then(() => {
-                //toast MUI
-                // setOpenSnackbar(true);
-                // console.table(dataValuesCategories);
-            })
-            .catch((e) => {
-                console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
-                // console.table(dataValuesCategories);
             });
     };
 
