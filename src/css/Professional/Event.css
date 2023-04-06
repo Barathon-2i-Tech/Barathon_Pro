@@ -1,0 +1,83 @@
+.img_establisment {
+  max-height: 100px;
+  width: auto;
+  margin: auto;
+}
+
+.color-filter-event:before {
+  content: '';
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border-radius: 20px;
+}
+.color-filter-event.is-refuse {
+  z-index: 30;
+}
+.is-refuse:before {
+  background-color: red;
+  z-index: 30;
+}
+
+.color-filter-event.is-pending {
+  z-index: 30;
+}
+.is-pending:before {
+  background-color: orange;
+  z-index: 30;
+}
+
+.status-establishment {
+  border-radius: 20px 0px 20px 0px;
+}
+
+/*CARD EVENT ESTABLISHMENT*/
+
+.event-card-hover__card-container {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.event-card-hover__card-container-img img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.event-card-hover__card {
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 30px;
+}
+
+.card-hover__content {
+  position: relative;
+  height: calc(100% - 210px);
+  padding: 15px;
+}
+
+.card-event__img-transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+  transition-property: top, left, bottom, right;
+}
+
+@media (hover: hover) {
+  /*eventTION CARD HOVER*/
+  .event-card-hover__card:hover .card-event__img-transition {
+    top: -10px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+  }
+}
