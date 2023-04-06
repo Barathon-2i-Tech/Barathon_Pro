@@ -5,7 +5,6 @@ import Copyright from '../../../Components/CommonComponents/Copyright';
 import Person from '@mui/icons-material/Person';
 
 export default function EventOfEstablishmentPage() {
-
     return (
         <Paper
             sx={{
