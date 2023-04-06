@@ -80,14 +80,12 @@ export default function EstablishmentPage() {
                 },
             });
             setAllEstablishments(response.data.data);
-            console.log(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
     const deleteEstablishment = (id) => {
-        console.log(id);
         Axios.api
             .delete(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
@@ -97,13 +95,11 @@ export default function EstablishmentPage() {
                 },
             })
             .then(() => {
-                console.log('bien effacé');
                 setReloading(true);
             })
             .catch((error) => {
                 console.log(error);
             });
-        console.log('suppression');
     };
 
     function getRowClassName(params) {

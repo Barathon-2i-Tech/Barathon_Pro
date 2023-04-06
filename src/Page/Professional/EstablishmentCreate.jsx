@@ -159,8 +159,6 @@ export default function EstablishmentCreatePage() {
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
         const urlCreate = `/pro/${ownerId}/establishment`;
 
-        console.log('submit ', dataValues);
-
         // Créer un nouvel objet FormData
         const formData = new FormData();
 
@@ -173,9 +171,6 @@ export default function EstablishmentCreatePage() {
                 formData.append(key, value);
             }
         }
-
-        console.log('formData', formData);
-        console.log('formData entries', Array.from(formData.entries()));
 
         // Create the establishment
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData

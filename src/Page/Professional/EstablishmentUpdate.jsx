@@ -218,7 +218,6 @@ export default function EstablishmentCreatePage() {
     useEffect(() => {
         setOpening(getInitialOpening(establishment));
         setIsOpeningInitialized(true);
-        console.log(establishment);
     }, [establishment]);
 
     useEffect(() => {
