@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../Hooks/useAuth';
 import { styled } from '@mui/material/styles';
@@ -70,8 +70,11 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 export const ProtectedLayout = () => {
     const { user, logout } = useAuth();
+    const [open, setOpen] = useState(true);
+    const [loggedUser, setLoggedUser] = useState();
+    const [userAvatar, setuserAvatar] = useState();
 
-    React.useEffect(() => {
+    useEffect(() => {
         setLoggedUser(user.userLogged.first_name + ' ' + user.userLogged.last_name);
         setuserAvatar(user.userLogged.avatar);
     }, []);
@@ -80,14 +83,10 @@ export const ProtectedLayout = () => {
         return <Navigate to="/" />;
     }
 
-    const [open, setOpen] = React.useState(true);
+    
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
-    const [loggedUser, setLoggedUser] = React.useState();
-
-    const [userAvatar, setuserAvatar] = React.useState();
 
     return (
         <Box sx={{ display: 'flex' }}>
