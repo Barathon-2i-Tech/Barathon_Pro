@@ -65,7 +65,9 @@ export default function EventPage() {
                             return (
                                 <div
                                     key={establishment.establishment_id}
-                                    className="event-card-hover__card flex justify-center flex-wrap relative"
+                                    className={`event-card-hover__card flex justify-center flex-wrap relative ${
+                                        establishment.deleted_at !== null ? 'hidden' : ''
+                                    }`}
                                 >
                                     <Link
                                         className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer"
