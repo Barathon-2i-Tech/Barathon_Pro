@@ -1,27 +1,28 @@
 @font-face {
   font-family: MontserratExtraBold;
-  src: local('MontserratExtraBold'), url('src/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+  src: local('MontserratExtraBold'), url('../../fonts/Montserrat-ExtraBold.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: MontserratBoldItalic;
-  src: local('MontserratBoldItalic'), url('src/fonts/Montserrat-BoldItalic.ttf') format('truetype');
+  src: local('MontserratBoldItalic'),
+    url('../../fonts/Montserrat-BoldItalic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
 }
 @font-face {
   font-family: MontserratBold;
-  src: local('MontserratBold'), url('src/fonts/Montserrat-Bold.ttf') format('truetype');
+  src: local('MontserratBold'), url('../../fonts/Montserrat-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: MontserratMedium;
-  src: local('MontserratMedium'), url('src/fonts/Montserrat-Medium.ttf') format('truetype');
+  src: local('MontserratMedium'), url('../../fonts/Montserrat-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -29,18 +30,18 @@
 
 @font-face {
   font-family: MontserratRegular;
-  src: local('MontserratRegular'), url('src/fonts/Montserrat-Regular.ttf') format('truetype');
+  src: local('MontserratRegular'), url('../../fonts/Montserrat-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 .body {
-  font-family: MontserratRegular;
+  font-family: MontserratRegular, sans-serif;
 }
 
 .font-bold {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
 }
 
 /* Headings */
@@ -62,7 +63,7 @@ h6,
 
 h1,
 .h1 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 42px;
   font-weight: 700;
   text-transform: none;
@@ -77,7 +78,7 @@ h1.banner-title {
 
 h2,
 .h2 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 30px;
   font-weight: 700;
   text-transform: none;
@@ -86,7 +87,7 @@ h2,
 
 h3,
 .h3 {
-  font-family: MontserratBold;
+  font-family: MontserratBold, sans-serif;
   font-size: 27px;
   font-weight: 700;
   text-transform: none;
@@ -111,7 +112,7 @@ h5,
 
 h6,
 .h6 {
-  font-family: MontserratMedium;
+  font-family: MontserratMedium, sans-serif;
   font-size: 16px;
   font-weight: 700;
   text-transform: none;

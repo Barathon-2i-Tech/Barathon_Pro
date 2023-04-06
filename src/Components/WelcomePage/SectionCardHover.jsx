@@ -49,7 +49,7 @@ export default function SectionCardHover() {
                         </div>
                         <div className="card-hover__content">
                             <div className="h6 text-orange-300 w-full text-center">{title}</div>
-                            <div className="pb-22 text-cyan-900 w-full font-bold text-center">
+                            <div className="pb-22 text-cyan-900 dark:text-white w-full font-bold text-center">
                                 {description}
                             </div>
                         </div>

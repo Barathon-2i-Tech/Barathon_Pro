@@ -1,0 +1,62 @@
+/*LIST*/
+.min-100px-min {
+  min-width: 100px;
+  min-height: 100px;
+}
+
+/* establishment form */
+
+.establishment_content {
+  min-height: 100px;
+}
+.standby {
+  min-height: 100px;
+}
+
+.custom-button-teal {
+  background-color: transparent;
+  border: 1px solid #047857;
+  color: black;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease-in-out;
+}
+.custom-button-teal a {
+  color: #047857;
+}
+.custom-button-teal:hover {
+  background-color: #047857;
+  color: white;
+}
+.custom-button-teal:hover a {
+  color: white !important;
+}
+
+/*dataGRID*/
+.MuiDataGrid-row img {
+  max-height: 52px;
+}
+/* .MuiDataGrid-toolbarContainer {
+  background: #0f766e;
+} */
+.MuiDataGrid-cell[data-field='status'] {
+  padding-left: 0 !important;
+}
+.MuiDataGrid-row.hidden-row {
+  display: none !important;
+}
+/*Establishment list categories */
+.categories_selected-list_icon svg {
+  width: 20px;
+  height: auto;
+}
+
+@media screen and (min-width: 1260px) {
+  .min-w-button-establishement {
+    min-width: 150px;
+  }
+  .min-300px-min-max {
+    min-width: 300px;
+    max-width: 301px;
+  }
+}

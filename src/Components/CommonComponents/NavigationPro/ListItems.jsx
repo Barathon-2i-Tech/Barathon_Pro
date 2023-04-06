@@ -10,6 +10,7 @@ import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import TagIcon from '@mui/icons-material/Tag';
 import EmailIcon from '@mui/icons-material/Email';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
+import GavelIcon from '@mui/icons-material/Gavel';
 
 export const mainListItems = (
     <React.Fragment>
@@ -45,7 +46,7 @@ export const mainListItems = (
         </ListItemButton>
         <ListItemButton href="/pro/employee">
             <ListItemIcon>
-                <TagIcon />
+                <GroupIcon />
             </ListItemIcon>
             <ListItemText primary="Mes employ&eacute;s" />
         </ListItemButton>
@@ -65,7 +66,7 @@ export const mainListItems = (
         </ListItemButton>
         <ListItemButton href="/pro/cgu">
             <ListItemIcon>
-                <EmailIcon />
+                <GavelIcon />
             </ListItemIcon>
             <ListItemText primary="Conditions d'utilisation" />
         </ListItemButton>

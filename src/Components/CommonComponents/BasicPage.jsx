@@ -9,13 +9,13 @@ export const BasicPage = ({ title, icon }) => {
         <Container component="main">
             <Box
                 sx={{
-                    marginTop: 8,
+                    marginTop: 4,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>{icon}</Avatar>
+                <Avatar sx={{ m: 1, bgcolor: 'black' }}>{icon}</Avatar>
                 <Typography component="h1" variant="h5">
                     {title}
                 </Typography>

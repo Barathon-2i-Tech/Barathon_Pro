@@ -1,4 +1,5 @@
 import './App.css';
+import './css/Professional/AtomeCustom.css';
 import Welcome from './Page/Welcome.jsx';
 import Register from './Page/Auth/RegisterHome';
 import LoginPage from './Page/Auth/LoginPage';
@@ -18,13 +19,16 @@ import TagPage from './Page/Professional/Tag';
 
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
+import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
+import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
+import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 
 export default function App() {
     return (
         <div className="App">
             <Routes>
                 <Route path="/" element={<Welcome />}></Route>
-                <Route path="/registersucess" element={<div>DOWNLOAD OUR APP</div>}></Route>
+                <Route path="/registersucess" element={<EndRegisterLogin />}></Route>
                 <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
 
                 <Route element={<HomeLayout />}>
@@ -41,6 +45,11 @@ export default function App() {
 
                     <Route path="employee" element={<EmployeePage />}></Route>
                     <Route path="establishment" element={<EstablishmentPage />}></Route>
+                    <Route path="establishmentForm/:id" element={<EstablishmentFormPage />}></Route>
+                    <Route
+                        path="/pro/:id/establishment/create"
+                        element={<EstablishmentCreatePage />}
+                    ></Route>
                     <Route path="event" element={<EventPage />}></Route>
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>

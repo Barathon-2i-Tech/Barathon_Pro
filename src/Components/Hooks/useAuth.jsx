@@ -1,13 +1,13 @@
 import { createContext, useContext, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from './UseLocalStorage';
+import { useSessionStorage } from './UseSessionStorage';
 import Axios from '../../utils/axiosUrl';
 
 const AuthContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useLocalStorage('user', null);
+    const [user, setUser] = useSessionStorage('user', null);
     const navigate = useNavigate();
 
     const login = async (data) => {
