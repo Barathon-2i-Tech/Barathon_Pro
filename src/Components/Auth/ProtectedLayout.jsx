@@ -83,7 +83,6 @@ export const ProtectedLayout = () => {
         return <Navigate to="/" />;
     }
 
-    
     const toggleDrawer = () => {
         setOpen(!open);
     };
