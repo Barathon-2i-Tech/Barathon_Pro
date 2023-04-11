@@ -21,11 +21,14 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import HeaderDatagrid from '../../../Components/CommonComponents/DataGrid/HeaderDataGrid';
 import Copyright from '../../../Components/CommonComponents/Copyright';
+import { useParams } from 'react-router-dom';
 
 export default function EventOfEstablishmentPage() {
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+    const { id } = useParams();
+    const establishmentId = parseInt(id);
 
     //dataGRID
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
@@ -34,6 +37,8 @@ export default function EventOfEstablishmentPage() {
         address: false,
         postal_code: false,
     });
+    const [establishment, setEstablishment] = useState([]);
+    const [establishmentName, setEstablishmentName] = useState('');
 
     const [allEvents, setAllEvents] = useState([]);
     const [reloading, setReloading] = useState(false);
@@ -56,7 +61,7 @@ export default function EventOfEstablishmentPage() {
                     <GridToolbarDensitySelector />
                     <GridToolbarExport />
                 </div>
-                <Link href={`/pro/${ownerId}/event/create`}>
+                <Link href={`/pro/establishment/event/${id}/create`}>
                     <Button
                         sx={{ marginRight: '10px', px: '40px' }}
                         variant="contained"
@@ -71,9 +76,39 @@ export default function EventOfEstablishmentPage() {
         );
     }
 
+    // ------------------------  ESTABLISHMENT ------------------------------------------
+    // AXIOS GET
+    // This function is used to get the establishment to update by his ID
+    async function getEstablishment() {
+        try {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setEstablishment(response.data.data);
+            console.log(response.data.data);
+            console.log(establishment);
+
+            const myEstablishment = response.data.data;
+            const myEstablishmentName = myEstablishment.map((is) => is.trade_name);
+            setEstablishmentName(myEstablishmentName[0] || '');
+
+            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('display');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     async function getEvents() {
         try {
-            const response = await Axios.api.get(`/pro/${ownerId}/event`, {
+            const response = await Axios.api.get(`/pro/events/${establishmentId}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -81,6 +116,7 @@ export default function EventOfEstablishmentPage() {
                 },
             });
             setAllEvents(response.data.data);
+            console.log(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -112,13 +148,13 @@ export default function EventOfEstablishmentPage() {
 
     function getStatus(params) {
         switch (params.row.status.code) {
-            case 'ESTABL_VALID':
+            case 'EVENT_VALID':
                 return 'Validé';
 
-            case 'ESTABL_REFUSE':
+            case 'EVENT_REFUSE':
                 return 'Refusé';
 
-            case 'ESTABL_PENDING':
+            case 'EVENT_PENDING':
                 return 'En attente';
 
             default:
@@ -130,114 +166,15 @@ export default function EventOfEstablishmentPage() {
         key: event.event_id,
         id: event.event_id,
         event_id: event.event_id,
+        event_name: event.event_name,
+        poster: event.poster,
         status: JSON.parse(event.comment),
         deleted_at: event.deleted_at,
     }));
 
-    // const eventsRows = [
-    //     {
-    //         id: 1,
-    //         poster_url:
-    //             'https://www.researchgate.net/profile/Harriet-Fell/publication/221538154/figure/fig1/AS:276824299982849@1443011464386/Original-Image-showing-200-x-200-pixels_Q640.jpg',
-    //         event_name: 'Snow',
-    //     },
-    //     {
-    //         id: 2,
-    //         poster_url:
-    //             'https://www.researchgate.net/profile/Harriet-Fell/publication/221538154/figure/fig1/AS:276824299982849@1443011464386/Original-Image-showing-200-x-200-pixels_Q640.jpg',
-    //         event_name: 'Snow',
-    //     },
-    //     {
-    //         id: 3,
-    //         poster_url:
-    //             'https://www.researchgate.net/profile/Harriet-Fell/publication/221538154/figure/fig1/AS:276824299982849@1443011464386/Original-Image-showing-200-x-200-pixels_Q640.jpg',
-    //         event_name: 'Snow',
-    //     },
-    // ];
-
-    // const eventColumns = [
-    //     { field: 'id', headerName: 'ID', width: 90 },
-    //     {
-    //         field: 'poster_url',
-    //         headerName: 'Poster',
-    //         flex: 0.1,
-    //         headerAlign: 'center',
-    //         minWidth: 90,
-    //         align: 'center',
-    //         renderCell: (params) => {
-    //             return <img src={params.value} />;
-    //         },
-    //     },
-    //     {
-    //         field: 'event_name',
-    //         headerName: 'Nom evenement',
-    //         flex: 0.5,
-    //         headerAlign: 'center',
-    //         align: 'center',
-    //     },
-    //     {
-    //         field: 'action',
-    //         headerName: 'Action',
-    //         flex: 0.5,
-    //         headerAlign: 'center',
-    //         align: 'center',
-    //         minWidth: 400,
-    //         renderCell: (params) => {
-    //             return (
-    //                 <>
-    //                     <Link
-    //                     // href={
-    //                     //     params.row.status.code === 'ESTABL_PENDING' ||
-    //                     //     params.row.deleted_at !== null
-    //                     //         ? ''
-    //                     //         : `/pro/eventForm/${params.row.event_id}`
-    //                     // }
-    //                     // component={
-    //                     //     params.row.status.code === 'ESTABL_PENDING' ||
-    //                     //     params.row.deleted_at !== null
-    //                     //         ? Box
-    //                     //         : 'a'
-    //                     // }
-    //                     >
-    //                         <Button
-    //                             sx={{ marginRight: '10px', px: '40px' }}
-    //                             variant="contained"
-    //                             color="info"
-    //                             size="small"
-    //                             startIcon={<EditIcon />}
-    //                             // disabled={
-    //                             //     params.row.status.code === 'ESTABL_PENDING' ||
-    //                             //     params.row.deleted_at !== null
-    //                             // }
-    //                         >
-    //                             Modifier
-    //                         </Button>
-    //                     </Link>
-    //                     <Button
-    //                         sx={{ marginRight: '10px', px: '40px' }}
-    //                         variant="contained"
-    //                         color="error"
-    //                         size="small"
-    //                         onClick={() => {
-    //                             deleteEvent(params.row.event_id);
-    //                         }}
-    //                         startIcon={<DeleteForeverIcon />}
-    //                         // disabled={
-    //                         //     params.row.status.code === 'ESTABL_PENDING' ||
-    //                         //     params.row.deleted_at !== null
-    //                         // }
-    //                     >
-    //                         Supprimer
-    //                     </Button>
-    //                 </>
-    //             );
-    //         },
-    //     },
-    // ];
-
     const eventColumns = [
         {
-            field: 'poster_url',
+            field: 'poster', //'poster_url',
             headerName: 'Poster',
             flex: 0.1,
             headerAlign: 'center',
@@ -265,13 +202,13 @@ export default function EventOfEstablishmentPage() {
             renderCell: ({ row: { status } }) => {
                 let backgroundColor = null;
                 switch (status.code) {
-                    case 'ESTABL_VALID':
+                    case 'EVENT_VALID':
                         backgroundColor = green[400];
                         break;
-                    case 'ESTABL_PENDING':
+                    case 'EVENT_PENDING':
                         backgroundColor = orange[400];
                         break;
-                    case 'ESTABL_REFUSE':
+                    case 'EVENT_REFUSE':
                         backgroundColor = red[400];
                         break;
                     default:
@@ -305,13 +242,13 @@ export default function EventOfEstablishmentPage() {
                     <>
                         <Link
                             href={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
                                     : `/pro/eventForm/${params.row.event_id}`
                             }
                             component={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? Box
                                     : 'a'
@@ -324,7 +261,7 @@ export default function EventOfEstablishmentPage() {
                                 size="small"
                                 startIcon={<EditIcon />}
                                 disabled={
-                                    params.row.status.code === 'ESTABL_PENDING' ||
+                                    params.row.status.code === 'EVENT_PENDING' ||
                                     params.row.deleted_at !== null
                                 }
                             >
@@ -341,7 +278,7 @@ export default function EventOfEstablishmentPage() {
                             }}
                             startIcon={<DeleteForeverIcon />}
                             disabled={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                             }
                         >
@@ -355,7 +292,7 @@ export default function EventOfEstablishmentPage() {
 
     useEffect(() => {
         getEvents();
-
+        getEstablishment();
         setReloading(false);
     }, [reloading]);
 
@@ -369,7 +306,7 @@ export default function EventOfEstablishmentPage() {
                 width: '100%',
             }}
         >
-            <HeaderDatagrid title={'Tous mes évenements'} />
+            <HeaderDatagrid title={`Événements de ${establishmentName}`} />
             <DataGrid
                 rows={eventsRows}
                 columns={eventColumns}

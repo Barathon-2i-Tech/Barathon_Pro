@@ -185,7 +185,7 @@ export default function FooterWelcome() {
                     </div>
                 </div>
                 <div className="ds-font-small flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 text-white pt-2">
-                    <span className="text-white">2022 Barathon</span>
+                    <span className="text-white">2023 Barathon</span>
                     <a
                         href=""
                         data-event-label="Terms of Service"

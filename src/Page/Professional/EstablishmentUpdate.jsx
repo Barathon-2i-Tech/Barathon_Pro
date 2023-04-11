@@ -13,7 +13,7 @@ import {
 import { Grid, Box } from '@mui/material';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { useFormik, Formik } from 'formik';
-import { FormSelectEstablishment } from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment';
+import { FormSelect } from '../../Components/CommonComponents/FormsComponent/FormSelect';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { sendFormDataPutCategory, sendFormDataPutMultipart } from '../../utils/AxiosModel';
@@ -304,7 +304,7 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <FormSelectEstablishment
+                <FormSelect
                     allCategories={allCategories}
                     formikCategories={formikCategories}
                     handleCategoryChange={handleCategoryChange}
@@ -315,7 +315,7 @@ export default function EstablishmentCreatePage() {
 
                 <Box m="20px">
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6 pt-4">
-                        INFORMATIONS DE VOTRE ETABLISSMENT :
+                        INFORMATIONS DE VOTRE ETABLISSEMENT :
                     </div>
                     <Loader allClass={'loading display'} />
                     {establishment.map((establishment) => (

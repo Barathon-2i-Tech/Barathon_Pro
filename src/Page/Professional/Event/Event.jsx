@@ -75,7 +75,7 @@ export default function EventPage() {
                                             commentCode === 'ESTABL_PENDING' ||
                                             commentCode === 'ESTABL_REFUSE'
                                                 ? ''
-                                                : `/pro/${establishment.establishment_id}/event/list`
+                                                : `/pro/establishment/${establishment.establishment_id}/event/list`
                                         }
                                         component={
                                             commentCode === 'ESTABL_PENDING' ||

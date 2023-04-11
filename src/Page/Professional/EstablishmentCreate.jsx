@@ -16,7 +16,7 @@ import {
     FormInitialValuesEstablishment,
 } from '../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-import { FormSelectEstablishment } from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment';
+import { FormSelect } from '../../Components/CommonComponents/FormsComponent/FormSelect';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
@@ -241,7 +241,7 @@ export default function EstablishmentCreatePage() {
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <FormSelectEstablishment
+                <FormSelect
                     allCategories={allCategories}
                     formikCategories={formikCategories}
                     handleCategoryChange={handleCategoryChange}

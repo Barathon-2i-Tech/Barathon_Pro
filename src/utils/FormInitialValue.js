@@ -19,3 +19,13 @@ export const FormInitialValuesEstablishment = {
     email: '',
     website: '',
 };
+
+export const FormInitialValuesEvent = {
+    poster: '',
+    event_name: '',
+    description: '',
+    capacity: '',
+    price: '',
+    start_event: '',
+    end_event: '',
+};

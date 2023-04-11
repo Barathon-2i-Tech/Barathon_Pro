@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { InputLabel, MenuItem, Select, Box } from '@mui/material';
 import Parser from 'html-react-parser';
 
-export const FormSelectEstablishment = ({
+export const FormSelect = ({
     allCategories,
     formikCategories,
     handleCategoryChange,
@@ -15,7 +15,7 @@ export const FormSelectEstablishment = ({
             <div className="rounded-xl bg-teal-700">
                 <Box m="20px" pt="20px" pb="20px">
                     <div className="categorie-title text-2xl text-white font-bold pt-6">
-                        CATEGORIES DE VOTRE ETABLISSMENT :
+                        VOS CATEGORIES :
                     </div>
                     <div className="">
                         <form className="py-4 sm:pb-4" onSubmit={handleSubmit}>
@@ -115,7 +115,7 @@ export const FormSelectEstablishment = ({
     );
 };
 
-FormSelectEstablishment.propTypes = {
+FormSelect.propTypes = {
     allCategories: PropTypes.array.isRequired,
     formikCategories: PropTypes.object.isRequired,
     handleCategoryChange: PropTypes.func.isRequired,

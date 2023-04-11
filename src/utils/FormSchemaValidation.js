@@ -46,3 +46,15 @@ export const establishmentSchema = () => {
 export const selectCategoriesSchema = () => {
     return yup.object().shape({});
 };
+
+export const eventSchema = () => {
+    return yup.object().shape({
+        poster: yup.string(),
+        event_name: yup.string().required("Veuillez renseigner le nom de l'évènement"),
+        description: yup.string(),
+        capacity: yup.string(),
+        price: yup.string().required('Veuillez renseigner le prix'),
+        start_event: yup.string().required("Veuillez renseigner la date de debut de l'évènement"),
+        end_event: yup.string().required("Veuillez renseigner la date de fin de l'évènement"),
+    });
+};

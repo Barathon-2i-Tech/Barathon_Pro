@@ -23,6 +23,7 @@ import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
+import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
 
 export default function App() {
     return (
@@ -51,10 +52,14 @@ export default function App() {
                         path="/pro/:id/establishment/create"
                         element={<EstablishmentCreatePage />}
                     ></Route>
-                    <Route path="event" element={<EventPage />}></Route>
+                    <Route path="/pro/establishment/event" element={<EventPage />}></Route>
                     <Route
-                        path="/pro/:id/event/list"
+                        path="/pro/establishment/:id/event/list"
                         element={<EventOfEstablishmentPage />}
+                    ></Route>
+                    <Route
+                        path="/pro/establishment/event/:id/create"
+                        element={<EventOfEstablishmentCreatePage />}
                     ></Route>
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>
