@@ -1,6 +1,10 @@
 import { BasicPage } from '../../../Components/CommonComponents/BasicPage';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import EuroIcon from '@mui/icons-material/Euro';
+import TagIcon from '@mui/icons-material/Tag';
+import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
@@ -33,11 +37,17 @@ export default function EventOfEstablishmentCreatePage() {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const token = user.token;
-    // const ownerId = user.userLogged.owner_id;
+    const ownerId = user.userLogged.owner_id;
     const [startEventFormatted, setStartEventFormatted] = useState('');
     const [endEventFormatted, setEndEventFormatted] = useState('');
     const [startTimeFormatted, setStartTimeFormatted] = useState('');
     const [endTimeFormatted, setEndTimeFormatted] = useState('');
+
+    const [reloading, setReloading] = useState(false);
+    const [establishment, setEstablishment] = useState([]);
+    const [establishmentName, setEstablishmentName] = useState('');
+    const [establishmentAddress, setEstablishmentAddress] = useState('');
+    const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
 
     //phone demo
     const [inputValues, setInputValues] = useState({
@@ -74,6 +84,41 @@ export default function EventOfEstablishmentCreatePage() {
         setOpenSnackbarCategoryError(false);
     };
 
+    // ------------------------  ESTABLISHMENT ------------------------------------------
+    // AXIOS GET
+    // This function is used to get the establishment to update by his ID
+    async function getEstablishment() {
+        try {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setEstablishment(response.data.data);
+            console.log(response.data.data);
+            console.log(establishment);
+
+            const myEstablishment = response.data.data;
+            const myEstablishmentAddress = myEstablishment.map((is) => is.address);
+            setEstablishmentAddress(myEstablishmentAddress[0] || '');
+
+            const myEstablishmentPostalCode = myEstablishment.map((is) => is.postal_code);
+            setEstablishmentPostalCode(myEstablishmentPostalCode[0] || '');
+
+            const myEstablishmentName = myEstablishment.map((is) => is.trade_name);
+            setEstablishmentName(myEstablishmentName[0] || '');
+
+            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.classList.remove('display');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     // ------------------------  CATEGORY ------------------------------------------
 
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
@@ -143,7 +188,9 @@ export default function EventOfEstablishmentCreatePage() {
 
     useEffect(() => {
         getAllCategories();
-    }, []);
+        getEstablishment();
+        setReloading(false);
+    }, [reloading]);
 
     useEffect(() => {
         console.log('categorie :', eventCategories);
@@ -322,14 +369,14 @@ export default function EventOfEstablishmentCreatePage() {
                                                 </div>
                                             </div>
 
-                                            <div className="m-2">
-                                                <div className="start-event flex">
+                                            <div className="mx-2 mt-3">
+                                                <div className="start-event flex items-center">
                                                     <div>
                                                         <CalendarMonthIcon
                                                             style={{ color: 'white', fontSize: 15 }}
                                                         />
                                                     </div>
-                                                    <div className="text-white">
+                                                    <div className="text-white text-xs ml-1">
                                                         {startEventFormatted}
                                                     </div>
                                                     <div>
@@ -341,17 +388,17 @@ export default function EventOfEstablishmentCreatePage() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <div className="text-white">
+                                                    <div className="text-white text-xs ml-1">
                                                         {startTimeFormatted}
                                                     </div>
                                                 </div>
-                                                <div className="end-event flex">
+                                                <div className="end-event flex items-center mt-1">
                                                     <div>
                                                         <CalendarMonthIcon
                                                             style={{ color: 'white', fontSize: 15 }}
                                                         />
                                                     </div>
-                                                    <div className="text-white">
+                                                    <div className="text-white text-xs ml-1">
                                                         {endEventFormatted}
                                                     </div>
                                                     <div>
@@ -363,13 +410,64 @@ export default function EventOfEstablishmentCreatePage() {
                                                             }}
                                                         />
                                                     </div>
-                                                    <div className="text-white">
+                                                    <div className="text-white text-xs ml-1">
                                                         {endTimeFormatted}
                                                     </div>
                                                 </div>
 
-                                                <div className="price-event">
-                                                    {inputValues.price}
+                                                <div className="text-white text-xs flex  mt-3">
+                                                    <div>
+                                                        <FmdGoodIcon
+                                                            style={{
+                                                                color: 'white',
+                                                                fontSize: 15,
+                                                            }}
+                                                        />
+                                                    </div>
+
+                                                    <div className="ml-1">
+                                                        <div className="establishment-name font-bold">
+                                                            {establishmentName}
+                                                        </div>
+                                                        <div className="establishment-address flex ">
+                                                            <div className="">
+                                                                {establishmentAddress}
+                                                            </div>
+                                                            <div className="ml-1">
+                                                                - {establishmentPostalCode}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div className="tags-event mt-3">
+                                                    <div>
+                                                        <TagIcon
+                                                            style={{ color: 'white', fontSize: 15 }}
+                                                        />
+                                                    </div>
+                                                    <div></div>
+                                                </div>
+
+                                                <div className="price-event flex mt-3">
+                                                    <div>
+                                                        <ConfirmationNumberIcon
+                                                            style={{ color: 'white', fontSize: 15 }}
+                                                        />
+                                                    </div>
+                                                    <div className="flex items-center">
+                                                        <div className="text-white text-sm ml-1">
+                                                            {inputValues.price}
+                                                        </div>
+                                                        <div className="ml-1">
+                                                            <EuroIcon
+                                                                style={{
+                                                                    color: 'white',
+                                                                    fontSize: 13,
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div className="description p-2 rounded-xl bg-white">
@@ -378,8 +476,6 @@ export default function EventOfEstablishmentCreatePage() {
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div className="home-button"></div>
                                     </div>
                                 </div>
                             </div>
