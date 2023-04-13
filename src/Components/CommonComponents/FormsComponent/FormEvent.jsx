@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
 
-export const FormEvent = ({ formik, setInputValues }) => {
+export const FormEvent = ({ formik, setInputValues, setSelectedImage }) => {
     const labelMap = {
         poster: 'Affiche de votre évènement',
         event_name: 'Nom de lévènement',
@@ -33,6 +33,7 @@ export const FormEvent = ({ formik, setInputValues }) => {
                                     ? 12
                                     : 6
                             }
+                            setSelectedImage={setSelectedImage}
                             label={labelMap[formFieldValue]}
                             onBlur={formik.handleBlur}
                             onChange={(event, fileList) => {
@@ -69,7 +70,20 @@ export const FormEvent = ({ formik, setInputValues }) => {
                     ))}
                 </Grid>
             </Box>
-            <Box display="flex" justifyContent="end" mt="20px"></Box>
+
+            <Box display="flex" justifyContent="end" mt="20px" mb="20px">
+                <div className="w-fit inline-block text-white lg:text-xl">
+                    <button className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg">
+                        Annuler
+                    </button>
+                </div>
+                <button
+                    type="submit"
+                    className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
+                >
+                    Envoyer
+                </button>
+            </Box>
         </>
     );
 };
@@ -77,4 +91,5 @@ export const FormEvent = ({ formik, setInputValues }) => {
 FormEvent.propTypes = {
     formik: PropTypes.object,
     setInputValues: PropTypes.func,
+    setSelectedImage: PropTypes.func,
 };

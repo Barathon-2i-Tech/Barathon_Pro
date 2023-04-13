@@ -12,6 +12,7 @@ export const FormFieldModel = ({
     name,
     error,
     helperText,
+    setSelectedImage,
 }) => {
     const isLogoField = name === 'logo' || name === 'poster';
     const isDateTimePickerField = name === 'start_event' || name === 'end_event';
@@ -22,6 +23,7 @@ export const FormFieldModel = ({
             const fileList = event.target.files;
             setFileName(fileList[0].name);
             onChange(event, fileList);
+            setSelectedImage(URL.createObjectURL(fileList[0]));
         } else {
             onChange(event);
         }
@@ -33,7 +35,7 @@ export const FormFieldModel = ({
                 <Box display="flex" alignItems="center">
                     <Button variant="contained" component="label">
                         <UploadIcon style={{ marginRight: '8px' }} />
-                        Téléchargez un logo
+                        Téléchargez votre ficher
                         <input
                             hidden
                             accept="image/*"
@@ -98,4 +100,5 @@ FormFieldModel.propTypes = {
     onChange: PropTypes.func.isRequired,
     error: PropTypes.bool,
     helperText: PropTypes.string,
+    setSelectedImage: PropTypes.func,
 };

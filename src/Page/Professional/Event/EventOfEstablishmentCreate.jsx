@@ -2,7 +2,6 @@ import { BasicPage } from '../../../Components/CommonComponents/BasicPage';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EuroIcon from '@mui/icons-material/Euro';
-import TagIcon from '@mui/icons-material/Tag';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -11,16 +10,17 @@ import Link from '@mui/material/Link';
 import '../../../css/Professional/Loader.css';
 import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
+import { sendFormDataPost } from '../../../utils/AxiosModel';
 import { useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
+import Parser from 'html-react-parser';
 
 import { eventSchema } from '../../../utils/FormSchemaValidation';
 import { Box, Button, Grid } from '@mui/material';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
 
-// import { sendFormDataPost } from '../../utils/AxiosModel';
 import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm';
 import { FormEvent } from '../../../Components/CommonComponents/FormsComponent/FormEvent';
 import Axios from '../../../utils/axiosUrl';
@@ -49,6 +49,10 @@ export default function EventOfEstablishmentCreatePage() {
     const [establishmentAddress, setEstablishmentAddress] = useState('');
     const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
 
+    const [selectedImage, setSelectedImage] = useState(
+        'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
+    );
+
     //phone demo
     const [inputValues, setInputValues] = useState({
         poster: '',
@@ -72,7 +76,7 @@ export default function EventOfEstablishmentCreatePage() {
     // This function is used to navigate to the home page
     // It will be called when the button is clicked
     // const goBack = () => {
-    //     navigate('/');
+    //     navigate(`/pro/establishment/${establishmentId}/event/list`);
     // };
 
     // ------------------------  TOAST ------------------------------------------
@@ -228,67 +232,68 @@ export default function EventOfEstablishmentCreatePage() {
         initialValues: FormInitialValuesEvent,
         enableReinitialize: true,
         validationSchema: eventSchema,
-        // onSubmit: (values) => handleFormSubmit(values),
+        onSubmit: (values) => handleFormSubmit(values),
     });
 
     // ------------------------  SUBMIT ------------------------------------------
 
-    // const handleFormSubmit = (values) => {
-    //     // Include the logic from handleFormSubmitOpening to save opening hours
-    //     const dataValuesOpening = { ...formikOpening.values };
-    //     setOpening(dataValuesOpening);
-    //     console.log(opening);
+    const handleFormSubmit = (values) => {
+        const dataValues = { ...values };
+        const urlCreate = `pro/events`;
 
-    //     // Replace openingFormat with JSON.stringify(dataValuesOpening)
-    //     const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
-    //     const urlCreate = `/pro/${ownerId}/establishment`;
+        // Créer un nouvel objet FormData
+        const formData = new FormData();
 
-    //     // Créer un nouvel objet FormData
-    //     const formData = new FormData();
+        // Ajouter les paires clé-valeur au FormData
+        for (const [key, value] of Object.entries(dataValues)) {
+            if (key === 'poster' && value) {
+                // Si la clé est 'poster', ajoutez le fichier image et non son chemin
+                formData.append(key, value[0]);
+            } else {
+                formData.append(key, value);
+            }
+        }
 
-    //     // Ajouter les paires clé-valeur au FormData
-    //     for (const [key, value] of Object.entries(dataValues)) {
-    //         if (key === 'logo' && value) {
-    //             // Si la clé est 'logo', ajoutez le fichier image et non son chemin
-    //             formData.append(key, value[0]);
-    //         } else {
-    //             formData.append(key, value);
-    //         }
-    //     }
+        const logFormData = (formData) => {
+            for (const [key, value] of formData.entries()) {
+                console.log(`${key}:`, value);
+            }
+        };
 
-    //     // Create the establishment
-    //     sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
-    //         .then((response) => {
-    //             // Get the newly created establishment ID
-    //             const newEstablishmentId = response.data.data[0].establishment_id;
+        logFormData(formData);
 
-    //             // Associate categories to the new establishment
-    //             const dataValuesCategories = { options: establishmentCategories };
-    //             const urlCreateCategories = `/pro/establishment/${newEstablishmentId}/category`;
+        // Create the establishment
+        sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+            .then((response) => {
+                console.log(response.data.data[0].event_id);
+                // Associate categories to the new establishment
+                const dataValuesCategories = { options: eventCategories };
+                const urlCreateCategories = `/pro/establishment/${establishmentId}/category`;
 
-    //             sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
-    //                 .then(() => {
-    //                     // Show success message
-    //                     setOpenSnackbar(true);
-    //                     // Navigate to the home page after a delay of 1.5 seconds
-    //                     setTimeout(() => {
-    //                         goBack();
-    //                     }, 1500);
-    //                 })
-    //                 .catch((e) => {
-    //                     console.error(e);
-    //                     console.error(e.response.data);
-    //                     alert('Une erreur ');
-    //                 });
-    //         })
-    //         .catch((e) => {
-    //             console.error(e);
-    //             console.error(e.response.data);
-    //             alert(
-    //                 "Une erreur est survenue lors de la création de l'établissement. Merci de réessayer",
-    //             );
-    //         });
-    // };
+                sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
+                    .then(() => {
+                        // Show success message
+                        setOpenSnackbar(true);
+                        // Navigate to the home page after a delay of 1.5 seconds
+                        setTimeout(() => {
+                            // goBack();
+                            console.log('ok');
+                        }, 1500);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                        console.error(e.response.data);
+                        alert('Une erreur ');
+                    });
+            })
+            .catch((e) => {
+                console.error(e);
+                console.error(e.response.data);
+                alert(
+                    "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
+                );
+            });
+    };
 
     return (
         <Paper
@@ -343,7 +348,11 @@ export default function EventOfEstablishmentCreatePage() {
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
                             <form onSubmit={formikEvent.handleSubmit}>
-                                <FormEvent formik={formikEvent} setInputValues={setInputValues} />
+                                <FormEvent
+                                    formik={formikEvent}
+                                    setInputValues={setInputValues}
+                                    setSelectedImage={setSelectedImage}
+                                />
                             </form>
                         </Grid>
                         <Grid item xs={12} md={6}>
@@ -359,13 +368,15 @@ export default function EventOfEstablishmentCreatePage() {
                                         <div className="container-event">
                                             <div className="poster-event relative">
                                                 <img
-                                                    className="fit-picture"
-                                                    src="https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/cocktail-bibliotheque-comptoir-du-bar-lounge-boisson-relaxante_482257-24605.jpeg"
+                                                    className="fit-picture object-cover	object-top"
+                                                    src={selectedImage}
                                                     alt="poster"
                                                 />
 
-                                                <div className="name-event text-white absolute bottom-0 right-0 left-0 text-center font-bold pb-4 bck-black-gradient">
-                                                    {inputValues.event_name}
+                                                <div className="name-event text-xl text-white absolute bottom-0 right-0 left-0 text-center font-bold pb-4 bck-black-gradient">
+                                                    {inputValues.event_name
+                                                        ? inputValues.event_name
+                                                        : "Nom de l'événement"}
                                                 </div>
                                             </div>
 
@@ -441,15 +452,33 @@ export default function EventOfEstablishmentCreatePage() {
                                                 </div>
 
                                                 <div className="tags-event mt-3">
-                                                    <div>
-                                                        <TagIcon
-                                                            style={{ color: 'white', fontSize: 15 }}
-                                                        />
+                                                    <div className="categories-event flex flex-wrap">
+                                                        {categoriesSelected.map((category) => {
+                                                            const categoryDetails = JSON.parse(
+                                                                category.category_details,
+                                                            );
+                                                            return (
+                                                                <div
+                                                                    key={category.category_id}
+                                                                    className="category-item flex flex-wrap"
+                                                                >
+                                                                    <div className="categories_selected-list_icon-container w-fit flex flex-wrap text-white text-xs rounded-lg">
+                                                                        <div className="categories_selected-list_icon categories_selected-list_icon-svg pr-2 w-fit">
+                                                                            {Parser(
+                                                                                categoryDetails.icon,
+                                                                            )}
+                                                                        </div>
+                                                                        <div className="categories_selected-list_label w-fit pr-2">
+                                                                            {categoryDetails.label}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
                                                     </div>
-                                                    <div></div>
                                                 </div>
 
-                                                <div className="price-event flex mt-3">
+                                                <div className="price-event flex mt-1">
                                                     <div>
                                                         <ConfirmationNumberIcon
                                                             style={{ color: 'white', fontSize: 15 }}
@@ -457,7 +486,9 @@ export default function EventOfEstablishmentCreatePage() {
                                                     </div>
                                                     <div className="flex items-center">
                                                         <div className="text-white text-sm ml-1">
-                                                            {inputValues.price}
+                                                            {inputValues.price
+                                                                ? `${inputValues.price}`
+                                                                : '0'}
                                                         </div>
                                                         <div className="ml-1">
                                                             <EuroIcon
@@ -469,10 +500,13 @@ export default function EventOfEstablishmentCreatePage() {
                                                         </div>
                                                     </div>
                                                 </div>
-
-                                                <div className="description p-2 rounded-xl bg-white">
-                                                    <div className="font-bold">Details :</div>
-                                                    <div>{inputValues.description}</div>
+                                            </div>
+                                            <div className="description-event p-2 mt-4 rounded-xl bg-white">
+                                                <div className="font-bold">Details :</div>
+                                                <div>
+                                                    {inputValues.description
+                                                        ? inputValues.description
+                                                        : `Description de l'événement... Entrez les détails importants ici. Informations sur les horaires, les intervenants, etc.`}
                                                 </div>
                                             </div>
                                         </div>
