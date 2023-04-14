@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
+import Link from '@mui/material/Link';
 
-export const FormEvent = ({ formik, setInputValues, setSelectedImage }) => {
+export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishmentId }) => {
     const labelMap = {
         poster: 'Affiche de votre évènement',
         event_name: 'Nom de lévènement',
@@ -72,10 +73,25 @@ export const FormEvent = ({ formik, setInputValues, setSelectedImage }) => {
             </Box>
 
             <Box display="flex" justifyContent="end" mt="20px" mb="20px">
-                <div className="w-fit inline-block text-white lg:text-xl">
-                    <button className="w-fit mr-2 bg-red-700 hover:border-solid hover:border-white-900 hover:border-2 pt-2 pb-2 pr-4 pl-4 rounded-lg">
+                <div className="w-fit inline-block text-white lg:text-xl ">
+                    <Link
+                        style={{
+                            borderRadius: '8px',
+                            border: '1px solid transparent',
+                            padding: '0.6em 1.2em',
+                            fontSize: '1em',
+                            cursor: 'pointer',
+                            transition: 'border-color 0.25s',
+                            textDecoration: 'none',
+                            color: 'white',
+                            display: 'inline-block',
+                            backgroundColor: '#b91c1c',
+                        }}
+                        className="font-bold bg-red-700 rounded-lg"
+                        href={`/pro/establishment/${establishmentId}/event/list`}
+                    >
                         Annuler
-                    </button>
+                    </Link>
                 </div>
                 <button
                     type="submit"
@@ -92,4 +108,5 @@ FormEvent.propTypes = {
     formik: PropTypes.object,
     setInputValues: PropTypes.func,
     setSelectedImage: PropTypes.func,
+    establishmentId: PropTypes.number,
 };

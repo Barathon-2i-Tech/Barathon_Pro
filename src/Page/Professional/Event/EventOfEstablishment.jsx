@@ -167,14 +167,14 @@ export default function EventOfEstablishmentPage() {
         id: event.event_id,
         event_id: event.event_id,
         event_name: event.event_name,
-        poster: event.poster,
+        poster_url: event.poster_url,
         status: JSON.parse(event.comment),
         deleted_at: event.deleted_at,
     }));
 
     const eventColumns = [
         {
-            field: 'poster', //'poster_url',
+            field: 'poster_url', //'poster_url',
             headerName: 'Poster',
             flex: 0.1,
             headerAlign: 'center',

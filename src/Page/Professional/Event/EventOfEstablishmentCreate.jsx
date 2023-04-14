@@ -1,9 +1,4 @@
 import { BasicPage } from '../../../Components/CommonComponents/BasicPage';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import EuroIcon from '@mui/icons-material/Euro';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
-import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import BusinessIcon from '@mui/icons-material/Business';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
@@ -11,23 +6,19 @@ import '../../../css/Professional/Loader.css';
 import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
 import { sendFormDataPost } from '../../../utils/AxiosModel';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-import Parser from 'html-react-parser';
-
 import { eventSchema } from '../../../utils/FormSchemaValidation';
 import { Box, Button, Grid } from '@mui/material';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-
 import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm';
 import { FormEvent } from '../../../Components/CommonComponents/FormsComponent/FormEvent';
 import Axios from '../../../utils/axiosUrl';
-// import { useNavigate } from 'react-router-dom';
-
 import { FormSelect } from '../../../Components/CommonComponents/FormsComponent/FormSelect';
 import { selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
+import { EventPhoneDemo } from '../../../Components/CommonComponents/PhoneDemo/EventPhoneDemo';
 
 export default function EventOfEstablishmentCreatePage() {
     const [allCategories, setAllCategories] = useState([]);
@@ -38,6 +29,7 @@ export default function EventOfEstablishmentCreatePage() {
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+    const userId = user.userLogged.user_id;
     const [startEventFormatted, setStartEventFormatted] = useState('');
     const [endEventFormatted, setEndEventFormatted] = useState('');
     const [startTimeFormatted, setStartTimeFormatted] = useState('');
@@ -71,13 +63,13 @@ export default function EventOfEstablishmentCreatePage() {
 
     // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // This function is used to navigate to the home page
     // It will be called when the button is clicked
-    // const goBack = () => {
-    //     navigate(`/pro/establishment/${establishmentId}/event/list`);
-    // };
+    const goBack = () => {
+        navigate(`/pro/establishment/${establishmentId}/event/list`);
+    };
 
     // ------------------------  TOAST ------------------------------------------
     const handleSnackbarClose = (event, reason) => {
@@ -169,20 +161,20 @@ export default function EventOfEstablishmentCreatePage() {
         //     //toast MUI
         //setOpenSnackbarOpening(true);
 
-        //     // Mettre à jour les catégories de l'établissement
+        // Mettre à jour les catégories de l'établissement
         const updatedCategories = allCategories.filter((category) =>
             values.options.includes(category.category_id),
         );
         const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
 
-        //     // avoir la liste des categories selectionner en state pour les lister
+        // avoir la liste des categories selectionner en state pour les lister
         setCategoriesSelected(updatedCategories);
 
-        //     // Créer l'objet avec la propriété "option"
+        // Créer l'objet avec la propriété "option"
         // const optionObj = { option: updatedCategoryIds };
         setEventCategories(updatedCategoryIds);
 
-        //     // Mettre à jour les options sélectionnées dans formikCategories.values
+        // Mettre à jour les options sélectionnées dans formikCategories.values
         const newOptions = values.options.concat(updatedCategoryIds);
         formikCategories.setValues({
             ...formikCategories.values,
@@ -238,7 +230,7 @@ export default function EventOfEstablishmentCreatePage() {
     // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
-        const dataValues = { ...values };
+        const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
         const urlCreate = `pro/events`;
 
         // Créer un nouvel objet FormData
@@ -266,9 +258,12 @@ export default function EventOfEstablishmentCreatePage() {
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {
                 console.log(response.data.data[0].event_id);
+                const newEventId = response.data.data[0].event_id;
                 // Associate categories to the new establishment
                 const dataValuesCategories = { options: eventCategories };
-                const urlCreateCategories = `/pro/establishment/${establishmentId}/category`;
+                const urlCreateCategories = `/pro/event/${newEventId}/category`;
+
+                console.log('datavalues categories :' + dataValuesCategories.options);
 
                 sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
                     .then(() => {
@@ -276,7 +271,7 @@ export default function EventOfEstablishmentCreatePage() {
                         setOpenSnackbar(true);
                         // Navigate to the home page after a delay of 1.5 seconds
                         setTimeout(() => {
-                            // goBack();
+                            goBack();
                             console.log('ok');
                         }, 1500);
                     })
@@ -352,167 +347,23 @@ export default function EventOfEstablishmentCreatePage() {
                                     formik={formikEvent}
                                     setInputValues={setInputValues}
                                     setSelectedImage={setSelectedImage}
+                                    establishmentId={establishmentId}
                                 />
                             </form>
                         </Grid>
                         <Grid item xs={12} md={6}>
-                            <div className="container-iphone">
-                                <div className="phone-iphone">
-                                    <div className="camera-iphone"></div>
-                                    <div className="speaker-iphone"></div>
-                                    <div className="sleep-button-iphone"></div>
-                                    <div className="silent-switch-iphone"></div>
-                                    <div className="volume-iphone up"></div>
-                                    <div className="volume-iphone down"></div>
-                                    <div className="screen-iphone">
-                                        <div className="container-event">
-                                            <div className="poster-event relative">
-                                                <img
-                                                    className="fit-picture object-cover	object-top"
-                                                    src={selectedImage}
-                                                    alt="poster"
-                                                />
-
-                                                <div className="name-event text-xl text-white absolute bottom-0 right-0 left-0 text-center font-bold pb-4 bck-black-gradient">
-                                                    {inputValues.event_name
-                                                        ? inputValues.event_name
-                                                        : "Nom de l'événement"}
-                                                </div>
-                                            </div>
-
-                                            <div className="mx-2 mt-3">
-                                                <div className="start-event flex items-center">
-                                                    <div>
-                                                        <CalendarMonthIcon
-                                                            style={{ color: 'white', fontSize: 15 }}
-                                                        />
-                                                    </div>
-                                                    <div className="text-white text-xs ml-1">
-                                                        {startEventFormatted}
-                                                    </div>
-                                                    <div>
-                                                        <AccessTimeIcon
-                                                            style={{
-                                                                color: 'white',
-                                                                fontSize: 15,
-                                                                marginLeft: 8,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div className="text-white text-xs ml-1">
-                                                        {startTimeFormatted}
-                                                    </div>
-                                                </div>
-                                                <div className="end-event flex items-center mt-1">
-                                                    <div>
-                                                        <CalendarMonthIcon
-                                                            style={{ color: 'white', fontSize: 15 }}
-                                                        />
-                                                    </div>
-                                                    <div className="text-white text-xs ml-1">
-                                                        {endEventFormatted}
-                                                    </div>
-                                                    <div>
-                                                        <AccessTimeIcon
-                                                            style={{
-                                                                color: 'white',
-                                                                fontSize: 15,
-                                                                marginLeft: 8,
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <div className="text-white text-xs ml-1">
-                                                        {endTimeFormatted}
-                                                    </div>
-                                                </div>
-
-                                                <div className="text-white text-xs flex  mt-3">
-                                                    <div>
-                                                        <FmdGoodIcon
-                                                            style={{
-                                                                color: 'white',
-                                                                fontSize: 15,
-                                                            }}
-                                                        />
-                                                    </div>
-
-                                                    <div className="ml-1">
-                                                        <div className="establishment-name font-bold">
-                                                            {establishmentName}
-                                                        </div>
-                                                        <div className="establishment-address flex ">
-                                                            <div className="">
-                                                                {establishmentAddress}
-                                                            </div>
-                                                            <div className="ml-1">
-                                                                - {establishmentPostalCode}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="tags-event mt-3">
-                                                    <div className="categories-event flex flex-wrap">
-                                                        {categoriesSelected.map((category) => {
-                                                            const categoryDetails = JSON.parse(
-                                                                category.category_details,
-                                                            );
-                                                            return (
-                                                                <div
-                                                                    key={category.category_id}
-                                                                    className="category-item flex flex-wrap"
-                                                                >
-                                                                    <div className="categories_selected-list_icon-container w-fit flex flex-wrap text-white text-xs rounded-lg">
-                                                                        <div className="categories_selected-list_icon categories_selected-list_icon-svg pr-2 w-fit">
-                                                                            {Parser(
-                                                                                categoryDetails.icon,
-                                                                            )}
-                                                                        </div>
-                                                                        <div className="categories_selected-list_label w-fit pr-2">
-                                                                            {categoryDetails.label}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            );
-                                                        })}
-                                                    </div>
-                                                </div>
-
-                                                <div className="price-event flex mt-1">
-                                                    <div>
-                                                        <ConfirmationNumberIcon
-                                                            style={{ color: 'white', fontSize: 15 }}
-                                                        />
-                                                    </div>
-                                                    <div className="flex items-center">
-                                                        <div className="text-white text-sm ml-1">
-                                                            {inputValues.price
-                                                                ? `${inputValues.price}`
-                                                                : '0'}
-                                                        </div>
-                                                        <div className="ml-1">
-                                                            <EuroIcon
-                                                                style={{
-                                                                    color: 'white',
-                                                                    fontSize: 13,
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="description-event p-2 mt-4 rounded-xl bg-white">
-                                                <div className="font-bold">Details :</div>
-                                                <div>
-                                                    {inputValues.description
-                                                        ? inputValues.description
-                                                        : `Description de l'événement... Entrez les détails importants ici. Informations sur les horaires, les intervenants, etc.`}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <EventPhoneDemo
+                                selectedImage={selectedImage}
+                                inputValues={inputValues}
+                                startEventFormatted={startEventFormatted}
+                                startTimeFormatted={startTimeFormatted}
+                                endEventFormatted={endEventFormatted}
+                                endTimeFormatted={endTimeFormatted}
+                                establishmentName={establishmentName}
+                                establishmentAddress={establishmentAddress}
+                                establishmentPostalCode={establishmentPostalCode}
+                                categoriesSelected={categoriesSelected}
+                            />
                         </Grid>
                     </Grid>
                 </Box>
