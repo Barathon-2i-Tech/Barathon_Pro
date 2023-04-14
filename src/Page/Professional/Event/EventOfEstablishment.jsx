@@ -245,7 +245,7 @@ export default function EventOfEstablishmentPage() {
                                 params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
-                                    : `/pro/eventForm/${params.row.event_id}`
+                                    : `/pro/establishment/${establishmentId}/event/${params.row.event_id}/update`
                             }
                             component={
                                 params.row.status.code === 'EVENT_PENDING' ||

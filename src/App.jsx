@@ -24,6 +24,7 @@ import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
 import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
+import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
 
 export default function App() {
     return (
@@ -60,6 +61,10 @@ export default function App() {
                     <Route
                         path="/pro/establishment/event/:id/create"
                         element={<EventOfEstablishmentCreatePage />}
+                    ></Route>
+                    <Route
+                        path="/pro/establishment/:establishmentIdParam/event/:eventIdParam/update"
+                        element={<EventOfEstablishmentUpdatePage />}
                     ></Route>
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>
