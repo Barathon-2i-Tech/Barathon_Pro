@@ -124,7 +124,7 @@ export default function EventOfEstablishmentPage() {
 
     const deleteEvent = (id) => {
         Axios.api
-            .delete(`/pro/${ownerId}/event/${id}`, {
+            .delete(`/pro/event/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
