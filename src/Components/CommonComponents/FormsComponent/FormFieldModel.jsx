@@ -23,7 +23,9 @@ export const FormFieldModel = ({
             const fileList = event.target.files;
             setFileName(fileList[0].name);
             onChange(event, fileList);
-            setSelectedImage(URL.createObjectURL(fileList[0]));
+            if (typeof setSelectedImage === 'function') {
+                setSelectedImage(URL.createObjectURL(fileList[0]));
+            }
         } else {
             onChange(event);
         }
@@ -101,4 +103,8 @@ FormFieldModel.propTypes = {
     error: PropTypes.bool,
     helperText: PropTypes.string,
     setSelectedImage: PropTypes.func,
+};
+
+FormFieldModel.defaultProps = {
+    setSelectedImage: () => {},
 };

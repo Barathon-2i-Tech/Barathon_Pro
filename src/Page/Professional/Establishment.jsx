@@ -132,7 +132,7 @@ export default function EstablishmentPage() {
         trade_name: establishment.trade_name,
         opening: JSON.parse(establishment.opening),
         siret: establishment.siret,
-        logo_url: establishment.logo_url,
+        logo: establishment.logo,
         phone: establishment.phone,
         address: establishment.address,
         postal_code: establishment.postal_code,
@@ -144,7 +144,7 @@ export default function EstablishmentPage() {
 
     const establishmentColumns = [
         {
-            field: 'logo_url',
+            field: 'logo',
             headerName: 'Logo',
             flex: 0.1,
             headerAlign: 'center',

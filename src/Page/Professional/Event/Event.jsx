@@ -119,7 +119,7 @@ export default function EventPage() {
                                         <div className="event-card-hover__card-container-img  card-event__img-transition">
                                             <img
                                                 className="card-hover__img  w-full py-4"
-                                                src={establishment.logo_url}
+                                                src={establishment.logo}
                                                 alt="pub"
                                                 width="300"
                                                 height="100"
