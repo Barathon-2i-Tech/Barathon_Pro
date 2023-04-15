@@ -14,7 +14,7 @@ import GavelIcon from '@mui/icons-material/Gavel';
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton href="/pro/dashboard" disabled sx={{ color: 'grey' }}>
+        <ListItemButton href="/pro/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
