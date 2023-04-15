@@ -59,7 +59,7 @@ export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishm
                                     }
                                 }
                             }}
-                            value={formFieldValue === 'poster' ? '' : formik.values[formFieldValue]} // Modifiez cette ligne
+                            value={formik.values[formFieldValue] || ''} // Modifiez cette ligne
                             name={formFieldValue}
                             error={
                                 !!formik.touched[formFieldValue] && !!formik.errors[formFieldValue]

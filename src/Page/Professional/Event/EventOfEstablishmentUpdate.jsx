@@ -5,7 +5,7 @@ import Link from '@mui/material/Link';
 import '../../../css/Professional/Loader.css';
 import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
-import { sendFormDataPost } from '../../../utils/AxiosModel';
+import { sendFormDataPutMultipart, sendFormDataPutCategory } from '../../../utils/AxiosModel';
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
@@ -24,6 +24,7 @@ export default function EventOfEstablishmentUpdatePage() {
     const [allCategories, setAllCategories] = useState([]);
     const [eventCategories, setEventCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
+    const [posterUrl, setPosterUrl] = useState('');
 
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -44,9 +45,7 @@ export default function EventOfEstablishmentUpdatePage() {
     const [establishmentAddress, setEstablishmentAddress] = useState('');
     const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
 
-    const [selectedImage, setSelectedImage] = useState(
-        'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
-    );
+    const [selectedImage, setSelectedImage] = useState('');
 
     //phone demo
     const [inputValues, setInputValues] = useState({
@@ -141,6 +140,12 @@ export default function EventOfEstablishmentUpdatePage() {
             );
             setEvent(response.data.data);
             console.log('log event get :', event);
+
+            // Récupérer l'URL du poster et la stocker dans l'état posterUrl
+            const poster = response.data.data.poster; // Remplacez "poster" par la clé appropriée pour récupérer l'URL du poster
+            setPosterUrl(poster);
+            console.log('log poster :', poster);
+
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
             if (loader) {
@@ -175,10 +180,10 @@ export default function EventOfEstablishmentUpdatePage() {
             console.log(error);
         }
     }
-    // This function is used to get All categories of The establishment to update
+    // This function is used to get All categories of The event to update ////A FAIIIRE !!!!!!!!!!!!!! BACKEND  ///////////////////////
     async function getEventCategory() {
         try {
-            const response = await Axios.api.get(`/categories/establishment/${establishmentId}`, {
+            const response = await Axios.api.get(`/pro/event/${eventId}/category`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -213,7 +218,7 @@ export default function EventOfEstablishmentUpdatePage() {
             : [];
     };
 
-    //This const is for formik shema and action to form Opening
+    //This const is for formik shema and action to form categorie
     const formikCategories = useFormik({
         initialValues: {
             options: [],
@@ -246,6 +251,20 @@ export default function EventOfEstablishmentUpdatePage() {
             ...formikCategories.values,
             options: newOptions,
         });
+
+        // Envoi des données de catégories formatées
+        const urlCreateCategories = `/pro/event/${eventId}/category`;
+        const dataValuesCategories = { options: updatedCategoryIds };
+
+        sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
+            .then(() => {
+                console.log('mise a jours des category');
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+                // console.table(dataValuesCategories);
+            });
     };
 
     useEffect(() => {
@@ -258,6 +277,13 @@ export default function EventOfEstablishmentUpdatePage() {
     useEffect(() => {
         console.log('categorie :', eventCategories);
     }, [eventCategories]);
+
+    useEffect(() => {
+        setSelectedImage(
+            posterUrl ||
+                'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
+        );
+    }, [posterUrl]);
 
     useEffect(() => {
         getEventCategory();
@@ -301,7 +327,7 @@ export default function EventOfEstablishmentUpdatePage() {
 
     const handleFormSubmit = (values) => {
         const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
-        const urlCreate = `pro/events`;
+        const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
 
         // Créer un nouvel objet FormData
         const formData = new FormData();
@@ -325,31 +351,13 @@ export default function EventOfEstablishmentUpdatePage() {
         logFormData(formData);
 
         // Create the establishment
-        sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
-            .then((response) => {
-                console.log(response.data.data[0].event_id);
-                const newEventId = response.data.data[0].event_id;
-                // Associate categories to the new establishment
-                const dataValuesCategories = { options: eventCategories };
-                const urlCreateCategories = `/pro/event/${newEventId}/category`;
-
-                console.log('datavalues categories :' + dataValuesCategories.options);
-
-                sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
-                    .then(() => {
-                        // Show success message
-                        setOpenSnackbar(true);
-                        // Navigate to the home page after a delay of 1.5 seconds
-                        setTimeout(() => {
-                            goBack();
-                            console.log('ok');
-                        }, 1500);
-                    })
-                    .catch((e) => {
-                        console.error(e);
-                        console.error(e.response.data);
-                        alert('Une erreur ');
-                    });
+        sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+            .then(() => {
+                console.log('ca a mit a jours');
+                // Navigate to the home page after a delay of 1.5 seconds
+                setTimeout(() => {
+                    goBack();
+                }, 1500);
             })
             .catch((e) => {
                 console.error(e);
