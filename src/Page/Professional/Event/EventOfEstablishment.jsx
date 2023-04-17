@@ -139,13 +139,6 @@ export default function EventOfEstablishmentPage() {
             });
     };
 
-    function getRowClassName(params) {
-        if (params.row.deleted_at !== null) {
-            return 'hidden-row';
-        }
-        return 'text-center';
-    }
-
     function getStatus(params) {
         switch (params.row.status.code) {
             case 'EVENT_VALID':
@@ -322,7 +315,6 @@ export default function EventOfEstablishmentPage() {
                         padding: '10px',
                     },
                 }}
-                getRowClassName={getRowClassName}
                 getRowHeight={() => 'auto'}
             />
             <Copyright sx={{ pt: 4, pb: 4 }} />

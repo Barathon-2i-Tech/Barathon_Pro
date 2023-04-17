@@ -9,7 +9,7 @@ import { sendFormDataPutMultipart, sendFormDataPutCategory } from '../../../util
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-import { eventSchema } from '../../../utils/FormSchemaValidation';
+import { eventSchema, selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
 import { Box, Button, Grid } from '@mui/material';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
@@ -17,7 +17,6 @@ import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm'
 import { FormEvent } from '../../../Components/CommonComponents/FormsComponent/FormEvent';
 import Axios from '../../../utils/axiosUrl';
 import { FormSelect } from '../../../Components/CommonComponents/FormsComponent/FormSelect';
-import { selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
 import { EventPhoneDemo } from '../../../Components/CommonComponents/PhoneDemo/EventPhoneDemo';
 
 export default function EventOfEstablishmentUpdatePage() {
@@ -100,18 +99,15 @@ export default function EventOfEstablishmentUpdatePage() {
                 },
             );
             setEstablishment(response.data.data);
-
             setIsEventDataLoaded(true);
 
-            console.log('log establishment get :', establishment);
-            const myEstablishment = response.data.data;
-            const myEstablishmentAddress = myEstablishment.map((is) => is.address);
+            const myEstablishmentAddress = establishment.map((is) => is.address);
             setEstablishmentAddress(myEstablishmentAddress[0] || '');
 
-            const myEstablishmentPostalCode = myEstablishment.map((is) => is.postal_code);
+            const myEstablishmentPostalCode = establishment.map((is) => is.postal_code);
             setEstablishmentPostalCode(myEstablishmentPostalCode[0] || '');
 
-            const myEstablishmentName = myEstablishment.map((is) => is.trade_name);
+            const myEstablishmentName = establishment.map((is) => is.trade_name);
             setEstablishmentName(myEstablishmentName[0] || '');
 
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
@@ -139,12 +135,10 @@ export default function EventOfEstablishmentUpdatePage() {
                 },
             );
             setEvent(response.data.data);
-            console.log('log event get :', event);
 
             // Récupérer l'URL du poster et la stocker dans l'état posterUrl
             const poster = response.data.data.poster; // Remplacez "poster" par la clé appropriée pour récupérer l'URL du poster
             setPosterUrl(poster);
-            console.log('log poster :', poster);
 
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
             const loader = document.getElementById('loader');
@@ -260,10 +254,9 @@ export default function EventOfEstablishmentUpdatePage() {
             .then(() => {
                 console.log('mise a jours des category');
             })
-            .catch((e) => {
-                console.error(e);
+            .catch((error) => {
+                console.log(error);
                 alert('Une erreur est survenue. Merci de réessayer');
-                // console.table(dataValuesCategories);
             });
     };
 
@@ -273,10 +266,6 @@ export default function EventOfEstablishmentUpdatePage() {
         getEvent();
         setReloading(false);
     }, [reloading]);
-
-    useEffect(() => {
-        console.log('categorie :', eventCategories);
-    }, [eventCategories]);
 
     useEffect(() => {
         setSelectedImage(
@@ -342,26 +331,16 @@ export default function EventOfEstablishmentUpdatePage() {
             }
         }
 
-        const logFormData = (formData) => {
-            for (const [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
-            }
-        };
-
-        logFormData(formData);
-
         // Create the establishment
         sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then(() => {
-                console.log('ca a mit a jours');
                 // Navigate to the home page after a delay of 1.5 seconds
                 setTimeout(() => {
                     goBack();
                 }, 1500);
             })
-            .catch((e) => {
-                console.error(e);
-                console.error(e.response.data);
+            .catch((error) => {
+                console.log(error);
                 alert(
                     "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
                 );

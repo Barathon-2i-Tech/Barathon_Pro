@@ -16,28 +16,75 @@ export default function EventPage() {
     const ownerId = user.userLogged.owner_id;
 
     const [allEstablishments, setAllEstablishments] = useState([]);
-    const [reloading, setReloading] = useState(false);
 
-    async function getEstablishments() {
-        try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setAllEstablishments(response.data.data);
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        async function getEstablishments() {
+            try {
+                const response = await Axios.api.get(`/pro/${ownerId}/establishment`, {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                setAllEstablishments(response.data.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEstablishments();
+    }, [ownerId, token]);
+
+    function getLinkProps(commentCode, establishment) {
+        if (commentCode === 'ESTABL_PENDING' || commentCode === 'ESTABL_REFUSE') {
+            return {
+                component: Box,
+                href: '',
+                className:
+                    'absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer',
+            };
+        } else {
+            return {
+                component: 'a',
+                href: `/pro/establishment/${establishment.establishment_id}/event/list`,
+                className:
+                    'absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer',
+            };
         }
     }
 
-    useEffect(() => {
-        getEstablishments();
+    function getBackgroundColor(commentCode) {
+        if (commentCode === 'ESTABL_PENDING') {
+            return 'bg-orange-500';
+        } else if (commentCode === 'ESTABL_REFUSE') {
+            return 'bg-red-500';
+        } else if (commentCode === 'ESTABL_VALID') {
+            return 'bg-green-500';
+        } else {
+            return '';
+        }
+    }
 
-        setReloading(false);
-    }, [reloading]);
+    function getStatusText(commentCode) {
+        if (commentCode === 'ESTABL_PENDING') {
+            return 'En attente de validation';
+        } else if (commentCode === 'ESTABL_REFUSE') {
+            return 'Établissement refusé';
+        } else if (commentCode === 'ESTABL_VALID') {
+            return 'Établissement validé';
+        } else {
+            return '';
+        }
+    }
+    function getFilterClass(commentCode) {
+        if (commentCode === 'ESTABL_PENDING') {
+            return 'color-filter-event is-pending';
+        } else if (commentCode === 'ESTABL_REFUSE') {
+            return 'color-filter-event is-refuse';
+        } else {
+            return '';
+        }
+    }
 
     return (
         <Paper
@@ -62,6 +109,11 @@ export default function EventPage() {
                             // Accéder à la propriété "code"
                             const commentCode = commentObj.code;
 
+                            const linkProps = getLinkProps(commentCode, establishment);
+                            const backgroundColor = getBackgroundColor(commentCode);
+                            const filterColor = getFilterClass(commentCode);
+                            const statusText = getStatusText(commentCode);
+
                             return (
                                 <div
                                     key={establishment.establishment_id}
@@ -69,50 +121,15 @@ export default function EventPage() {
                                         establishment.deleted_at !== null ? 'hidden' : ''
                                     }`}
                                 >
-                                    <Link
-                                        className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer"
-                                        href={
-                                            commentCode === 'ESTABL_PENDING' ||
-                                            commentCode === 'ESTABL_REFUSE'
-                                                ? ''
-                                                : `/pro/establishment/${establishment.establishment_id}/event/list`
-                                        }
-                                        component={
-                                            commentCode === 'ESTABL_PENDING' ||
-                                            commentCode === 'ESTABL_REFUSE'
-                                                ? Box
-                                                : 'a'
-                                        }
-                                    ></Link>
+                                    <Link {...linkProps}></Link>
 
                                     <div
-                                        className={`absolute-status-bg absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 opacity-20 ${
-                                            commentCode === 'ESTABL_PENDING'
-                                                ? 'color-filter-event is-pending'
-                                                : commentCode === 'ESTABL_REFUSE'
-                                                ? 'color-filter-event is-refuse'
-                                                : ''
-                                        }`}
+                                        className={`absolute-status-bg absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 opacity-20 ${filterColor}`}
                                     ></div>
                                     <div
-                                        className={`status-establishment absolute z-50 top-0 left-0 p-2 text-white text-center 
-                                        ${
-                                            commentCode === 'ESTABL_PENDING'
-                                                ? 'bg-orange-500'
-                                                : commentCode === 'ESTABL_REFUSE'
-                                                ? 'bg-red-500'
-                                                : commentCode === 'ESTABL_VALID'
-                                                ? 'bg-green-500'
-                                                : ''
-                                        }`}
+                                        className={`status-establishment absolute z-50 top-0 left-0 p-2 text-white text-center ${backgroundColor}`}
                                     >
-                                        {commentCode === 'ESTABL_PENDING'
-                                            ? 'En attente de validation'
-                                            : commentCode === 'ESTABL_REFUSE'
-                                            ? 'Établissement refusé'
-                                            : commentCode === 'ESTABL_VALID'
-                                            ? 'Établissement validé'
-                                            : ''}
+                                        {statusText}
                                     </div>
 
                                     <div className="event-card-hover__card-container relative w-full w-100 ">

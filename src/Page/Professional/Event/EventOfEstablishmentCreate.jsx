@@ -5,11 +5,11 @@ import Link from '@mui/material/Link';
 import '../../../css/Professional/Loader.css';
 import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
-import { sendFormDataPost } from '../../../utils/AxiosModel';
+import { sendFormDataPost, sendFormDataPutCategory } from '../../../utils/AxiosModel';
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-import { eventSchema } from '../../../utils/FormSchemaValidation';
+import { eventSchema, selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
 import { Box, Button, Grid } from '@mui/material';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
@@ -17,7 +17,6 @@ import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm'
 import { FormEvent } from '../../../Components/CommonComponents/FormsComponent/FormEvent';
 import Axios from '../../../utils/axiosUrl';
 import { FormSelect } from '../../../Components/CommonComponents/FormsComponent/FormSelect';
-import { selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
 import { EventPhoneDemo } from '../../../Components/CommonComponents/PhoneDemo/EventPhoneDemo';
 
 export default function EventOfEstablishmentCreatePage() {
@@ -158,9 +157,6 @@ export default function EventOfEstablishmentCreatePage() {
     });
 
     const handleFormSubmitCategories = (values) => {
-        //     //toast MUI
-        //setOpenSnackbarOpening(true);
-
         // Mettre à jour les catégories de l'établissement
         const updatedCategories = allCategories.filter((category) =>
             values.options.includes(category.category_id),
@@ -170,8 +166,7 @@ export default function EventOfEstablishmentCreatePage() {
         // avoir la liste des categories selectionner en state pour les lister
         setCategoriesSelected(updatedCategories);
 
-        // Créer l'objet avec la propriété "option"
-        // const optionObj = { option: updatedCategoryIds };
+        // udpate categories with the ids
         setEventCategories(updatedCategoryIds);
 
         // Mettre à jour les options sélectionnées dans formikCategories.values
@@ -265,7 +260,7 @@ export default function EventOfEstablishmentCreatePage() {
 
                 console.log('datavalues categories :' + dataValuesCategories.options);
 
-                sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
+                sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
                     .then(() => {
                         // Show success message
                         setOpenSnackbar(true);
@@ -278,15 +273,13 @@ export default function EventOfEstablishmentCreatePage() {
                     .catch((e) => {
                         console.error(e);
                         console.error(e.response.data);
-                        alert('Une erreur ');
+                        alert('Une erreur est survenu pour vos category.');
                     });
             })
             .catch((e) => {
                 console.error(e);
                 console.error(e.response.data);
-                alert(
-                    "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
-                );
+                alert("Une erreur est survenue lors de la création de l'évenemnt.");
             });
     };
 

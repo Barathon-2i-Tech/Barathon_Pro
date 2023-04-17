@@ -60,7 +60,7 @@ export const FormFieldModel = ({
                             fullWidth
                             variant="filled"
                             label={label || name}
-                            type={name === 'start_event' ? 'datetime-local' : 'datetime-local'}
+                            type="datetime-local"
                             onBlur={onBlur}
                             onChange={handleChange}
                             value={value}
