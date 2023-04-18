@@ -5,24 +5,24 @@ import { sendFormDataPutMultipart, sendFormDataPutCategory } from '../../../util
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-import { eventSchema, selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
+import { eventSchema } from '../../../utils/FormSchemaValidation';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
 import Axios from '../../../utils/axiosUrl';
 import { GlobalFormEvent } from '../../../Components/CommonComponents/FormsComponent/GlobalFormEvent';
+import UseCategories from '../../../utils/UseCategories';
 
 export default function EventOfEstablishmentUpdatePage() {
-    const [allCategories, setAllCategories] = useState([]);
-    const [eventCategories, setEventCategories] = useState([]);
-    const [categoriesSelected, setCategoriesSelected] = useState([]);
-    const [posterUrl, setPosterUrl] = useState('');
-
-    const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const userId = user.userLogged.user_id;
+    const { establishmentIdParam, eventIdParam } = useParams();
+    const establishmentId = parseInt(establishmentIdParam);
+    const eventId = parseInt(eventIdParam);
+    const [posterUrl, setPosterUrl] = useState('');
+    const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [startEventFormatted, setStartEventFormatted] = useState('');
     const [endEventFormatted, setEndEventFormatted] = useState('');
     const [startTimeFormatted, setStartTimeFormatted] = useState('');
@@ -47,9 +47,18 @@ export default function EventOfEstablishmentUpdatePage() {
         // Ajoutez d'autres champs si nécessaire
     });
     dayjs.locale('fr');
-    const { establishmentIdParam, eventIdParam } = useParams();
-    const establishmentId = parseInt(establishmentIdParam);
-    const eventId = parseInt(eventIdParam);
+
+    const {
+        allCategories,
+        categoriesSelected,
+        formikCategories,
+        handleFormReset,
+        handleCategoryChange,
+        eventCategories,
+        getAllCategories,
+        getEventCategories,
+    } = UseCategories(token, eventId);
+
     // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();
@@ -145,92 +154,11 @@ export default function EventOfEstablishmentUpdatePage() {
 
     // ------------------------  CATEGORY ------------------------------------------
 
-    // This function is used to get All categories in database (who has sub_category ALL and Establishment)
-    async function getAllCategories() {
-        try {
-            const response = await Axios.api.get(`/categories/event`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setAllCategories(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    // This function is used to get All categories of The event to update ////A FAIIIRE !!!!!!!!!!!!!! BACKEND  ///////////////////////
-    async function getEventCategory() {
-        try {
-            const response = await Axios.api.get(`/pro/event/${eventId}/category`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setEventCategories(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    //function to reset selection
-    const handleFormReset = () => {
-        formikCategories.resetForm();
-        setCategoriesSelected([]);
-    };
-
-    //function no add more 4 categories
-    const handleCategoryChange = (event) => {
-        if (event.target.value.length <= 4) {
-            formikCategories.handleChange(event);
-        } else {
-            setOpenSnackbarCategoryError(true);
-        }
-    };
-
     // This const is to initialize initial option value with the categories of establishment in DB
     const getInitialOptions = (categories) => {
         return categories && categories.length > 0
             ? categories.map((category) => category.category_id)
             : [];
-    };
-
-    //This const is for formik shema and action to form categorie
-    const formikCategories = useFormik({
-        initialValues: {
-            options: [],
-        },
-        enableReinitialize: true,
-        validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
-    });
-
-    const handleFormSubmitCategories = (values) => {
-        //     //toast MUI
-        //setOpenSnackbarOpening(true);
-
-        // Mettre à jour les catégories de l'établissement
-        const updatedCategories = allCategories.filter((category) =>
-            values.options.includes(category.category_id),
-        );
-        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-
-        // avoir la liste des categories selectionner en state pour les lister
-        setCategoriesSelected(updatedCategories);
-
-        // Créer l'objet avec la propriété "option"
-        // const optionObj = { option: updatedCategoryIds };
-        setEventCategories(updatedCategoryIds);
-
-        // Mettre à jour les options sélectionnées dans formikCategories.values
-        const newOptions = values.options.concat(updatedCategoryIds);
-        formikCategories.setValues({
-            ...formikCategories.values,
-            options: newOptions,
-        });
     };
 
     useEffect(() => {
@@ -248,7 +176,7 @@ export default function EventOfEstablishmentUpdatePage() {
     }, [posterUrl]);
 
     useEffect(() => {
-        getEventCategory();
+        getEventCategories();
         getInitialOptions(eventCategories);
         console.log(eventCategories);
     }, []);

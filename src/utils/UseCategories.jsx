@@ -3,7 +3,7 @@ import Axios from './axiosUrl';
 import { useFormik } from 'formik';
 import { selectCategoriesSchema } from './FormSchemaValidation';
 
-const UseCategories = (token) => {
+const UseCategories = (token, eventId) => {
     const [allCategories, setAllCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
     const [eventCategories, setEventCategories] = useState([]);
@@ -19,6 +19,21 @@ const UseCategories = (token) => {
                 },
             });
             setAllCategories(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const getEventCategories = async () => {
+        try {
+            const response = await Axios.api.get(`/pro/event/${eventId}/category`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setEventCategories(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -79,6 +94,7 @@ const UseCategories = (token) => {
         handleFormReset,
         handleCategoryChange,
         getAllCategories,
+        getEventCategories,
     };
 };
 
