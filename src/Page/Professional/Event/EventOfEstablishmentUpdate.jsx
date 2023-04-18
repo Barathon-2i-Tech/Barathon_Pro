@@ -27,7 +27,6 @@ export default function EventOfEstablishmentUpdatePage() {
     const [endEventFormatted, setEndEventFormatted] = useState('');
     const [startTimeFormatted, setStartTimeFormatted] = useState('');
     const [endTimeFormatted, setEndTimeFormatted] = useState('');
-
     const [reloading, setReloading] = useState(false);
     const [isEventDataLoaded, setIsEventDataLoaded] = useState(false);
     const [event, setEvent] = useState([]);
@@ -35,9 +34,7 @@ export default function EventOfEstablishmentUpdatePage() {
     const [establishmentName, setEstablishmentName] = useState('');
     const [establishmentAddress, setEstablishmentAddress] = useState('');
     const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
-
     const [selectedImage, setSelectedImage] = useState('');
-
     //phone demo
     const [inputValues, setInputValues] = useState({
         poster: '',
@@ -50,12 +47,9 @@ export default function EventOfEstablishmentUpdatePage() {
         // Ajoutez d'autres champs si nécessaire
     });
     dayjs.locale('fr');
-
     const { establishmentIdParam, eventIdParam } = useParams();
-
     const establishmentId = parseInt(establishmentIdParam);
     const eventId = parseInt(eventIdParam);
-
     // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
     const navigate = useNavigate();

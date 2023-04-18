@@ -5,19 +5,14 @@ import { sendFormDataPost, sendFormDataPutCategory } from '../../../utils/AxiosM
 import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
-import { eventSchema, selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
-
+import { eventSchema } from '../../../utils/FormSchemaValidation';
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-
 import Axios from '../../../utils/axiosUrl';
-
 import { GlobalFormEvent } from '../../../Components/CommonComponents/FormsComponent/GlobalFormEvent';
+import UseCategories from '../../../utils/UseCategories';
 
 export default function EventOfEstablishmentCreatePage() {
-    const [allCategories, setAllCategories] = useState([]);
-    const [eventCategories, setEventCategories] = useState([]);
-    const [categoriesSelected, setCategoriesSelected] = useState([]);
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
@@ -34,11 +29,12 @@ export default function EventOfEstablishmentCreatePage() {
     const [establishmentName, setEstablishmentName] = useState('');
     const [establishmentAddress, setEstablishmentAddress] = useState('');
     const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
-
     const [selectedImage, setSelectedImage] = useState(
         'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
     );
-
+    dayjs.locale('fr');
+    const { id } = useParams();
+    const establishmentId = parseInt(id);
     //phone demo
     const [inputValues, setInputValues] = useState({
         poster: '',
@@ -48,12 +44,17 @@ export default function EventOfEstablishmentCreatePage() {
         price: '',
         start_event: '',
         end_event: '',
-        // Ajoutez d'autres champs si nécessaire
     });
-    dayjs.locale('fr');
 
-    const { id } = useParams();
-    const establishmentId = parseInt(id);
+    const {
+        allCategories,
+        categoriesSelected,
+        formikCategories,
+        handleFormReset,
+        handleCategoryChange,
+        eventCategories,
+        getAllCategories,
+    } = UseCategories(token);
 
     // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
@@ -110,67 +111,6 @@ export default function EventOfEstablishmentCreatePage() {
         }
     }
     // ------------------------  CATEGORY ------------------------------------------
-
-    // This function is used to get All categories in database (who has sub_category ALL and Establishment)
-    async function getAllCategories() {
-        try {
-            const response = await Axios.api.get(`/categories/event`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setAllCategories(response.data.data);
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    //function to reset selection
-    const handleFormReset = () => {
-        formikCategories.resetForm();
-        setCategoriesSelected([]);
-    };
-
-    //function no add more 4 categories
-    const handleCategoryChange = (event) => {
-        if (event.target.value.length <= 4) {
-            formikCategories.handleChange(event);
-        } else {
-            setOpenSnackbarCategoryError(true);
-        }
-    };
-    //This const is for formik shema and action to form Opening
-    const formikCategories = useFormik({
-        initialValues: {
-            options: [],
-        },
-        enableReinitialize: true,
-        validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
-    });
-
-    const handleFormSubmitCategories = (values) => {
-        // Mettre à jour les catégories de l'établissement
-        const updatedCategories = allCategories.filter((category) =>
-            values.options.includes(category.category_id),
-        );
-        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-
-        // avoir la liste des categories selectionner en state pour les lister
-        setCategoriesSelected(updatedCategories);
-
-        // udpate categories with the ids
-        setEventCategories(updatedCategoryIds);
-
-        // Mettre à jour les options sélectionnées dans formikCategories.values
-        const newOptions = values.options.concat(updatedCategoryIds);
-        formikCategories.setValues({
-            ...formikCategories.values,
-            options: newOptions,
-        });
-    };
 
     useEffect(() => {
         getAllCategories();
