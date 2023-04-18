@@ -13,7 +13,7 @@ import CGUPage from './Page/Professional/CGU';
 import ContactPage from './Page/Professional/Contact';
 import EmployeePage from './Page/Professional/Employee';
 import EstablishmentPage from './Page/Professional/Establishment';
-import EventPage from './Page/Professional/Event/Event';
+import EventPage from './Page/Professional/Event/EventEstablishments';
 import NotificationPage from './Page/Professional/Notification';
 import TagPage from './Page/Professional/Tag';
 

@@ -18,9 +18,6 @@ export const EventPhoneDemo = ({
     establishmentPostalCode,
     categoriesSelected,
 }) => {
-    // Le code pour la démonstration du téléphone portable
-    // ...
-
     return (
         <div className="container-iphone">
             <div className="container-iphone">

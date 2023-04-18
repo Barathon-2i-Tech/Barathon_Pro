@@ -1,7 +1,3 @@
-import { BasicPage } from '../../../Components/CommonComponents/BasicPage';
-import BusinessIcon from '@mui/icons-material/Business';
-import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import '../../../css/Professional/Loader.css';
 import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
@@ -10,14 +6,13 @@ import { useParams, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 import { eventSchema, selectCategoriesSchema } from '../../../utils/FormSchemaValidation';
-import { Box, Button, Grid } from '@mui/material';
+
 import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm';
-import { FormEvent } from '../../../Components/CommonComponents/FormsComponent/FormEvent';
+
 import Axios from '../../../utils/axiosUrl';
-import { FormSelect } from '../../../Components/CommonComponents/FormsComponent/FormSelect';
-import { EventPhoneDemo } from '../../../Components/CommonComponents/PhoneDemo/EventPhoneDemo';
+
+import { GlobalFormEvent } from '../../../Components/CommonComponents/FormsComponent/GlobalFormEvent';
 
 export default function EventOfEstablishmentCreatePage() {
     const [allCategories, setAllCategories] = useState([]);
@@ -252,7 +247,6 @@ export default function EventOfEstablishmentCreatePage() {
         // Create the establishment
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {
-                console.log(response.data.data[0].event_id);
                 const newEventId = response.data.data[0].event_id;
                 // Associate categories to the new establishment
                 const dataValuesCategories = { options: eventCategories };
@@ -284,83 +278,30 @@ export default function EventOfEstablishmentCreatePage() {
     };
 
     return (
-        <Paper
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                minHeight: '80vh',
-                width: '100%',
-            }}
-        >
-            <ToastForm
-                openSnackbar={openSnackbarCategoryError}
+        <>
+            <GlobalFormEvent
+                formikEvent={formikEvent}
+                formikCategories={formikCategories}
+                handleCategoryChange={handleCategoryChange}
+                handleFormReset={handleFormReset}
                 handleSnackbarClose={handleSnackbarClose}
-                title={'Attention!'}
-                message={'Vous avez droit à 4 categories maximum'}
-                severity={'error'}
-            />
-
-            <ToastForm
                 openSnackbar={openSnackbar}
-                handleSnackbarClose={handleSnackbarClose}
-                title={'Felicitation !'}
-                message={'Bien envoyez'}
-                severity={'success'}
+                openSnackbarCategoryError={openSnackbarCategoryError}
+                allCategories={allCategories}
+                categoriesSelected={categoriesSelected}
+                setInputValues={setInputValues}
+                setSelectedImage={setSelectedImage}
+                establishmentId={establishmentId}
+                selectedImage={selectedImage}
+                inputValues={inputValues}
+                startEventFormatted={startEventFormatted}
+                startTimeFormatted={startTimeFormatted}
+                endEventFormatted={endEventFormatted}
+                endTimeFormatted={endTimeFormatted}
+                establishmentName={establishmentName}
+                establishmentAddress={establishmentAddress}
+                establishmentPostalCode={establishmentPostalCode}
             />
-
-            <BasicPage title="Creer mon évènement" icon={<BusinessIcon />} />
-
-            <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <Link href={`/pro/establishment/${establishmentId}/event/list`}>
-                    <Button
-                        sx={{ marginRight: '10px', px: '10px' }}
-                        variant="contained"
-                        color="info"
-                        size="small"
-                    >
-                        Retour aux événements
-                    </Button>
-                </Link>
-
-                <FormSelect
-                    allCategories={allCategories}
-                    formikCategories={formikCategories}
-                    handleCategoryChange={handleCategoryChange}
-                    categoriesSelected={categoriesSelected}
-                    handleFormReset={handleFormReset}
-                    handleSubmit={formikCategories.handleSubmit}
-                />
-
-                <Box mt={10}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={6}>
-                            <form onSubmit={formikEvent.handleSubmit}>
-                                <FormEvent
-                                    formik={formikEvent}
-                                    setInputValues={setInputValues}
-                                    setSelectedImage={setSelectedImage}
-                                    establishmentId={establishmentId}
-                                />
-                            </form>
-                        </Grid>
-                        <Grid item xs={12} md={6}>
-                            <EventPhoneDemo
-                                selectedImage={selectedImage}
-                                inputValues={inputValues}
-                                startEventFormatted={startEventFormatted}
-                                startTimeFormatted={startTimeFormatted}
-                                endEventFormatted={endEventFormatted}
-                                endTimeFormatted={endTimeFormatted}
-                                establishmentName={establishmentName}
-                                establishmentAddress={establishmentAddress}
-                                establishmentPostalCode={establishmentPostalCode}
-                                categoriesSelected={categoriesSelected}
-                            />
-                        </Grid>
-                    </Grid>
-                </Box>
-            </section>
-        </Paper>
+        </>
     );
 }
