@@ -135,14 +135,12 @@ export default function EventOfEstablishmentUpdatePage() {
     useEffect(() => {
         getEventCategories();
         getInitialOptions(eventCategories);
-        console.log(eventCategories);
     }, []);
 
     useEffect(() => {
         formikCategories.setValues({
             options: getInitialOptions(eventCategories),
         });
-        console.log(eventCategories);
     }, [eventCategories]);
 
     return (

@@ -71,15 +71,6 @@ export default function EventOfEstablishmentCreatePage() {
                 formData.append(key, value);
             }
         }
-
-        const logFormData = (formData) => {
-            for (const [key, value] of formData.entries()) {
-                console.log(`${key}:`, value);
-            }
-        };
-
-        logFormData(formData);
-
         // Create the establishment
         sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {
@@ -88,8 +79,6 @@ export default function EventOfEstablishmentCreatePage() {
                 const dataValuesCategories = { options: eventCategories };
                 const urlCreateCategories = `/pro/event/${newEventId}/category`;
 
-                console.log('datavalues categories :' + dataValuesCategories.options);
-
                 sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
                     .then(() => {
                         // Show success message
@@ -97,18 +86,15 @@ export default function EventOfEstablishmentCreatePage() {
                         // Navigate to the home page after a delay of 1.5 seconds
                         setTimeout(() => {
                             goBack();
-                            console.log('ok');
                         }, 1500);
                     })
                     .catch((e) => {
                         console.error(e);
-                        console.error(e.response.data);
                         alert('Une erreur est survenu pour vos category.');
                     });
             })
             .catch((e) => {
                 console.error(e);
-                console.error(e.response.data);
                 alert("Une erreur est survenue lors de la création de l'évenemnt.");
             });
     };

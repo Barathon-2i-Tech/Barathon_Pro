@@ -310,7 +310,6 @@ export default function EstablishmentPage() {
 
     useEffect(() => {
         getEstablishments();
-
         setReloading(false);
     }, [reloading]);
 

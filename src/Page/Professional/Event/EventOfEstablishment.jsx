@@ -89,18 +89,6 @@ export default function EventOfEstablishmentPage() {
                 },
             });
             setEstablishment(response.data.data);
-            console.log(response.data.data);
-            console.log(establishment);
-
-            const myEstablishment = response.data.data;
-            const myEstablishmentName = myEstablishment.map((is) => is.trade_name);
-            setEstablishmentName(myEstablishmentName[0] || '');
-
-            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.classList.remove('display');
-            }
         } catch (error) {
             console.log(error);
         }
@@ -116,7 +104,6 @@ export default function EventOfEstablishmentPage() {
                 },
             });
             setAllEvents(response.data.data);
-            console.log(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -288,6 +275,11 @@ export default function EventOfEstablishmentPage() {
         getEstablishment();
         setReloading(false);
     }, [reloading]);
+
+    useEffect(() => {
+        const myEstablishmentName = establishment.map((is) => is.trade_name);
+        setEstablishmentName(myEstablishmentName[0] || '');
+    }, [establishment]);
 
     return (
         <>
