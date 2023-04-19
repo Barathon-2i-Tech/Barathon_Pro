@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import Axios from './axiosUrl';
+import Axios from '../../utils/axiosUrl';
 import { useFormik } from 'formik';
-import { selectCategoriesSchema } from './FormSchemaValidation';
+import { selectCategoriesSchema } from '../../utils/FormSchemaValidation';
 
 const UseCategories = (token, eventId) => {
     const [allCategories, setAllCategories] = useState([]);

@@ -30,6 +30,7 @@ export const GlobalFormEvent = ({
     establishmentName,
     establishmentAddress,
     establishmentPostalCode,
+    title,
 }) => {
     return (
         <>
@@ -58,12 +59,12 @@ export const GlobalFormEvent = ({
                     severity={'success'}
                 />
 
-                <BasicPage title="Creer mon évènement" icon={<BusinessIcon />} />
+                <BasicPage title={title} icon={<BusinessIcon />} />
 
                 <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
                     <Link href={`/pro/establishment/${establishmentId}/event/list`}>
                         <Button
-                            sx={{ marginRight: '10px', px: '10px' }}
+                            sx={{ marginRight: '10px', px: '10px', background: '#0f766e' }}
                             variant="contained"
                             color="info"
                             size="small"
@@ -137,4 +138,5 @@ GlobalFormEvent.propTypes = {
     establishmentName: PropTypes.string,
     establishmentAddress: PropTypes.string,
     establishmentPostalCode: PropTypes.string,
+    title: PropTypes.string,
 };

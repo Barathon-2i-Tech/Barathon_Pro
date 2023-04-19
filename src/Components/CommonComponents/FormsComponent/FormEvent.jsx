@@ -30,7 +30,9 @@ export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishm
                         <FormFieldModel
                             key={formFieldValue}
                             grid={
-                                formFieldValue === 'poster' || formFieldValue === 'description'
+                                formFieldValue === 'poster' ||
+                                formFieldValue === 'description' ||
+                                formFieldValue === 'event_name'
                                     ? 12
                                     : 6
                             }

@@ -290,34 +290,53 @@ export default function EventOfEstablishmentPage() {
     }, [reloading]);
 
     return (
-        <Paper
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                minHeight: '80vh',
-                width: '100%',
-            }}
-        >
-            <HeaderDatagrid title={`Événements de ${establishmentName}`} />
-            <DataGrid
-                rows={eventsRows}
-                columns={eventColumns}
-                columnVisibilityModel={columnVisibilityModel}
-                onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-                density="comfortable"
-                components={{
-                    Toolbar: eventCustomToolbar,
-                }}
+        <>
+            <Link href={`/pro/establishment/event`}>
+                <Button
+                    sx={{
+                        marginRight: '10px',
+                        marginBottom: '10px',
+                        px: '10px',
+                        background: '#0f766e',
+                    }}
+                    variant="contained"
+                    color="info"
+                    size="small"
+                >
+                    Retour aux établissements
+                </Button>
+            </Link>
+
+            <Paper
                 sx={{
-                    marginX: 2,
-                    '& .MuiDataGrid-cell': {
-                        padding: '10px',
-                    },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    minHeight: '80vh',
+                    width: '100%',
                 }}
-                getRowHeight={() => 'auto'}
-            />
-            <Copyright sx={{ pt: 4, pb: 4 }} />
-        </Paper>
+            >
+                <HeaderDatagrid title={`Événements de ${establishmentName}`} />
+
+                <DataGrid
+                    rows={eventsRows}
+                    columns={eventColumns}
+                    columnVisibilityModel={columnVisibilityModel}
+                    onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+                    density="comfortable"
+                    components={{
+                        Toolbar: eventCustomToolbar,
+                    }}
+                    sx={{
+                        marginX: 2,
+                        '& .MuiDataGrid-cell': {
+                            padding: '10px',
+                        },
+                    }}
+                    getRowHeight={() => 'auto'}
+                />
+                <Copyright sx={{ pt: 4, pb: 4 }} />
+            </Paper>
+        </>
     );
 }

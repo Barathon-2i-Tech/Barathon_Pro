@@ -100,7 +100,7 @@ export default function EventPage() {
             <section className="relative z-10">
                 <div className="container mx-auto max-w-screen-xl">
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pt-4">
-                        CHOIX DE VOTRE ÉTABLISSMENT :
+                        CHOIX DE VOTRE ÉTABLISSEMENT :
                     </div>
                     <div className=" sm:py-11 md:py-10 lg:items-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-10 px-4">
                         {allEstablishments.map((establishment) => {

@@ -3,14 +3,10 @@ import { useState, useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
 import { sendFormDataPost, sendFormDataPutCategory } from '../../../utils/AxiosModel';
 import { useParams, useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
-import 'dayjs/locale/fr';
-import { eventSchema } from '../../../utils/FormSchemaValidation';
-import { FormInitialValuesEvent } from '../../../utils/FormInitialValue';
-import { useFormik } from 'formik';
-import Axios from '../../../utils/axiosUrl';
 import { GlobalFormEvent } from '../../../Components/CommonComponents/FormsComponent/GlobalFormEvent';
-import UseCategories from '../../../utils/UseCategories';
+import UseCategories from '../../../Components/Hooks/useCategory';
+import UseEstablishment from '../../../Components/Hooks/useEstablishments';
+import UseEvent from '../../../Components/Hooks/useEvents';
 
 export default function EventOfEstablishmentCreatePage() {
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
@@ -19,33 +15,11 @@ export default function EventOfEstablishmentCreatePage() {
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
     const userId = user.userLogged.user_id;
-    const [startEventFormatted, setStartEventFormatted] = useState('');
-    const [endEventFormatted, setEndEventFormatted] = useState('');
-    const [startTimeFormatted, setStartTimeFormatted] = useState('');
-    const [endTimeFormatted, setEndTimeFormatted] = useState('');
-
     const [reloading, setReloading] = useState(false);
-    const [establishment, setEstablishment] = useState([]);
-    const [establishmentName, setEstablishmentName] = useState('');
-    const [establishmentAddress, setEstablishmentAddress] = useState('');
-    const [establishmentPostalCode, setEstablishmentPostalCode] = useState('');
-    const [selectedImage, setSelectedImage] = useState(
-        'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
-    );
-    dayjs.locale('fr');
     const { id } = useParams();
     const establishmentId = parseInt(id);
-    //phone demo
-    const [inputValues, setInputValues] = useState({
-        poster: '',
-        event_name: '',
-        description: '',
-        capacity: '',
-        price: '',
-        start_event: '',
-        end_event: '',
-    });
 
+    // ------------------------  CATEGORY ------------------------------------------
     const {
         allCategories,
         categoriesSelected,
@@ -55,6 +29,10 @@ export default function EventOfEstablishmentCreatePage() {
         eventCategories,
         getAllCategories,
     } = UseCategories(token);
+
+    // ------------------------  ESTABLISHMENT ------------------------------------------
+    const { establishmentName, establishmentAddress, establishmentPostalCode, getEstablishment } =
+        UseEstablishment(ownerId, establishmentId, token);
 
     // ------------------------  go home after submit ------------------------------------------
     // Use this hook to programmatically navigate to another page
@@ -74,88 +52,6 @@ export default function EventOfEstablishmentCreatePage() {
         setOpenSnackbar(false);
         setOpenSnackbarCategoryError(false);
     };
-
-    // ------------------------  ESTABLISHMENT ------------------------------------------
-    // AXIOS GET
-    // This function is used to get the establishment to update by his ID
-    async function getEstablishment() {
-        try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setEstablishment(response.data.data);
-            console.log(response.data.data);
-            console.log(establishment);
-
-            const myEstablishment = response.data.data;
-            const myEstablishmentAddress = myEstablishment.map((is) => is.address);
-            setEstablishmentAddress(myEstablishmentAddress[0] || '');
-
-            const myEstablishmentPostalCode = myEstablishment.map((is) => is.postal_code);
-            setEstablishmentPostalCode(myEstablishmentPostalCode[0] || '');
-
-            const myEstablishmentName = myEstablishment.map((is) => is.trade_name);
-            setEstablishmentName(myEstablishmentName[0] || '');
-
-            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.classList.remove('display');
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    // ------------------------  CATEGORY ------------------------------------------
-
-    useEffect(() => {
-        getAllCategories();
-        getEstablishment();
-        setReloading(false);
-    }, [reloading]);
-
-    useEffect(() => {
-        console.log('categorie :', eventCategories);
-    }, [eventCategories]);
-
-    useEffect(() => {
-        if (
-            inputValues.start_event &&
-            dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').isValid()
-        ) {
-            setStartEventFormatted(
-                dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'),
-            );
-            setStartTimeFormatted(
-                dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').format('HH:mm'),
-            );
-        } else {
-            setStartEventFormatted("Début de l'événement");
-            setStartTimeFormatted('Heure');
-        }
-
-        if (inputValues.end_event && dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').isValid()) {
-            setEndEventFormatted(
-                dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'),
-            );
-            setEndTimeFormatted(dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
-        } else {
-            setEndEventFormatted("Fin de l'événement");
-            setEndTimeFormatted('Heure');
-        }
-    }, [inputValues.start_event, inputValues.end_event]);
-
-    // ------------------------  EVENT ------------------------------------------
-    const formikEvent = useFormik({
-        initialValues: FormInitialValuesEvent,
-        enableReinitialize: true,
-        validationSchema: eventSchema,
-        onSubmit: (values) => handleFormSubmit(values),
-    });
 
     // ------------------------  SUBMIT ------------------------------------------
 
@@ -217,6 +113,29 @@ export default function EventOfEstablishmentCreatePage() {
             });
     };
 
+    // ------------------------  EVENT ------------------------------------------
+    const {
+        startEventFormatted,
+        endEventFormatted,
+        startTimeFormatted,
+        endTimeFormatted,
+        selectedImage,
+        formikEvent,
+        inputValues,
+        setInputValues,
+        setSelectedImage,
+    } = UseEvent({ establishmentId, token, handleFormSubmit });
+
+    useEffect(() => {
+        getAllCategories();
+        getEstablishment();
+        setReloading(false);
+    }, [reloading]);
+
+    useEffect(() => {
+        console.log('categorie :', eventCategories);
+    }, [eventCategories]);
+
     return (
         <>
             <GlobalFormEvent
@@ -241,6 +160,7 @@ export default function EventOfEstablishmentCreatePage() {
                 establishmentName={establishmentName}
                 establishmentAddress={establishmentAddress}
                 establishmentPostalCode={establishmentPostalCode}
+                title={'Créer mon évènement'}
             />
         </>
     );
