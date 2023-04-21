@@ -34,6 +34,7 @@ export const FormEstablishment = ({ formik }) => {
                             key={formFieldValue}
                             grid={formFieldValue === 'logo' ? 12 : 6}
                             label={labelMap[formFieldValue]}
+                            buttonTextDownload={'Importez votre logo'}
                             onBlur={formik.handleBlur}
                             onChange={(event, fileList) => {
                                 if (fileList) {

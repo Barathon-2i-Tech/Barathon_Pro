@@ -36,6 +36,7 @@ export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishm
                                     ? 12
                                     : 6
                             }
+                            buttonTextDownload={'Importez votre image'}
                             setSelectedImage={setSelectedImage}
                             label={labelMap[formFieldValue]}
                             onBlur={formik.handleBlur}

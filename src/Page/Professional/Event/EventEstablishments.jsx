@@ -58,8 +58,6 @@ export default function EventPage() {
             return 'bg-orange-500';
         } else if (commentCode === 'ESTABL_REFUSE') {
             return 'bg-red-500';
-        } else if (commentCode === 'ESTABL_VALID') {
-            return 'bg-green-500';
         } else {
             return '';
         }
@@ -70,8 +68,6 @@ export default function EventPage() {
             return 'En attente de validation';
         } else if (commentCode === 'ESTABL_REFUSE') {
             return 'Établissement refusé';
-        } else if (commentCode === 'ESTABL_VALID') {
-            return 'Établissement validé';
         } else {
             return '';
         }

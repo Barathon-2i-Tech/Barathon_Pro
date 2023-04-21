@@ -24,8 +24,8 @@ export const FormInitialValuesEvent = {
     poster: '',
     event_name: '',
     description: '',
-    capacity: '',
-    price: '',
+    capacity: '0',
+    price: '0',
     start_event: '',
     end_event: '',
 };

@@ -24,13 +24,13 @@ const UseEstablishment = (ownerId, establishmentId, token) => {
             setEstablishment(response.data.data);
             setIsEventDataLoaded(true);
 
-            const myEstablishmentAddress = establishment.map((is) => is.address);
+            const myEstablishmentAddress = response.data.data.map((is) => is.address);
             setEstablishmentAddress(myEstablishmentAddress[0] || '');
 
-            const myEstablishmentPostalCode = establishment.map((is) => is.postal_code);
+            const myEstablishmentPostalCode = response.data.data.map((is) => is.postal_code);
             setEstablishmentPostalCode(myEstablishmentPostalCode[0] || '');
 
-            const myEstablishmentName = establishment.map((is) => is.trade_name);
+            const myEstablishmentName = response.data.data.map((is) => is.trade_name);
             setEstablishmentName(myEstablishmentName[0] || '');
 
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur

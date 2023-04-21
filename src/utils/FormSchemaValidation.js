@@ -44,16 +44,27 @@ export const establishmentSchema = () => {
 };
 
 export const selectCategoriesSchema = () => {
-    return yup.object().shape({});
+    return yup.object().shape({
+        options: yup
+            .array()
+            .min(1, 'Veuillez sélectionner au moins une catégorie')
+            .required('Veuillez sélectionner une catégorie'),
+    });
 };
 
 export const eventSchema = () => {
     return yup.object().shape({
-        poster: yup.string(),
+        poster: yup.mixed().required('Ajoutez une image'),
         event_name: yup.string().required("Veuillez renseigner le nom de l'évènement"),
-        description: yup.string(),
-        capacity: yup.string(),
-        price: yup.string().required('Veuillez renseigner le prix'),
+        description: yup.string().required('Veuillez mettre une description votre evenement'),
+        capacity: yup
+            .number()
+            .typeError('Vous devez renseigner un chiffre et non des lettres')
+            .required('Veuillez renseigner la capacité de votre evenement'),
+        price: yup
+            .number()
+            .typeError('Vous devez renseigner un chiffre et non des lettres')
+            .required('Veuillez renseigner le prix'),
         start_event: yup.string().required("Veuillez renseigner la date de debut de l'évènement"),
         end_event: yup.string().required("Veuillez renseigner la date de fin de l'évènement"),
     });

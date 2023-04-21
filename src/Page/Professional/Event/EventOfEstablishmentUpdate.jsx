@@ -16,19 +16,20 @@ export default function EventOfEstablishmentUpdatePage() {
     const { establishmentIdParam, eventIdParam } = useParams();
     const establishmentId = parseInt(establishmentIdParam);
     const eventId = parseInt(eventIdParam);
-    const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [reloading, setReloading] = useState(false);
     // ------------------------  CATEGORY ------------------------------------------
     const {
         allCategories,
         categoriesSelected,
         formikCategories,
-        handleFormReset,
         handleCategoryChange,
         eventCategories,
         getAllCategories,
         getEventCategories,
+        openSnackbarCategoryError,
+        openSnackbar,
+        setOpenSnackbar,
+        handleSnackbarClose,
     } = UseCategories(token, eventId);
     // ------------------------  ESTABLISHMENT ------------------------------------------
     const { establishmentName, establishmentAddress, establishmentPostalCode, getEstablishment } =
@@ -44,15 +45,6 @@ export default function EventOfEstablishmentUpdatePage() {
         navigate(`/pro/establishment/${establishmentId}/event/list`);
     };
 
-    // ------------------------  TOAST ------------------------------------------
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackbar(false);
-        setOpenSnackbarCategoryError(false);
-    };
-
     // ------------------------  CATEGORY ------------------------------------------
 
     // This const is to initialize initial option value with the categories of establishment in DB
@@ -65,6 +57,8 @@ export default function EventOfEstablishmentUpdatePage() {
     // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
+        const categoryIds = formikCategories.values.options;
+
         const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
         const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
 
@@ -81,18 +75,30 @@ export default function EventOfEstablishmentUpdatePage() {
             }
         }
 
-        // Create the establishment
+        const dataValuesCategories = { options: categoryIds };
+        console.log('sendFormDataPutMultipart log de eventCategories :', eventCategories);
+        console.log('sendFormDataPutMultipart log de dataValuesCategories :', dataValuesCategories);
+
+        //Create the establishment
         sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
             .then((response) => {
                 // take new id event
                 const newEventId = response.data.data[0].event_id;
                 // Envoi des données de catégories formatées
                 const urlCreateCategories = `/pro/event/${newEventId}/category`;
-                const dataValuesCategories = { options: eventCategories };
+
+                const dataValuesCategories = { options: categoryIds };
+                console.log('sendFormDataPutMultipart log de eventCategories :', eventCategories);
+                console.log(
+                    'sendFormDataPutMultipart log de dataValuesCategories :',
+                    dataValuesCategories,
+                );
 
                 sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
                     .then(() => {
                         console.log('mise a jours des category');
+                        // Show success message
+                        setOpenSnackbar(true);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -129,18 +135,18 @@ export default function EventOfEstablishmentUpdatePage() {
         getAllCategories();
         getEstablishment();
         getEvent();
+        getEventCategories();
         setReloading(false);
     }, [reloading]);
 
+    // Combiner les deux autres useEffect en un seul
     useEffect(() => {
-        getEventCategories();
-        getInitialOptions(eventCategories);
-    }, []);
-
-    useEffect(() => {
-        formikCategories.setValues({
-            options: getInitialOptions(eventCategories),
-        });
+        if (eventCategories && eventCategories.length > 0) {
+            const initialOptions = getInitialOptions(eventCategories);
+            formikCategories.setValues({
+                options: initialOptions,
+            });
+        }
     }, [eventCategories]);
 
     return (
@@ -148,13 +154,12 @@ export default function EventOfEstablishmentUpdatePage() {
             <GlobalFormEvent
                 formikEvent={formikEvent}
                 formikCategories={formikCategories}
+                categoriesSelected={categoriesSelected}
                 handleCategoryChange={handleCategoryChange}
-                handleFormReset={handleFormReset}
                 handleSnackbarClose={handleSnackbarClose}
                 openSnackbar={openSnackbar}
                 openSnackbarCategoryError={openSnackbarCategoryError}
                 allCategories={allCategories}
-                categoriesSelected={categoriesSelected}
                 setInputValues={setInputValues}
                 setSelectedImage={setSelectedImage}
                 establishmentId={establishmentId}

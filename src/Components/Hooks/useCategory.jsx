@@ -7,6 +7,17 @@ const UseCategories = (token, eventId) => {
     const [allCategories, setAllCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
     const [eventCategories, setEventCategories] = useState([]);
+    const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    // ------------------------  TOAST ------------------------------------------
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+        setOpenSnackbarCategoryError(false);
+    };
 
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
     const getAllCategories = async () => {
@@ -48,9 +59,14 @@ const UseCategories = (token, eventId) => {
     const handleCategoryChange = (event) => {
         if (event.target.value.length <= 4) {
             formikCategories.handleChange(event);
+
+            const selected = event.target.value.map((value) => {
+                return allCategories.find((category) => category.category_id === value);
+            });
+            setCategoriesSelected(selected);
         } else {
             // Replace this with your setOpenSnackbarCategoryError setter function
-            console.log('Error: Cannot add more than 4 categories');
+            setOpenSnackbarCategoryError(true);
         }
     };
 
@@ -61,26 +77,7 @@ const UseCategories = (token, eventId) => {
         },
         enableReinitialize: true,
         validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
     });
-
-    const handleFormSubmitCategories = (values) => {
-        const updatedCategories = allCategories.filter((category) =>
-            values.options.includes(category.category_id),
-        );
-        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-
-        setCategoriesSelected(updatedCategories);
-
-        // udpate categories with the ids
-        setEventCategories(updatedCategoryIds);
-
-        const newOptions = values.options.concat(updatedCategoryIds);
-        formikCategories.setValues({
-            ...formikCategories.values,
-            options: newOptions,
-        });
-    };
 
     useEffect(() => {
         getAllCategories();
@@ -95,6 +92,12 @@ const UseCategories = (token, eventId) => {
         handleCategoryChange,
         getAllCategories,
         getEventCategories,
+        setEventCategories,
+        openSnackbarCategoryError,
+        openSnackbar,
+        handleSnackbarClose,
+        setOpenSnackbar,
+        setOpenSnackbarCategoryError,
     };
 };
 

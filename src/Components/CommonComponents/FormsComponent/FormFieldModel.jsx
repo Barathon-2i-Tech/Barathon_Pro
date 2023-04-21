@@ -13,6 +13,7 @@ export const FormFieldModel = ({
     error,
     helperText,
     setSelectedImage,
+    buttonTextDownload,
 }) => {
     const isLogoField = name === 'logo' || name === 'poster';
     const isDateTimePickerField = name === 'start_event' || name === 'end_event';
@@ -37,7 +38,7 @@ export const FormFieldModel = ({
                 <Box display="flex" alignItems="center">
                     <Button variant="contained" component="label">
                         <UploadIcon style={{ marginRight: '8px' }} />
-                        Téléchargez votre ficher
+                        {buttonTextDownload}
                         <input
                             hidden
                             accept="image/*"
@@ -103,6 +104,7 @@ FormFieldModel.propTypes = {
     error: PropTypes.bool,
     helperText: PropTypes.string,
     setSelectedImage: PropTypes.func,
+    buttonTextDownload: PropTypes.string,
 };
 
 FormFieldModel.defaultProps = {

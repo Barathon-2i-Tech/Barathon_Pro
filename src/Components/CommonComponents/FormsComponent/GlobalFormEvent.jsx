@@ -12,7 +12,6 @@ export const GlobalFormEvent = ({
     formikEvent,
     formikCategories,
     handleCategoryChange,
-    handleFormReset,
     handleSnackbarClose,
     openSnackbar,
     openSnackbarCategoryError,
@@ -55,7 +54,7 @@ export const GlobalFormEvent = ({
                     openSnackbar={openSnackbar}
                     handleSnackbarClose={handleSnackbarClose}
                     title={'Felicitation !'}
-                    message={'Bien envoyez'}
+                    message={'Votre évènements est bien créé, il sera bientot validé !'}
                     severity={'success'}
                 />
 
@@ -73,18 +72,16 @@ export const GlobalFormEvent = ({
                         </Button>
                     </Link>
 
-                    <FormSelect
-                        allCategories={allCategories}
-                        formikCategories={formikCategories}
-                        handleCategoryChange={handleCategoryChange}
-                        categoriesSelected={categoriesSelected}
-                        handleFormReset={handleFormReset}
-                        handleSubmit={formikCategories.handleSubmit}
-                    />
-
-                    <Box mt={10}>
+                    <Box mt={5}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>
+                                <FormSelect
+                                    allCategories={allCategories}
+                                    formikCategories={formikCategories}
+                                    handleCategoryChange={handleCategoryChange}
+                                    handleSubmit={formikCategories.handleSubmit}
+                                    submitClass={'hidden'}
+                                />
                                 <form onSubmit={formikEvent.handleSubmit}>
                                     <FormEvent
                                         formik={formikEvent}
@@ -120,7 +117,6 @@ GlobalFormEvent.propTypes = {
     formikEvent: PropTypes.object,
     formikCategories: PropTypes.object,
     handleCategoryChange: PropTypes.func,
-    handleFormReset: PropTypes.func,
     handleSnackbarClose: PropTypes.func,
     openSnackbar: PropTypes.bool,
     openSnackbarCategoryError: PropTypes.bool,
