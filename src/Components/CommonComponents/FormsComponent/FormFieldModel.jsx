@@ -41,7 +41,7 @@ export const FormFieldModel = ({
                         {buttonTextDownload}
                         <input
                             hidden
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/jpg,image/gif,image/svg"
                             type="file"
                             name={name}
                             onChange={handleChange}

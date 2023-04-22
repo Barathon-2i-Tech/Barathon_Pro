@@ -46,7 +46,7 @@ export const GlobalFormEvent = ({
                     openSnackbar={openSnackbarCategoryError}
                     handleSnackbarClose={handleSnackbarClose}
                     title={'Attention!'}
-                    message={'Vous avez droit à 4 categories maximum'}
+                    message={'Vous devez avoir entre 1 et 4 categories maximum'}
                     severity={'error'}
                 />
 
