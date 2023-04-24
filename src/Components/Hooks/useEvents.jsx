@@ -11,14 +11,12 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
     const [posterUrl, setPosterUrl] = useState('');
     const [event, setEvent] = useState([]);
     const [isEventDataLoaded, setIsEventDataLoaded] = useState(false);
-
     const [startEventFormatted, setStartEventFormatted] = useState('');
     const [endEventFormatted, setEndEventFormatted] = useState('');
     const [startTimeFormatted, setStartTimeFormatted] = useState('');
     const [endTimeFormatted, setEndTimeFormatted] = useState('');
     const [selectedImage, setSelectedImage] = useState('');
 
-    //phone demo
     const [inputValues, setInputValues] = useState({
         poster: '',
         event_name: '',
@@ -28,6 +26,25 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
         start_event: '',
         end_event: '',
     });
+
+    useEffect(() => {
+        if (eventId) {
+            getEvent();
+            setIsEventDataLoaded(true);
+        }
+    }, [eventId]);
+
+    useEffect(() => {
+        setSelectedImage(
+            posterUrl ||
+                'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
+        );
+    }, [posterUrl]);
+
+    useEffect(() => {
+        updateStartEventAndTime(inputValues.start_event);
+        updateEndEventAndTime(inputValues.end_event);
+    }, [inputValues.start_event, inputValues.end_event]);
 
     // This function is used to get the event to update by his ID
     async function getEvent() {
@@ -58,53 +75,32 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
         }
     }
 
+    function updateStartEventAndTime(start_event) {
+        if (start_event && dayjs(start_event, 'DD/MM/YYYY HH:mm').isValid()) {
+            setStartEventFormatted(dayjs(start_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'));
+            setStartTimeFormatted(dayjs(start_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
+        } else {
+            setStartEventFormatted("Début de l'événement");
+            setStartTimeFormatted('Heure');
+        }
+    }
+
+    function updateEndEventAndTime(end_event) {
+        if (end_event && dayjs(end_event, 'DD/MM/YYYY HH:mm').isValid()) {
+            setEndEventFormatted(dayjs(end_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'));
+            setEndTimeFormatted(dayjs(end_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
+        } else {
+            setEndEventFormatted("Fin de l'événement");
+            setEndTimeFormatted('Heure');
+        }
+    }
+
     const formikEvent = useFormik({
         initialValues: isEventDataLoaded ? event : FormInitialValuesEvent,
         enableReinitialize: true,
         validationSchema: eventSchema,
         onSubmit: (values) => handleFormSubmit(values),
     });
-
-    useEffect(() => {
-        if (eventId) {
-            getEvent();
-            setIsEventDataLoaded(true);
-        }
-    }, [eventId]);
-
-    useEffect(() => {
-        setSelectedImage(
-            posterUrl ||
-                'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
-        );
-    }, [posterUrl]);
-
-    useEffect(() => {
-        if (
-            inputValues.start_event &&
-            dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').isValid()
-        ) {
-            setStartEventFormatted(
-                dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'),
-            );
-            setStartTimeFormatted(
-                dayjs(inputValues.start_event, 'DD/MM/YYYY HH:mm').format('HH:mm'),
-            );
-        } else {
-            setStartEventFormatted("Début de l'événement");
-            setStartTimeFormatted('Heure');
-        }
-
-        if (inputValues.end_event && dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').isValid()) {
-            setEndEventFormatted(
-                dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'),
-            );
-            setEndTimeFormatted(dayjs(inputValues.end_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
-        } else {
-            setEndEventFormatted("Fin de l'événement");
-            setEndTimeFormatted('Heure');
-        }
-    }, [inputValues.start_event, inputValues.end_event]);
 
     return {
         posterUrl,

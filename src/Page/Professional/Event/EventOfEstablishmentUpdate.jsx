@@ -1,5 +1,5 @@
 import '../../../css/Professional/Loader.css';
-import { useState, useEffect } from 'react'; //,
+import { useEffect } from 'react'; //,
 import { useAuth } from '../../../Components/Hooks/useAuth';
 import { sendFormDataPutMultipart, sendFormDataPutCategory } from '../../../utils/AxiosModel';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -16,8 +16,9 @@ export default function EventOfEstablishmentUpdatePage() {
     const { establishmentIdParam, eventIdParam } = useParams();
     const establishmentId = parseInt(establishmentIdParam);
     const eventId = parseInt(eventIdParam);
-    const [reloading, setReloading] = useState(false);
+
     // ------------------------  CATEGORY ------------------------------------------
+    // Destructure the needed values and functions from UseCategories hook
     const {
         allCategories,
         categoriesSelected,
@@ -32,7 +33,9 @@ export default function EventOfEstablishmentUpdatePage() {
         setOpenSnackbar,
         handleSnackbarClose,
     } = UseCategories(token, eventId);
+
     // ------------------------  ESTABLISHMENT ------------------------------------------
+    // Destructure the needed values and functions from UseEstablishment hook
     const { establishmentName, establishmentAddress, establishmentPostalCode, getEstablishment } =
         UseEstablishment(ownerId, establishmentId, token);
 
@@ -48,7 +51,7 @@ export default function EventOfEstablishmentUpdatePage() {
 
     // ------------------------  CATEGORY ------------------------------------------
 
-    // This const is to initialize initial option value with the categories of establishment in DB
+    // This function returns an array of initial category option values
     const getInitialOptions = (categories) => {
         return categories && categories.length > 0
             ? categories.map((category) => category.category_id)
@@ -57,7 +60,9 @@ export default function EventOfEstablishmentUpdatePage() {
 
     // ------------------------  SUBMIT ------------------------------------------
 
+    // This function handles the form submission
     const handleFormSubmit = (values) => {
+        // Check if there are selected categories
         if (!formikCategories.values.options.length) {
             setOpenSnackbarCategoryError(true);
         } else {
@@ -66,27 +71,26 @@ export default function EventOfEstablishmentUpdatePage() {
             const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
             const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
 
-            // Créer un nouvel objet FormData
+            // Create a new FormData object
             const formData = new FormData();
 
-            // Ajouter les paires clé-valeur au FormData
+            // Add key-value pairs to FormData
             for (const [key, value] of Object.entries(dataValues)) {
                 if (key === 'poster' && value) {
-                    // Si la clé est 'poster', ajoutez le fichier image et non son chemin
+                    // If the key is 'poster', add the image file instead of its path
                     formData.append(key, value[0]);
                 } else {
                     formData.append(key, value);
                 }
             }
-
-            //Create the establishment
-            sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+            // Update the event
+            sendFormDataPutMultipart(urlCreate, token, formData)
                 .then((response) => {
-                    // take new id event
+                    // Get the updated event's ID
                     const newEventId = response.data.data[0].event_id;
-                    // Envoi des données de catégories formatées
-                    const urlCreateCategories = `/pro/event/${newEventId}/category`;
 
+                    // Send formatted category data
+                    const urlCreateCategories = `/pro/event/${newEventId}/category`;
                     const dataValuesCategories = { options: categoryIds };
 
                     sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
@@ -97,7 +101,7 @@ export default function EventOfEstablishmentUpdatePage() {
                         })
                         .catch((error) => {
                             console.log(error);
-                            alert('Une erreur est survenue. Merci de réessayer');
+                            alert('An error occurred. Please try again');
                         });
                     // Navigate to the home page after a delay of 1.5 seconds
                     setTimeout(() => {
@@ -106,16 +110,14 @@ export default function EventOfEstablishmentUpdatePage() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    alert(
-                        "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
-                    );
+                    alert('An error occurred while updating the event. Please try again');
                 });
         }
     };
 
     // ------------------------  EVENT ------------------------------------------
+    // Destructure the needed values and functions from UseEvent hook
     const {
-        getEvent,
         startEventFormatted,
         endEventFormatted,
         startTimeFormatted,
@@ -127,15 +129,14 @@ export default function EventOfEstablishmentUpdatePage() {
         setSelectedImage,
     } = UseEvent({ establishmentId, eventId, token, handleFormSubmit });
 
+    // Call API methods on component mount
     useEffect(() => {
         getAllCategories();
         getEstablishment();
-        getEvent();
         getEventCategories();
-        setReloading(false);
-    }, [reloading]);
+    }, []);
 
-    // Combiner les deux autres useEffect en un seul
+    // Combine the two useEffects into one
     useEffect(() => {
         if (eventCategories && eventCategories.length > 0) {
             const initialOptions = getInitialOptions(eventCategories);
