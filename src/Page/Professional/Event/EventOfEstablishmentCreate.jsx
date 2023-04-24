@@ -23,7 +23,6 @@ export default function EventOfEstablishmentCreatePage() {
         categoriesSelected,
         formikCategories,
         handleCategoryChange,
-        eventCategories,
         getAllCategories,
         openSnackbarCategoryError,
         setOpenSnackbarCategoryError,
@@ -49,54 +48,54 @@ export default function EventOfEstablishmentCreatePage() {
     // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
-        if (!formikCategories.isValid) {
+        if (!formikCategories.values.options.length) {
             setOpenSnackbarCategoryError(true);
-            return;
-        }
-        const categoryIds = formikCategories.values.options;
+        } else {
+            const categoryIds = formikCategories.values.options;
 
-        const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
-        const urlCreate = `pro/events`;
+            const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
+            const urlCreate = `pro/events`;
 
-        // Créer un nouvel objet FormData
-        const formData = new FormData();
+            // Créer un nouvel objet FormData
+            const formData = new FormData();
 
-        // Ajouter les paires clé-valeur au FormData
-        for (const [key, value] of Object.entries(dataValues)) {
-            if (key === 'poster' && value) {
-                // Si la clé est 'poster', ajoutez le fichier image et non son chemin
-                formData.append(key, value[0]);
-            } else {
-                formData.append(key, value);
+            // Ajouter les paires clé-valeur au FormData
+            for (const [key, value] of Object.entries(dataValues)) {
+                if (key === 'poster' && value) {
+                    // Si la clé est 'poster', ajoutez le fichier image et non son chemin
+                    formData.append(key, value[0]);
+                } else {
+                    formData.append(key, value);
+                }
             }
+
+            // Create the establishment
+            sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+                .then((response) => {
+                    const newEventId = response.data.data[0].event_id;
+                    // Associate categories to the new establishment
+                    const dataValuesCategories = { options: categoryIds };
+                    const urlCreateCategories = `/pro/event/${newEventId}/category`;
+
+                    sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
+                        .then(() => {
+                            // Show success message
+                            setOpenSnackbar(true);
+                            // Navigate to the home page after a delay of 1.5 seconds
+                            setTimeout(() => {
+                                goBack();
+                            }, 1500);
+                        })
+                        .catch((e) => {
+                            console.error(e);
+                            alert('Une erreur est survenu pour vos category.');
+                        });
+                })
+                .catch((e) => {
+                    console.error(e);
+                    alert("Une erreur est survenue lors de la création de l'évenemnt.");
+                });
         }
-
-        // Create the establishment
-        sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
-            .then((response) => {
-                const newEventId = response.data.data[0].event_id;
-                // Associate categories to the new establishment
-                const dataValuesCategories = { options: categoryIds };
-                const urlCreateCategories = `/pro/event/${newEventId}/category`;
-
-                sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
-                    .then(() => {
-                        // Show success message
-                        setOpenSnackbar(true);
-                        // Navigate to the home page after a delay of 1.5 seconds
-                        setTimeout(() => {
-                            goBack();
-                        }, 1500);
-                    })
-                    .catch((e) => {
-                        console.error(e);
-                        alert('Une erreur est survenu pour vos category.');
-                    });
-            })
-            .catch((e) => {
-                console.error(e);
-                alert("Une erreur est survenue lors de la création de l'évenemnt.");
-            });
     };
 
     // ------------------------  EVENT ------------------------------------------
@@ -117,10 +116,6 @@ export default function EventOfEstablishmentCreatePage() {
         getEstablishment();
         setReloading(false);
     }, [reloading]);
-
-    useEffect(() => {
-        console.log('categorie :', eventCategories);
-    }, [eventCategories]);
 
     return (
         <>

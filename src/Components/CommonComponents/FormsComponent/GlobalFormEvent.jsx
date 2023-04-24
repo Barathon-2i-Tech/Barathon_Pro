@@ -7,6 +7,7 @@ import { BasicPage } from '../BasicPage';
 import { FormSelect } from './FormSelect';
 import { FormEvent } from './FormEvent';
 import { EventPhoneDemo } from '../PhoneDemo/EventPhoneDemo';
+import { Loader } from '../Loader';
 
 export const GlobalFormEvent = ({
     formikEvent,
@@ -72,6 +73,7 @@ export const GlobalFormEvent = ({
                         </Button>
                     </Link>
 
+                    <Loader allClass={'loading display'} />
                     <Box mt={5}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} md={6}>

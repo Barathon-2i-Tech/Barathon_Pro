@@ -27,6 +27,7 @@ export default function EventOfEstablishmentUpdatePage() {
         getAllCategories,
         getEventCategories,
         openSnackbarCategoryError,
+        setOpenSnackbarCategoryError,
         openSnackbar,
         setOpenSnackbar,
         handleSnackbarClose,
@@ -57,64 +58,59 @@ export default function EventOfEstablishmentUpdatePage() {
     // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
-        const categoryIds = formikCategories.values.options;
+        if (!formikCategories.values.options.length) {
+            setOpenSnackbarCategoryError(true);
+        } else {
+            const categoryIds = formikCategories.values.options;
 
-        const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
-        const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
+            const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
+            const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
 
-        // Créer un nouvel objet FormData
-        const formData = new FormData();
+            // Créer un nouvel objet FormData
+            const formData = new FormData();
 
-        // Ajouter les paires clé-valeur au FormData
-        for (const [key, value] of Object.entries(dataValues)) {
-            if (key === 'poster' && value) {
-                // Si la clé est 'poster', ajoutez le fichier image et non son chemin
-                formData.append(key, value[0]);
-            } else {
-                formData.append(key, value);
+            // Ajouter les paires clé-valeur au FormData
+            for (const [key, value] of Object.entries(dataValues)) {
+                if (key === 'poster' && value) {
+                    // Si la clé est 'poster', ajoutez le fichier image et non son chemin
+                    formData.append(key, value[0]);
+                } else {
+                    formData.append(key, value);
+                }
             }
+
+            //Create the establishment
+            sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+                .then((response) => {
+                    // take new id event
+                    const newEventId = response.data.data[0].event_id;
+                    // Envoi des données de catégories formatées
+                    const urlCreateCategories = `/pro/event/${newEventId}/category`;
+
+                    const dataValuesCategories = { options: categoryIds };
+
+                    sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
+                        .then(() => {
+                            console.log('mise a jours des category');
+                            // Show success message
+                            setOpenSnackbar(true);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            alert('Une erreur est survenue. Merci de réessayer');
+                        });
+                    // Navigate to the home page after a delay of 1.5 seconds
+                    setTimeout(() => {
+                        goBack();
+                    }, 1500);
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert(
+                        "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
+                    );
+                });
         }
-
-        const dataValuesCategories = { options: categoryIds };
-        console.log('sendFormDataPutMultipart log de eventCategories :', eventCategories);
-        console.log('sendFormDataPutMultipart log de dataValuesCategories :', dataValuesCategories);
-
-        //Create the establishment
-        sendFormDataPutMultipart(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
-            .then((response) => {
-                // take new id event
-                const newEventId = response.data.data[0].event_id;
-                // Envoi des données de catégories formatées
-                const urlCreateCategories = `/pro/event/${newEventId}/category`;
-
-                const dataValuesCategories = { options: categoryIds };
-                console.log('sendFormDataPutMultipart log de eventCategories :', eventCategories);
-                console.log(
-                    'sendFormDataPutMultipart log de dataValuesCategories :',
-                    dataValuesCategories,
-                );
-
-                sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
-                    .then(() => {
-                        console.log('mise a jours des category');
-                        // Show success message
-                        setOpenSnackbar(true);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        alert('Une erreur est survenue. Merci de réessayer');
-                    });
-                // Navigate to the home page after a delay of 1.5 seconds
-                setTimeout(() => {
-                    goBack();
-                }, 1500);
-            })
-            .catch((error) => {
-                console.log(error);
-                alert(
-                    "Une erreur est survenue lors de la création de l'évenemnt. Merci de réessayer",
-                );
-            });
     };
 
     // ------------------------  EVENT ------------------------------------------

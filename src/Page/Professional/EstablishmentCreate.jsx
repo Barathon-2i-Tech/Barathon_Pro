@@ -155,13 +155,11 @@ export default function EstablishmentCreatePage() {
                     })
                     .catch((e) => {
                         console.error(e);
-                        console.error(e.response.data);
                         alert('Une erreur ');
                     });
             })
             .catch((e) => {
                 console.error(e);
-                console.error(e.response.data);
                 alert(
                     "Une erreur est survenue lors de la création de l'établissement. Merci de réessayer",
                 );

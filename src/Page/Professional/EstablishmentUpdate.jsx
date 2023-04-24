@@ -151,8 +151,6 @@ export default function EstablishmentCreatePage() {
         // Envoi des données de catégories formatées
         const urlCreateCategories = `/pro/establishment/${id}/category`;
         const dataValuesCategories = { options: categoryIds };
-        console.log('sendFormDataPutMultipart log de eventCategories :', establishmentCategories);
-        console.log('sendFormDataPutMultipart log de dataValuesCategories :', dataValuesCategories);
 
         sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
             .then(() => {
@@ -161,7 +159,6 @@ export default function EstablishmentCreatePage() {
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                // console.table(dataValuesCategories);
             });
     };
 
@@ -241,7 +238,6 @@ export default function EstablishmentCreatePage() {
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                //console.table(dataValues);
             });
     };
 

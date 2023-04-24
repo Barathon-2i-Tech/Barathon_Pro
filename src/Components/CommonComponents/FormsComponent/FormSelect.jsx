@@ -64,7 +64,7 @@ export const FormSelect = ({
                             </div>
                             <div className="flex md:justify-end">
                                 <button type="submit" className={submitClass}>
-                                    Enregistrer mon/mes Categories
+                                    Enregistrer uniquement mon/mes Categories
                                 </button>
                             </div>
                         </form>
