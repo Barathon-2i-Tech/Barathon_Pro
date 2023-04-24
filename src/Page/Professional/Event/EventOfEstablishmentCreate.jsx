@@ -18,7 +18,7 @@ export default function EventOfEstablishmentCreatePage() {
     const { id } = useParams();
     const establishmentId = parseInt(id);
 
-    // ------------------------  CATEGORY ------------------------------------------
+    // ------------------------  CATEGORY ---------------------------------------------
     // Destructure the needed values and functions from UseCategories hook
     const {
         allCategories,
