@@ -143,11 +143,11 @@ export default function EstablishmentCreatePage() {
         onSubmit: (values) => handleFormSubmitCategories(values),
     });
 
-    const handleFormSubmitCategories = () => {
+    const handleFormSubmitCategories = (values) => {
         //toast MUI
         setOpenSnackbar(true);
 
-        const categoryIds = formikCategories.values.options;
+        const categoryIds = values.options;
         // Envoi des données de catégories formatées
         const urlCreateCategories = `/pro/establishment/${id}/category`;
         const dataValuesCategories = { options: categoryIds };
