@@ -46,7 +46,6 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
         updateEndEventAndTime(inputValues.end_event);
     }, [inputValues.start_event, inputValues.end_event]);
 
-    // This function is used to get the event to update by his ID
     async function getEvent() {
         try {
             const response = await Axios.api.get(
@@ -60,12 +59,9 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
                 },
             );
             setEvent(response.data.data);
+            setPosterUrl(response.data.data.poster);
 
-            // Récupérer l'URL du poster et la stocker dans l'état posterUrl
-            const poster = response.data.data.poster; // Remplacez "poster" par la clé appropriée pour récupérer l'URL du poster
-            setPosterUrl(poster);
-
-            await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
+            await new Promise((resolve) => setTimeout(resolve));
             const loader = document.getElementById('loader');
             if (loader) {
                 loader.classList.remove('display');
@@ -76,25 +72,40 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
     }
 
     function updateStartEventAndTime(start_event) {
-        if (start_event && dayjs(start_event, 'DD/MM/YYYY HH:mm').isValid()) {
-            setStartEventFormatted(dayjs(start_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'));
-            setStartTimeFormatted(dayjs(start_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
-        } else {
-            setStartEventFormatted("Début de l'événement");
-            setStartTimeFormatted('Heure');
-        }
+        updateEventAndTime(
+            start_event,
+            setStartEventFormatted,
+            setStartTimeFormatted,
+            "Début de l'événement",
+            'Heure',
+        );
     }
 
     function updateEndEventAndTime(end_event) {
-        if (end_event && dayjs(end_event, 'DD/MM/YYYY HH:mm').isValid()) {
-            setEndEventFormatted(dayjs(end_event, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'));
-            setEndTimeFormatted(dayjs(end_event, 'DD/MM/YYYY HH:mm').format('HH:mm'));
-        } else {
-            setEndEventFormatted("Fin de l'événement");
-            setEndTimeFormatted('Heure');
-        }
+        updateEventAndTime(
+            end_event,
+            setEndEventFormatted,
+            setEndTimeFormatted,
+            "Fin de l'événement",
+            'Heure',
+        );
     }
 
+    function updateEventAndTime(
+        eventDateTime,
+        setEventFormatted,
+        setTimeFormatted,
+        defaultEventText,
+        defaultTimeText,
+    ) {
+        if (eventDateTime && dayjs(eventDateTime, 'DD/MM/YYYY HH:mm').isValid()) {
+            setEventFormatted(dayjs(eventDateTime, 'DD/MM/YYYY HH:mm').format('dddd D MMMM'));
+            setTimeFormatted(dayjs(eventDateTime, 'DD/MM/YYYY HH:mm').format('HH:mm'));
+        } else {
+            setEventFormatted(defaultEventText);
+            setTimeFormatted(defaultTimeText);
+        }
+    }
     const formikEvent = useFormik({
         initialValues: isEventDataLoaded ? event : FormInitialValuesEvent,
         enableReinitialize: true,
