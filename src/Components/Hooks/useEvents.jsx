@@ -35,6 +35,20 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
     }, [eventId]);
 
     useEffect(() => {
+        if (isEventDataLoaded && event) {
+            setInputValues({
+                poster: event.poster || '',
+                event_name: event.event_name || '',
+                description: event.description || '',
+                capacity: event.capacity || '',
+                price: event.price || '',
+                start_event: event.start_event || '',
+                end_event: event.end_event || '',
+            });
+        }
+    }, [isEventDataLoaded, event]);
+
+    useEffect(() => {
         setSelectedImage(
             posterUrl ||
                 'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',

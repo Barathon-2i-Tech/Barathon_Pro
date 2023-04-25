@@ -140,10 +140,10 @@ export default function EventPage() {
                                         </div>
                                     </div>
                                     <div className="card-hover__content">
-                                        <div className="h5 text-teal-700 dark:text-white w-full text-center ">
+                                        <div className="h5 text-teal-700 dark:text-black w-full text-center ">
                                             {establishment.trade_name}
                                         </div>
-                                        <div className="h6 pb-22 text-cyan-900 dark:text-white w-full font-bold text-center">
+                                        <div className="h6 pb-22 text-cyan-900 dark:text-black w-full font-bold text-center">
                                             {establishment.city}
                                         </div>
                                     </div>

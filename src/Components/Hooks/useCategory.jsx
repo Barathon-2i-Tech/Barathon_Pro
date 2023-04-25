@@ -5,6 +5,7 @@ import { selectCategoriesSchema } from '../../utils/FormSchemaValidation';
 
 const UseCategories = (token, eventId) => {
     const [allCategories, setAllCategories] = useState([]);
+    const [fetchedCategories, setFetchedCategories] = useState([]);
     const [categoriesSelected, setCategoriesSelected] = useState([]);
     const [eventCategories, setEventCategories] = useState([]);
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
@@ -45,6 +46,7 @@ const UseCategories = (token, eventId) => {
                 },
             });
             setEventCategories(response.data.data);
+            setFetchedCategories(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -82,6 +84,11 @@ const UseCategories = (token, eventId) => {
     useEffect(() => {
         getAllCategories();
     }, []);
+    useEffect(() => {
+        if (fetchedCategories.length > 0) {
+            setCategoriesSelected(fetchedCategories);
+        }
+    }, [fetchedCategories]);
 
     return {
         allCategories,

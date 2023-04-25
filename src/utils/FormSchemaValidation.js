@@ -56,11 +56,11 @@ export const eventSchema = () => {
     return yup.object().shape({
         poster: yup.mixed().required('Ajoutez une image'),
         event_name: yup.string().required("Veuillez renseigner le nom de l'évènement"),
-        description: yup.string().required('Veuillez mettre une description votre evenement'),
+        description: yup.string().required('Veuillez mettre une description votre évènement'),
         capacity: yup
             .number()
             .typeError('Vous devez renseigner un chiffre et non des lettres')
-            .required('Veuillez renseigner la capacité de votre evenement'),
+            .required('Veuillez renseigner la capacité de votre évènement'),
         price: yup
             .number()
             .typeError('Vous devez renseigner un chiffre et non des lettres')

@@ -6,8 +6,8 @@ import Link from '@mui/material/Link';
 export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishmentId }) => {
     const labelMap = {
         poster: 'Affiche de votre évènement',
-        event_name: 'Nom de lévènement',
-        description: 'Déscription',
+        event_name: "Nom de l'évènement",
+        description: 'Description',
         capacity: 'Capacité',
         price: 'Prix',
         start_event: "Début de l'évènement",
