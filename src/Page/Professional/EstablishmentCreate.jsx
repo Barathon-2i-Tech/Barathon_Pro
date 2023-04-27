@@ -10,13 +10,13 @@ import {
     establishmentSchema,
     selectCategoriesSchema,
 } from '../../utils/FormSchemaValidation';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import {
     FormInitialValuesOpening,
     FormInitialValuesEstablishment,
 } from '../../utils/FormInitialValue';
 import { useFormik } from 'formik';
-import { FormSelectEstablishment } from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment';
+import { FormSelect } from '../../Components/CommonComponents/FormsComponent/FormSelect';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormEstablishment } from '../../Components/CommonComponents/FormsComponent/FormEstablishment';
 import { sendFormDataPost } from '../../utils/AxiosModel';
@@ -26,10 +26,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function EstablishmentCreatePage() {
     const [allCategories, setAllCategories] = useState([]);
-    const [establishmentCategories, setEstablishmentCategories] = useState([]);
-    const [categoriesSelected, setCategoriesSelected] = useState([]);
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
-    const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
     const token = user.token;
@@ -52,7 +49,6 @@ export default function EstablishmentCreatePage() {
             return;
         }
         setOpenSnackbar(false);
-        setOpenSnackbarOpening(false);
         setOpenSnackbarCategoryError(false);
     };
 
@@ -74,12 +70,6 @@ export default function EstablishmentCreatePage() {
         }
     }
 
-    //function to reset selection
-    const handleFormReset = () => {
-        formikCategories.resetForm();
-        setCategoriesSelected([]);
-    };
-
     //function no add more 4 categories
     const handleCategoryChange = (event) => {
         if (event.target.value.length <= 4) {
@@ -95,41 +85,11 @@ export default function EstablishmentCreatePage() {
         },
         enableReinitialize: true,
         validationSchema: selectCategoriesSchema,
-        onSubmit: (values) => handleFormSubmitCategories(values),
     });
-
-    const handleFormSubmitCategories = (values) => {
-        //toast MUI
-        setOpenSnackbarOpening(true);
-
-        // Mettre à jour les catégories de l'établissement
-        const updatedCategories = allCategories.filter((category) =>
-            values.options.includes(category.category_id),
-        );
-        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-
-        // avoir la liste des categories selectionner en state pour les lister
-        setCategoriesSelected(updatedCategories);
-
-        // Créer l'objet avec la propriété "option"
-        // const optionObj = { option: updatedCategoryIds };
-        setEstablishmentCategories(updatedCategoryIds);
-
-        // Mettre à jour les options sélectionnées dans formikCategories.values
-        const newOptions = values.options.concat(updatedCategoryIds);
-        formikCategories.setValues({
-            ...formikCategories.values,
-            options: newOptions,
-        });
-    };
 
     useEffect(() => {
         getAllCategories();
     }, []);
-
-    useEffect(() => {
-        console.log('categorie :', establishmentCategories);
-    }, [establishmentCategories]);
 
     // ------------------------  ESTABLISHMENT ------------------------------------------
     const formikEstablishment = useFormik({
@@ -150,6 +110,8 @@ export default function EstablishmentCreatePage() {
     // ------------------------  SUBMIT ------------------------------------------
 
     const handleFormSubmit = (values) => {
+        const categoryIds = formikCategories.values.options;
+
         // Include the logic from handleFormSubmitOpening to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
         setOpening(dataValuesOpening);
@@ -179,7 +141,7 @@ export default function EstablishmentCreatePage() {
                 const newEstablishmentId = response.data.data[0].establishment_id;
 
                 // Associate categories to the new establishment
-                const dataValuesCategories = { options: establishmentCategories };
+                const dataValuesCategories = { options: categoryIds };
                 const urlCreateCategories = `/pro/establishment/${newEstablishmentId}/category`;
 
                 sendFormDataPost(urlCreateCategories, token, dataValuesCategories)
@@ -193,13 +155,11 @@ export default function EstablishmentCreatePage() {
                     })
                     .catch((e) => {
                         console.error(e);
-                        console.error(e.response.data);
                         alert('Une erreur ');
                     });
             })
             .catch((e) => {
                 console.error(e);
-                console.error(e.response.data);
                 alert(
                     "Une erreur est survenue lors de la création de l'établissement. Merci de réessayer",
                 );
@@ -224,31 +184,25 @@ export default function EstablishmentCreatePage() {
                 severity={'error'}
             />
             <ToastForm
-                openSnackbar={openSnackbarOpening}
-                handleSnackbarClose={handleSnackbarClose}
-                title={'Bravo !'}
-                message={'Bien enregisté - Continuez et enregistrez'}
-                severity={'success'}
-            />
-            <ToastForm
                 openSnackbar={openSnackbar}
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Felicitation !'}
-                message={'Bien envoyez'}
+                message={'Votre établissement est bien créé, il sera bientot validé !'}
                 severity={'success'}
             />
 
             <BasicPage title="Creer mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <FormSelectEstablishment
-                    allCategories={allCategories}
-                    formikCategories={formikCategories}
-                    handleCategoryChange={handleCategoryChange}
-                    categoriesSelected={categoriesSelected}
-                    handleFormReset={handleFormReset}
-                    handleSubmit={formikCategories.handleSubmit}
-                />
+                <Grid item xs={12} md={6}>
+                    <FormSelect
+                        allCategories={allCategories}
+                        formikCategories={formikCategories}
+                        handleCategoryChange={handleCategoryChange}
+                        handleSubmit={formikCategories.handleSubmit}
+                        submitClass={'hidden'}
+                    />
+                </Grid>
 
                 <Box m="20px">
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6 pt-4">

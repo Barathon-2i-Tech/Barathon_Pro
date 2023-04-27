@@ -32,19 +32,19 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Etablissements" />
         </ListItemButton>
-        <ListItemButton href="/pro/event">
+        <ListItemButton href="/pro/establishment/event">
             <ListItemIcon>
                 <ConfirmationNumberIcon />
             </ListItemIcon>
             <ListItemText primary="Evenements" />
         </ListItemButton>
-        <ListItemButton href="/pro/tag">
+        <ListItemButton href="/pro/tag" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
                 <TagIcon />
             </ListItemIcon>
             <ListItemText primary="Demander un Tag" />
         </ListItemButton>
-        <ListItemButton href="/pro/employee">
+        <ListItemButton href="/pro/employee" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
                 <GroupIcon />
             </ListItemIcon>
@@ -52,19 +52,19 @@ export const mainListItems = (
         </ListItemButton>
         <Divider sx={{ my: 1 }} />
 
-        <ListItemButton href="/pro/notification">
+        <ListItemButton href="/pro/notification" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
                 <PermContactCalendarIcon />
             </ListItemIcon>
             <ListItemText primary="Notifications" />
         </ListItemButton>
-        <ListItemButton href="/pro/contact">
+        <ListItemButton href="/pro/contact" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
                 <EmailIcon />
             </ListItemIcon>
             <ListItemText primary="Nous Contacter" />
         </ListItemButton>
-        <ListItemButton href="/pro/cgu">
+        <ListItemButton href="/pro/cgu" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
                 <GavelIcon />
             </ListItemIcon>

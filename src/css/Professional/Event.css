@@ -1,0 +1,232 @@
+.categories_selected-list_icon-svg svg {
+  fill: white;
+  width: 13px;
+  height: 13px;
+}
+.description-event {
+  min-height: 150px;
+}
+/* Applique le style à toutes les scrollbar dans l'application */
+::-webkit-scrollbar {
+  width: 7px; /* Largeur de la scrollbar */
+}
+
+/* Applique le style à toutes les scrollbar dans .screen-iphone */
+.screen-iphone::-webkit-scrollbar {
+  width: 7px; /* Largeur de la scrollbar */
+}
+
+/* Applique le style au thumb (la partie qui se déplace) de toutes les scrollbar dans .screen-iphone */
+.screen-iphone::-webkit-scrollbar-thumb {
+  background-color: #0f766e; /* Couleur du thumb */
+  border-radius: 5px; /* Arrondir les coins du thumb */
+}
+
+/* Applique le style à la track (la partie fixe) de toutes les scrollbar dans .screen-iphone */
+.screen-iphone::-webkit-scrollbar-track {
+  background-color: #000000; /* Couleur de la track */
+  border-radius: 5px; /* Arrondir les coins de la track */
+}
+
+.img_establisment {
+  max-height: 100px;
+  width: auto;
+  margin: auto;
+}
+
+.color-filter-event:before {
+  content: '';
+  height: 100%;
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+  border-radius: 20px;
+}
+.color-filter-event.is-refuse {
+  z-index: 30;
+}
+.is-refuse:before {
+  background-color: red;
+  z-index: 30;
+}
+
+.color-filter-event.is-pending {
+  z-index: 30;
+}
+.is-pending:before {
+  background-color: orange;
+  z-index: 30;
+}
+
+.status-establishment {
+  border-radius: 20px 0px 20px 0px;
+}
+
+/*CARD EVENT ESTABLISHMENT*/
+
+.event-card-hover__card-container {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.event-card-hover__card-container-img img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.event-card-hover__card {
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  margin-bottom: 30px;
+}
+
+.card-hover__content {
+  position: relative;
+  height: calc(100% - 210px);
+  padding: 15px;
+}
+
+.card-event__img-transition {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+  transition-property: top, left, bottom, right;
+}
+
+@media (hover: hover) {
+  /*eventTION CARD HOVER*/
+  .event-card-hover__card:hover .card-event__img-transition {
+    top: -10px;
+    left: -10px;
+    bottom: -10px;
+    right: -10px;
+  }
+}
+
+/*FALSE PHONE */
+
+.container-iphone {
+  max-width: 600px;
+  margin: 0px auto 30px auto;
+}
+
+.phone-iphone {
+  position: relative;
+  background: #1e1e1e;
+  height: 670px;
+  width: 290px;
+  border-radius: 25px;
+  margin: 0 auto;
+}
+
+.camera-iphone {
+  position: absolute;
+  background: #7a7a7a;
+  height: 8px;
+  width: 8px;
+  border-radius: 15px;
+  top: 22px;
+  left: 85px;
+}
+
+.speaker-iphone {
+  position: absolute;
+  background: #7a7a7a;
+  height: 6px;
+  width: 50px;
+  border-radius: 15px;
+  top: 22px;
+  left: 105px;
+}
+
+.sleep-button-iphone {
+  position: absolute;
+  background: #1e1e1e;
+  height: 35px;
+  width: 3px;
+  border-top-right-radius: 3px 3px;
+  border-bottom-right-radius: 3px 3px;
+  top: 105px;
+  left: 250px;
+}
+
+.silent-switch-iphone {
+  position: absolute;
+  background: #1e1e1e;
+  height: 25px;
+  width: 3px;
+  border-top-left-radius: 3px 3px;
+  border-bottom-left-radius: 3px 3px;
+  top: 60px;
+  left: -3px;
+}
+
+.volume-iphone {
+  position: absolute;
+  background: #1e1e1e;
+  width: 3px;
+  height: 35px;
+  border-top-left-radius: 3px 3px;
+  border-bottom-left-radius: 3px 3px;
+  left: -3px;
+}
+
+.up {
+  top: 105px;
+}
+
+.down {
+  top: 145px;
+}
+
+.screen-iphone {
+  position: absolute;
+  overflow: auto;
+  background: #000000;
+  height: 580px;
+  width: 270px;
+  top: 50px;
+  left: 10px;
+  background-size: cover;
+}
+
+.home-button-iphone {
+  position: absolute;
+  border: 1px solid #7a7a7a;
+  height: 35px;
+  width: 35px;
+  border-radius: 25px;
+  bottom: 12px;
+  left: 50%;
+  margin-left: -18px;
+}
+
+.poster-event {
+  width: auto;
+  height: 300px;
+}
+.poster-event img {
+  width: 100%;
+  height: 300px;
+}
+
+.bck-black-gradient {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1),
+    rgba(0, 0, 0, 0.8) 20%,
+    rgba(0, 0, 0, 0.7) 75%,
+    rgba(0, 0, 0, 0.5) 85%,
+    rgba(0, 0, 0, 0.2) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}

@@ -13,7 +13,7 @@ import {
 import { Grid, Box } from '@mui/material';
 import { FormInitialValuesOpening } from '../../utils/FormInitialValue';
 import { useFormik, Formik } from 'formik';
-import { FormSelectEstablishment } from '../../Components/CommonComponents/FormsComponent/FormSelectEstablishment';
+import { FormSelect } from '../../Components/CommonComponents/FormsComponent/FormSelect';
 import { FormOpening } from '../../Components/CommonComponents/FormsComponent/FormOpening';
 import { FormFieldModel } from '../../Components/CommonComponents/FormsComponent/FormFieldModel';
 import { sendFormDataPutCategory, sendFormDataPutMultipart } from '../../utils/AxiosModel';
@@ -25,7 +25,6 @@ import { useNavigate } from 'react-router-dom';
 import '../../css/WelcomePage/TypoHome.css';
 
 export default function EstablishmentCreatePage() {
-    const [openSnackbarOpening, setOpenSnackbarOpening] = useState(false);
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();
@@ -37,7 +36,6 @@ export default function EstablishmentCreatePage() {
 
     const [allCategories, setAllCategories] = useState([]);
     const [establishmentCategories, setEstablishmentCategories] = useState([]);
-    const [categoriesSelected, setCategoriesSelected] = useState([]);
 
     const { id } = useParams();
     const establishmentId = parseInt(id);
@@ -59,7 +57,6 @@ export default function EstablishmentCreatePage() {
             return;
         }
         setOpenSnackbar(false);
-        setOpenSnackbarOpening(false);
         setOpenSnackbarCategoryError(false);
     };
 
@@ -120,12 +117,6 @@ export default function EstablishmentCreatePage() {
         }
     }
 
-    //function to reset selection
-    const handleFormReset = () => {
-        formikCategories.resetForm();
-        setCategoriesSelected([]);
-    };
-
     //function no add more 4 categories
     const handleCategoryChange = (event) => {
         if (event.target.value.length <= 4) {
@@ -154,29 +145,12 @@ export default function EstablishmentCreatePage() {
 
     const handleFormSubmitCategories = (values) => {
         //toast MUI
-        setOpenSnackbarOpening(true);
+        setOpenSnackbar(true);
 
-        // Mettre à jour les catégories de l'établissement
-        const updatedCategories = allCategories.filter((category) =>
-            values.options.includes(category.category_id),
-        );
-        const updatedCategoryIds = updatedCategories.map((category) => category.category_id);
-
-        // avoir la liste des categories selectionner en state pour les lister
-        setCategoriesSelected(updatedCategories);
-
-        setEstablishmentCategories(updatedCategoryIds);
-
-        // Mettre à jour les options sélectionnées dans formikCategories.values
-        const newOptions = values.options.concat(updatedCategoryIds);
-        formikCategories.setValues({
-            ...formikCategories.values,
-            options: newOptions,
-        });
-
+        const categoryIds = values.options;
         // Envoi des données de catégories formatées
         const urlCreateCategories = `/pro/establishment/${id}/category`;
-        const dataValuesCategories = { options: updatedCategoryIds };
+        const dataValuesCategories = { options: categoryIds };
 
         sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
             .then(() => {
@@ -185,7 +159,6 @@ export default function EstablishmentCreatePage() {
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                // console.table(dataValuesCategories);
             });
     };
 
@@ -265,7 +238,6 @@ export default function EstablishmentCreatePage() {
             .catch((e) => {
                 console.error(e);
                 alert('Une erreur est survenue. Merci de réessayer');
-                //console.table(dataValues);
             });
     };
 
@@ -280,13 +252,6 @@ export default function EstablishmentCreatePage() {
             }}
         >
             <ToastForm
-                openSnackbar={openSnackbarOpening}
-                handleSnackbarClose={handleSnackbarClose}
-                title={'Bravo !'}
-                message={'Bien enregisté - Continuez et enregistrez'}
-                severity={'success'}
-            />
-            <ToastForm
                 openSnackbar={openSnackbarCategoryError}
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Attention!'}
@@ -297,25 +262,28 @@ export default function EstablishmentCreatePage() {
                 openSnackbar={openSnackbar}
                 handleSnackbarClose={handleSnackbarClose}
                 title={'Felicitation !'}
-                message={'Bien envoyez'}
+                message={'Votre établissement est bien modifié, il sera bientot validé !'}
                 severity={'success'}
             />
 
             <BasicPage title="Modifier mon etablissement" icon={<BusinessIcon />} />
 
             <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                <FormSelectEstablishment
-                    allCategories={allCategories}
-                    formikCategories={formikCategories}
-                    handleCategoryChange={handleCategoryChange}
-                    categoriesSelected={categoriesSelected}
-                    handleFormReset={handleFormReset}
-                    handleSubmit={formikCategories.handleSubmit}
-                />
+                <Grid item xs={12} md={6}>
+                    <FormSelect
+                        allCategories={allCategories}
+                        formikCategories={formikCategories}
+                        handleCategoryChange={handleCategoryChange}
+                        handleSubmit={formikCategories.handleSubmit}
+                        submitClass={
+                            'sm:ml-7 mt-7 ml-2 sm:mt-4 mb-7 sm:mb-0 bg-white text-black font-bold'
+                        }
+                    />
+                </Grid>
 
                 <Box m="20px">
                     <div className="establishment-infos-title text-2xl text-teal-700 font-bold pb-6 pt-4">
-                        INFORMATIONS DE VOTRE ETABLISSMENT :
+                        INFORMATIONS DE VOTRE ETABLISSEMENT :
                     </div>
                     <Loader allClass={'loading display'} />
                     {establishment.map((establishment) => (
@@ -363,6 +331,7 @@ export default function EstablishmentCreatePage() {
                                                 }}
                                                 value={values.logo}
                                                 name={'logo'}
+                                                buttonTextDownload={'Importez votre logo'}
                                                 // Convert to boolean using !! operator
                                                 error={!!touched.logo && !!errors.logo}
                                                 helperText={touched.logo && errors.logo}

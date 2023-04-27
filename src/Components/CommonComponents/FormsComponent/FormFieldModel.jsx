@@ -12,15 +12,21 @@ export const FormFieldModel = ({
     name,
     error,
     helperText,
+    setSelectedImage,
+    buttonTextDownload,
 }) => {
-    const isLogoField = name === 'logo';
+    const isLogoField = name === 'logo' || name === 'poster';
+    const isDateTimePickerField = name === 'start_event' || name === 'end_event';
     const [fileName, setFileName] = useState('');
 
-    const handleFileChange = (event) => {
+    const handleChange = (event) => {
         if (isLogoField) {
             const fileList = event.target.files;
             setFileName(fileList[0].name);
             onChange(event, fileList);
+            if (typeof setSelectedImage === 'function') {
+                setSelectedImage(URL.createObjectURL(fileList[0]));
+            }
         } else {
             onChange(event);
         }
@@ -32,13 +38,13 @@ export const FormFieldModel = ({
                 <Box display="flex" alignItems="center">
                     <Button variant="contained" component="label">
                         <UploadIcon style={{ marginRight: '8px' }} />
-                        Téléchargez un logo
+                        {buttonTextDownload}
                         <input
                             hidden
-                            accept="image/*"
+                            accept="image/jpeg,image/png,image/jpg,image/gif,image/svg"
                             type="file"
                             name={name}
-                            onChange={handleFileChange}
+                            onChange={handleChange}
                         />
                     </Button>
                     <Box ml={2}>
@@ -49,18 +55,40 @@ export const FormFieldModel = ({
                     </Box>
                 </Box>
             ) : (
-                <TextField
-                    fullWidth
-                    variant="filled"
-                    type="text"
-                    label={label || name}
-                    onBlur={onBlur}
-                    onChange={handleFileChange}
-                    value={value}
-                    name={name}
-                    error={error}
-                    helperText={helperText}
-                />
+                <>
+                    {isDateTimePickerField ? (
+                        <TextField
+                            fullWidth
+                            variant="filled"
+                            label={label || name}
+                            type="datetime-local"
+                            onBlur={onBlur}
+                            onChange={handleChange}
+                            value={value}
+                            name={name}
+                            error={error}
+                            helperText={helperText}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    ) : (
+                        <TextField
+                            fullWidth
+                            variant="filled"
+                            type="text"
+                            label={label || name}
+                            onBlur={onBlur}
+                            onChange={handleChange}
+                            value={value}
+                            name={name}
+                            error={error}
+                            helperText={helperText}
+                            multiline={name === 'description'}
+                            rows={name === 'description' ? 4 : undefined}
+                        />
+                    )}
+                </>
             )}
         </Grid>
     );
@@ -70,9 +98,15 @@ FormFieldModel.propTypes = {
     grid: PropTypes.number.isRequired,
     label: PropTypes.string,
     name: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.number]),
     onBlur: PropTypes.func.isRequired,
     onChange: PropTypes.func.isRequired,
     error: PropTypes.bool,
     helperText: PropTypes.string,
+    setSelectedImage: PropTypes.func,
+    buttonTextDownload: PropTypes.string,
+};
+
+FormFieldModel.defaultProps = {
+    setSelectedImage: () => {},
 };

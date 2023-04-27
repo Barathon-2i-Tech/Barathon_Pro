@@ -9,19 +9,20 @@ import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
 import DashboardPage from './Page/Professional/Dashboard';
 import ProfilePage from './Page/Professional/Profile';
 import CGUPage from './Page/Professional/CGU';
-
 import ContactPage from './Page/Professional/Contact';
 import EmployeePage from './Page/Professional/Employee';
 import EstablishmentPage from './Page/Professional/Establishment';
-import EventPage from './Page/Professional/Event';
+import EventPage from './Page/Professional/Event/EventEstablishments';
 import NotificationPage from './Page/Professional/Notification';
 import TagPage from './Page/Professional/Tag';
-
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
+import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
+import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
+import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
 
 export default function App() {
     return (
@@ -50,7 +51,19 @@ export default function App() {
                         path="/pro/:id/establishment/create"
                         element={<EstablishmentCreatePage />}
                     ></Route>
-                    <Route path="event" element={<EventPage />}></Route>
+                    <Route path="/pro/establishment/event" element={<EventPage />}></Route>
+                    <Route
+                        path="/pro/establishment/:id/event/list"
+                        element={<EventOfEstablishmentPage />}
+                    ></Route>
+                    <Route
+                        path="/pro/establishment/event/:id/create"
+                        element={<EventOfEstablishmentCreatePage />}
+                    />
+                    <Route
+                        path="/pro/establishment/:establishmentIdParam/event/:eventIdParam/update"
+                        element={<EventOfEstablishmentUpdatePage />}
+                    />
                     <Route path="notification" element={<NotificationPage />}></Route>
                     <Route path="tag" element={<TagPage />}></Route>
                 </Route>

@@ -1,10 +1,11 @@
 import Paper from '@mui/material/Paper';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import '../../css/Professional/Establishment.css';
-import Axios from '../../utils/axiosUrl';
+import '../../../css/Professional/Event.css';
+import '../../../css/Professional/Establishment.css';
+import Axios from '../../../utils/axiosUrl';
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../Components/Hooks/useAuth';
+import { useAuth } from '../../../Components/Hooks/useAuth';
 import {
     DataGrid,
     GridToolbarContainer,
@@ -18,13 +19,16 @@ import { green, red, orange, grey } from '@mui/material/colors';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
-import HeaderDatagrid from '../../Components/CommonComponents/DataGrid/HeaderDataGrid';
-import Copyright from '../../Components/CommonComponents/Copyright';
+import HeaderDatagrid from '../../../Components/CommonComponents/DataGrid/HeaderDataGrid';
+import Copyright from '../../../Components/CommonComponents/Copyright';
+import { useParams } from 'react-router-dom';
 
-export default function EstablishmentPage() {
+export default function EventOfEstablishmentPage() {
     const { user } = useAuth();
     const token = user.token;
     const ownerId = user.userLogged.owner_id;
+    const { id } = useParams();
+    const establishmentId = parseInt(id);
 
     //dataGRID
     const [columnVisibilityModel, setColumnVisibilityModel] = useState({
@@ -33,8 +37,10 @@ export default function EstablishmentPage() {
         address: false,
         postal_code: false,
     });
+    const [establishment, setEstablishment] = useState([]);
+    const [establishmentName, setEstablishmentName] = useState('');
 
-    const [allEstablishments, setAllEstablishments] = useState([]);
+    const [allEvents, setAllEvents] = useState([]);
     const [reloading, setReloading] = useState(false);
 
     const RightAlignedContainer = styled(GridToolbarContainer)({
@@ -46,7 +52,7 @@ export default function EstablishmentPage() {
         },
     });
 
-    function establishmentCustomToolbar() {
+    function eventCustomToolbar() {
         return (
             <RightAlignedContainer>
                 <div>
@@ -55,7 +61,7 @@ export default function EstablishmentPage() {
                     <GridToolbarDensitySelector />
                     <GridToolbarExport />
                 </div>
-                <Link href={`/pro/${ownerId}/establishment/create`}>
+                <Link href={`/pro/establishment/event/${id}/create`}>
                     <Button
                         sx={{ marginRight: '10px', px: '40px' }}
                         variant="contained"
@@ -63,31 +69,49 @@ export default function EstablishmentPage() {
                         size="small"
                         startIcon={<AddIcon />}
                     >
-                        Ajouter un etablissement
+                        Ajouter un évenement
                     </Button>
                 </Link>
             </RightAlignedContainer>
         );
     }
 
-    async function getEstablishments() {
+    // ------------------------  ESTABLISHMENT ------------------------------------------
+    // AXIOS GET
+    // This function is used to get the establishment to update by his ID
+    async function getEstablishment() {
         try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment`, {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setAllEstablishments(response.data.data);
+            setEstablishment(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const deleteEstablishment = (id) => {
+    async function getEvents() {
+        try {
+            const response = await Axios.api.get(`/pro/events/${establishmentId}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setAllEvents(response.data.data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const deleteEvent = (id) => {
         Axios.api
-            .delete(`/pro/${ownerId}/establishment/${id}`, {
+            .delete(`/pro/event/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -104,13 +128,13 @@ export default function EstablishmentPage() {
 
     function getStatus(params) {
         switch (params.row.status.code) {
-            case 'ESTABL_VALID':
+            case 'EVENT_VALID':
                 return 'Validé';
 
-            case 'ESTABL_REFUSE':
+            case 'EVENT_REFUSE':
                 return 'Refusé';
 
-            case 'ESTABL_PENDING':
+            case 'EVENT_PENDING':
                 return 'En attente';
 
             default:
@@ -118,27 +142,20 @@ export default function EstablishmentPage() {
         return 'Erreur';
     }
 
-    const establishmentsRows = allEstablishments.map((establishment) => ({
-        key: establishment.establishment_id,
-        id: establishment.establishment_id,
-        establishment_id: establishment.establishment_id,
-        trade_name: establishment.trade_name,
-        opening: JSON.parse(establishment.opening),
-        siret: establishment.siret,
-        logo: establishment.logo,
-        phone: establishment.phone,
-        address: establishment.address,
-        postal_code: establishment.postal_code,
-        website: establishment.website,
-        email: establishment.email,
-        status: JSON.parse(establishment.comment),
-        deleted_at: establishment.deleted_at,
+    const eventsRows = allEvents.map((event) => ({
+        key: event.event_id,
+        id: event.event_id,
+        event_id: event.event_id,
+        event_name: event.event_name,
+        poster: event.poster,
+        status: JSON.parse(event.comment),
+        deleted_at: event.deleted_at,
     }));
 
-    const establishmentColumns = [
+    const eventColumns = [
         {
-            field: 'logo',
-            headerName: 'Logo',
+            field: 'poster', //'poster_url',
+            headerName: 'Poster',
             flex: 0.1,
             headerAlign: 'center',
             minWidth: 90,
@@ -148,66 +165,11 @@ export default function EstablishmentPage() {
             },
         },
         {
-            field: 'trade_name',
-            headerName: 'Nom commercial',
+            field: 'event_name',
+            headerName: 'Nom evenement',
             flex: 0.5,
             headerAlign: 'center',
             align: 'center',
-        },
-        {
-            field: 'address',
-            headerName: 'Adresse',
-            flex: 0.5,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'postal_code',
-            headerName: 'Code postal',
-            flex: 0.2,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'siret',
-            headerName: 'Siret',
-            flex: 0.3,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'website',
-            headerName: 'Site web',
-            flex: 0.2,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'phone',
-            headerName: 'Téléphone',
-            flex: 0.3,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'opening',
-            headerName: 'Horaires',
-            flex: 0.4,
-            minWidth: 200,
-            headerAlign: 'center',
-            align: 'left',
-            renderCell: ({ row: { opening } }) => {
-                return (
-                    <div className="pt-4 pb-4">
-                        {Object.entries(opening).map(([day, hours]) => (
-                            <div className="flex" key={day}>
-                                <div>{day} : </div>
-                                <div>{hours}</div>
-                            </div>
-                        ))}
-                    </div>
-                );
-            },
         },
         {
             field: 'status',
@@ -220,13 +182,13 @@ export default function EstablishmentPage() {
             renderCell: ({ row: { status } }) => {
                 let backgroundColor = null;
                 switch (status.code) {
-                    case 'ESTABL_VALID':
+                    case 'EVENT_VALID':
                         backgroundColor = green[400];
                         break;
-                    case 'ESTABL_PENDING':
+                    case 'EVENT_PENDING':
                         backgroundColor = orange[400];
                         break;
-                    case 'ESTABL_REFUSE':
+                    case 'EVENT_REFUSE':
                         backgroundColor = red[400];
                         break;
                     default:
@@ -260,13 +222,13 @@ export default function EstablishmentPage() {
                     <>
                         <Link
                             href={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
-                                    : `/pro/establishmentForm/${params.row.establishment_id}`
+                                    : `/pro/establishment/${establishmentId}/event/${params.row.event_id}/update`
                             }
                             component={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? Box
                                     : 'a'
@@ -279,7 +241,7 @@ export default function EstablishmentPage() {
                                 size="small"
                                 startIcon={<EditIcon />}
                                 disabled={
-                                    params.row.status.code === 'ESTABL_PENDING' ||
+                                    params.row.status.code === 'EVENT_PENDING' ||
                                     params.row.deleted_at !== null
                                 }
                             >
@@ -292,11 +254,11 @@ export default function EstablishmentPage() {
                             color="error"
                             size="small"
                             onClick={() => {
-                                deleteEstablishment(params.row.establishment_id);
+                                deleteEvent(params.row.event_id);
                             }}
                             startIcon={<DeleteForeverIcon />}
                             disabled={
-                                params.row.status.code === 'ESTABL_PENDING' ||
+                                params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                             }
                         >
@@ -309,39 +271,64 @@ export default function EstablishmentPage() {
     ];
 
     useEffect(() => {
-        getEstablishments();
+        getEvents();
+        getEstablishment();
         setReloading(false);
     }, [reloading]);
 
+    useEffect(() => {
+        const myEstablishmentName = establishment.map((is) => is.trade_name);
+        setEstablishmentName(myEstablishmentName[0] || '');
+    }, [establishment]);
+
     return (
-        <Paper
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                minHeight: '80vh',
-                width: '100%',
-            }}
-        >
-            <HeaderDatagrid title={'Tous mes etablissements'} />
-            <DataGrid
-                rows={establishmentsRows}
-                columns={establishmentColumns}
-                columnVisibilityModel={columnVisibilityModel}
-                onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
-                density="comfortable"
-                components={{
-                    Toolbar: establishmentCustomToolbar,
-                }}
+        <>
+            <Link href={`/pro/establishment/event`}>
+                <Button
+                    sx={{
+                        marginRight: '10px',
+                        marginBottom: '10px',
+                        px: '10px',
+                        background: '#0f766e',
+                    }}
+                    variant="contained"
+                    color="info"
+                    size="small"
+                >
+                    Retour aux établissements
+                </Button>
+            </Link>
+
+            <Paper
                 sx={{
-                    marginX: 2,
-                    '& .MuiDataGrid-cell': {
-                        padding: '10px',
-                    },
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    minHeight: '80vh',
+                    width: '100%',
                 }}
-                getRowHeight={() => 'auto'}
-            />
-            <Copyright sx={{ pt: 4, pb: 4 }} />
-        </Paper>
+            >
+                <HeaderDatagrid title={`Événements de ${establishmentName}`} />
+
+                <DataGrid
+                    rows={eventsRows}
+                    columns={eventColumns}
+                    columnVisibilityModel={columnVisibilityModel}
+                    onColumnVisibilityModelChange={(newModel) => setColumnVisibilityModel(newModel)}
+                    density="comfortable"
+                    components={{
+                        Toolbar: eventCustomToolbar,
+                    }}
+                    sx={{
+                        marginX: 2,
+                        '& .MuiDataGrid-cell': {
+                            padding: '10px',
+                        },
+                    }}
+                    getRowHeight={() => 'auto'}
+                />
+                <Copyright sx={{ pt: 4, pb: 4 }} />
+            </Paper>
+        </>
     );
 }
