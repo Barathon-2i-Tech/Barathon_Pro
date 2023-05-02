@@ -78,3 +78,18 @@ export const eventSchema = () => {
             .required("Veuillez renseigner la date de fin de l'évènement"),
     });
 };
+export const profileSchema = () => {
+    return yup.object().shape({
+        avatar: yup.mixed().required('Ajoutez une image'),
+        last_name: yup.string().required('Nom obligatoire'),
+        first_name: yup.string().required('Prénom obligatoire'),
+        email: yup.string().email('Veuillez entrer une adresse email valide'),
+        // phone: yup
+        //     .string()
+        //     .required('Téléphone est requis')
+        //     .matches(
+        //         /^\+?\d{1,3}[-.\s]?\d{1,14}[-.\s]?\d{1,14}$/,
+        //         'Veuillez entrer un numéro de téléphone valide',
+        //     )
+    });
+};

@@ -7,7 +7,7 @@ import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
 import DashboardPage from './Page/Professional/Dashboard';
-import ProfilePage from './Page/Professional/Profile';
+// import ProfilePage from './Page/Professional/Profile';
 import CGUPage from './Page/Professional/CGU';
 import ContactPage from './Page/Professional/Contact';
 import EmployeePage from './Page/Professional/Employee';
@@ -23,6 +23,7 @@ import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
 import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
 import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
+import ProfileUpdatePage from './Page/Professional/Profile/Profile';
 
 export default function App() {
     return (
@@ -39,7 +40,7 @@ export default function App() {
 
                 <Route path="/pro" element={<ProtectedLayout />}>
                     <Route path="dashboard" element={<DashboardPage />}></Route>
-                    <Route path="profile" element={<ProfilePage />}></Route>
+                    <Route path="profile" element={<ProfileUpdatePage />}></Route>
                     <Route path="cgu" element={<CGUPage />}></Route>
 
                     <Route path="contact" element={<ContactPage />}></Route>

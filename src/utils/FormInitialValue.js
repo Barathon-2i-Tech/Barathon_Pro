@@ -29,3 +29,10 @@ export const FormInitialValuesEvent = {
     start_event: '',
     end_event: '',
 };
+export const FormInitialValuesProfile = {
+    avatar: '',
+    last_name: '',
+    first_name: '',
+    email: '',
+    // phone:"",
+};
