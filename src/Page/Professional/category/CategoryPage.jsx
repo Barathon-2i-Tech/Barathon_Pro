@@ -20,6 +20,7 @@ function CategoryPage() {
                     Authorization: `Bearer ${apiToken}`,
                 },
             });
+            formik.resetForm();
         } catch (error) {
             console.log(error);
         }
