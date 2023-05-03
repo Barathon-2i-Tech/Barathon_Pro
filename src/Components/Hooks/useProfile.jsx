@@ -7,6 +7,10 @@ import Axios from '../../utils/axiosUrl';
 const UseProfile = ({ userId, token, handleFormSubmit }) => {
     const [profile, setProfile] = useState([]);
     const [isProfileLoaded, setIsProfileLoaded] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(
+        'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
+    );
+    const [avatarUrl, setAvatarUrl] = useState('');
 
     useEffect(() => {
         if (userId) {
@@ -38,10 +42,19 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setProfile(response.data.data[0]);
+            // Filtrez les champs souhaités à partir de la réponse
+            const fields = ['avatar', 'last_name', 'first_name', 'email', 'phone', 'avatar'];
+            const filteredProfile = fields.reduce((result, field) => {
+                result[field] = response.data.data[0][field] || '';
+                return result;
+            }, {});
+
+            // Affectez les données filtrées à `setProfile`
+            setProfile(filteredProfile);
+            setAvatarUrl(filteredProfile.avatar);
             setIsProfileLoaded(true);
         } catch (error) {
-            console.log(error);
+            console.error('Error getting profile:', error);
         }
     }
 
@@ -54,9 +67,12 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
 
     return {
         profile,
+        avatarUrl,
         isProfileLoaded,
         getProfile,
         formikProfile,
+        selectedImage,
+        setSelectedImage,
     };
 };
 

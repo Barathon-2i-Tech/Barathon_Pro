@@ -35,7 +35,11 @@ export const FormFieldModel = ({
     return (
         <Grid item xs={grid}>
             {isLogoField ? (
-                <Box display="flex" alignItems="center">
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent={name === 'avatar' ? 'center' : 'flex-start'}
+                >
                     <Button variant="contained" component="label">
                         <UploadIcon style={{ marginRight: '8px' }} />
                         {buttonTextDownload}
