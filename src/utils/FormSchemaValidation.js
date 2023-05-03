@@ -93,3 +93,17 @@ export const profileSchema = () => {
         //     )
     });
 };
+
+export const newPasswordSchema = () => {
+    return yup.object().shape({
+        password: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('obligatoire'),
+        password_confirmation: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('obligatoire')
+            .oneOf([yup.ref('password'), null], 'Les mots de passe doivent etre identiques'),
+    });
+};

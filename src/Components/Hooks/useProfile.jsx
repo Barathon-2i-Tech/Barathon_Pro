@@ -8,7 +8,7 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
     const [profile, setProfile] = useState([]);
     const [isProfileLoaded, setIsProfileLoaded] = useState(false);
     const [selectedImage, setSelectedImage] = useState(
-        'https://7482495.fs1.hubspotusercontent-na1.net/hubfs/7482495/Julien%20folder/Photo.png',
+        'https://img.freepik.com/free-photo/tasty-american-beer-arrangement_23-2148907580.jpg?w=740&t=st=1683116391~exp=1683116991~hmac=584918e27d013319c35203ce268841f480637965556343c6173885ba806453f2',
     );
     const [avatarUrl, setAvatarUrl] = useState('');
 
@@ -51,9 +51,13 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
                 return result;
             }, {});
 
+            if (filteredProfile.avatar) {
+                setSelectedImage(filteredProfile.avatar);
+            }
             // Affectez les données filtrées à `setProfile`
             setProfile(filteredProfile);
             setAvatarUrl(filteredProfile.avatar);
+            console.log(filteredProfile);
             setIsProfileLoaded(true);
         } catch (error) {
             console.error('Error getting profile:', error);

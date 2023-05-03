@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 
 export const FormProfile = ({ formik, setSelectedImage }) => {
     const labelMap = {
@@ -49,32 +49,12 @@ export const FormProfile = ({ formik, setSelectedImage }) => {
                     </Grid>
                 </Box>
 
-                <Box display="flex" justifyContent="end" mt="20px" mb="20px">
-                    <div className="w-fit inline-block text-white lg:text-xl ">
-                        <Link
-                            style={{
-                                borderRadius: '8px',
-                                border: '1px solid transparent',
-                                padding: '0.6em 1.2em',
-                                fontSize: '1em',
-                                cursor: 'pointer',
-                                transition: 'border-color 0.25s',
-                                textDecoration: 'none',
-                                color: 'white',
-                                display: 'inline-block',
-                                backgroundColor: '#b91c1c',
-                            }}
-                            className="font-bold bg-red-700 rounded-lg"
-                            href={`/pro/establishment`}
-                        >
-                            Annuler
-                        </Link>
-                    </div>
+                <Box display="flex" justifyContent="center" mt="20px" mb="20px">
                     <button
                         type="submit"
                         className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-teal-700 text-white font-bold"
                     >
-                        Envoyer
+                        Enregister
                     </button>
                 </Box>
             </form>

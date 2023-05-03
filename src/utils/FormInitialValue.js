@@ -36,3 +36,8 @@ export const FormInitialValuesProfile = {
     email: '',
     // phone:"",
 };
+
+export const FormInitialValuesNewPassword = {
+    password: '',
+    password_confirmation: '',
+};
