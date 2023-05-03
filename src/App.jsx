@@ -23,6 +23,7 @@ import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
 import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
 import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
+import Ticket from './Page/Professional/Ticket';
 
 export default function App() {
     return (
@@ -31,6 +32,10 @@ export default function App() {
                 <Route path="/" element={<Welcome />}></Route>
                 <Route path="/registersucess" element={<EndRegisterLogin />}></Route>
                 <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
+                <Route
+                    path="/pro/event/:idEvent/barathonien/:idBarathonien"
+                    element={<Ticket />}
+                ></Route>
 
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>

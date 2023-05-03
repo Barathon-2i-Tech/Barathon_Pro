@@ -79,6 +79,7 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(response.data.data);
             setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
@@ -124,6 +125,7 @@ export default function EstablishmentPage() {
         establishment_id: establishment.establishment_id,
         trade_name: establishment.trade_name,
         opening: JSON.parse(establishment.opening),
+        validation_code: establishment.validation_code,
         siret: establishment.siret,
         logo: establishment.logo,
         phone: establishment.phone,
@@ -151,6 +153,13 @@ export default function EstablishmentPage() {
             field: 'trade_name',
             headerName: 'Nom commercial',
             flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'validation_code',
+            headerName: 'Code',
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
         },
