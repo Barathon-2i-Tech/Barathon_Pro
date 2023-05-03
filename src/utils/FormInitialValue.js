@@ -39,5 +39,6 @@ export const FormInitialValuesProfile = {
 
 export const FormInitialValuesNewPassword = {
     password: '',
-    password_confirmation: '',
+    new_password: '',
+    new_password_confirmation: '',
 };

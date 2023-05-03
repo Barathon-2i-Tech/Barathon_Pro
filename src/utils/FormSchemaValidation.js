@@ -99,11 +99,15 @@ export const newPasswordSchema = () => {
         password: yup
             .string()
             .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
-            .required('obligatoire'),
-        password_confirmation: yup
+            .required('Ancien mot de passe obligatoire'),
+        new_password: yup
             .string()
             .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
-            .required('obligatoire')
-            .oneOf([yup.ref('password'), null], 'Les mots de passe doivent etre identiques'),
+            .required('Nouveau mot de passe obligatoire'),
+        new_password_confirmation: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('Confimation du nouveau mot de passe obligatoire')
+            .oneOf([yup.ref('new_password'), null], 'Les mots de passe doivent etre identiques'),
     });
 };
