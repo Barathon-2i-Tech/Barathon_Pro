@@ -14,8 +14,10 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
 
     useEffect(() => {
         if (userId) {
-            getProfile();
-            setIsProfileLoaded(true);
+            (async () => {
+                await getProfile();
+                setIsProfileLoaded(true);
+            })();
         }
     }, [userId]);
 
