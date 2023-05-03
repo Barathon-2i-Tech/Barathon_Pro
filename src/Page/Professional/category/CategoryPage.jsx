@@ -1,15 +1,27 @@
-import { Button, Grid, Paper } from '@mui/material';
-import { useAuth } from '../../../Components/Hooks/useAuth';
-import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import {
+    Button,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Paper,
+    Select,
+    TextField,
+} from '@mui/material';
 import { useFormik } from 'formik';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import HeaderDatagrid from '../../../Components/CommonComponents/DataGrid/HeaderDataGrid';
+import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm';
+import { useAuth } from '../../../Components/Hooks/useAuth';
 import Axios from '../../../utils/axiosUrl';
 
 function CategoryPage() {
     const { user } = useAuth();
     const apiToken = user.token;
     const userId = user.userLogged.user_id;
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openSnackbarError, setOpenSnackbarError] = useState(false);
 
     async function handleSubmit(values) {
         try {
@@ -20,8 +32,10 @@ function CategoryPage() {
                     Authorization: `Bearer ${apiToken}`,
                 },
             });
+            setOpenSnackbar(true);
             formik.resetForm();
         } catch (error) {
+            setOpenSnackbarError(true);
             console.log(error);
         }
     }
@@ -51,14 +65,26 @@ function CategoryPage() {
                 padding: '1rem',
             }}
         >
+            <ToastForm
+                openSnackbar={openSnackbarError}
+                handleSnackbarClose={() => setOpenSnackbarError(false)}
+                title={"Demande d'ajout"}
+                message={"Une erreur c'est produite, veuillez réessayer !"}
+                severity={'error'}
+            />
+
+            <ToastForm
+                openSnackbar={openSnackbar}
+                handleSnackbarClose={() => setOpenSnackbar(false)}
+                title={"Demande d'ajout"}
+                message={'Votre demande a bien été envoyée, elle sera bientot validée !'}
+                severity={'success'}
+            />
+
             <HeaderDatagrid title={"Demande de création d'une catégorie"} />
             <form onSubmit={formik.handleSubmit}>
-                <Grid
-                    container
-                    spacing={2}
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}
-                >
-                    <Grid item xs={6}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} sm={4}>
                         <TextField
                             id="category_name"
                             name="category_name"
@@ -72,7 +98,7 @@ function CategoryPage() {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={4}>
                         <FormControl required fullWidth>
                             <InputLabel id="category_visibility">Sous-catégorie</InputLabel>
                             <Select
@@ -89,7 +115,7 @@ function CategoryPage() {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Grid item xs={12} sm={4} sx={{ display: 'flex', justifyContent: 'start' }}>
                         <Button variant="contained" color="primary" type="submit">
                             Demander
                         </Button>
