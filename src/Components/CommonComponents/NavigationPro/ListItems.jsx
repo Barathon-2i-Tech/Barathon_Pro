@@ -38,11 +38,11 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Evenements" />
         </ListItemButton>
-        <ListItemButton href="/pro/tag" disabled sx={{ color: 'grey' }}>
+        <ListItemButton href="/pro/category">
             <ListItemIcon>
                 <TagIcon />
             </ListItemIcon>
-            <ListItemText primary="Demander un Tag" />
+            <ListItemText primary="Demander une catégorie" />
         </ListItemButton>
         <ListItemButton href="/pro/employee" disabled sx={{ color: 'grey' }}>
             <ListItemIcon>
