@@ -28,8 +28,6 @@ export default function ProfileUpdatePage() {
 
     // This function handles the form submission
     const handleFormSubmit = (values) => {
-        // const categoryIds = formikCategories.values.options;
-
         const dataValues = { ...values };
         const urlUpdate = `pro/${userId}`;
 
