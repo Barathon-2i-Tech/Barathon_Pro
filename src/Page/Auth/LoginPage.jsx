@@ -2,10 +2,12 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
 import ApplicationLogo from '../../Components/CommonComponents/SvgComponent/ApplicationLogo';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Link from '@mui/material/Link';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import Axios from '../../utils/axiosUrl';
 import toast, { Toaster } from 'react-hot-toast';
+import { ForgetPasswordDialog } from '../../Components/CommonComponents/DialogComponent/ForgetPasswordDialog';
 
 const initialValues = {
     email: '',
@@ -66,7 +68,41 @@ export default function LoginPage() {
             .catch((e) => {
                 console.error(e);
                 toast(
-                    "🛑 Vous n'avez pas creer de compte ou vos identifiants / mots de passe sont mauvais.",
+                    "🛑 Vous n'avez pas creer de compte ou vos identifiants / mots de passe sont invalides.",
+                    {
+                        duration: 8000,
+                    },
+                );
+            });
+    };
+    const handleSubmitForgetPassword = (values) => {
+        console.log(values);
+        Axios.api
+            .post(
+                '/mail/change/password',
+                {
+                    email: values.email,
+                },
+                {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                    },
+                },
+            )
+            .then(() => {
+                console.log('bien envoyé');
+                toast(
+                    '✅ Votre demande a bien été prise en compte, vous allez recevoir votre nouveau mot de passe par e-mail',
+                    {
+                        duration: 8000,
+                    },
+                );
+            })
+            .catch((e) => {
+                console.error(e);
+                toast(
+                    "🛑 Vous n'avez pas creer de compte ou vos identifiants / mots de passe sont invalides.",
                     {
                         duration: 8000,
                     },
@@ -78,9 +114,9 @@ export default function LoginPage() {
         <div className="mx-auto max-w-screen-2xl ">
             <Toaster />
             <div className="min-h-screen flex flex-col items-center justify-center sm:pt-6 sm:pt-0">
-                <div className="w-full sm:max-w-lg sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
+                <div className="w-full sm:max-w-xl sm:mt-6 sm:px-6 py-4 bg-white md:shadow-lg overflow-hidden sm:rounded-lg z-10">
                     <div className="z-10 flex justify-center items-center">
-                        <Link href="/">
+                        <Link href={`/`}>
                             <ApplicationLogo className="w-28 h-28 sm:w-40 sm:h-40 fill-current z-10" />
                         </Link>
                     </div>
@@ -113,7 +149,7 @@ export default function LoginPage() {
                                             onChange={handleChange}
                                             value={values.email}
                                             name="email"
-                                            //convert to boolean using !! operator
+                                            autoComplete="username"
                                             error={!!touched.email && !!errors.email}
                                             helperText={touched.email && errors.email}
                                             sx={{ gridColumn: 'span 4' }}
@@ -127,28 +163,42 @@ export default function LoginPage() {
                                             onChange={handleChange}
                                             value={values.password}
                                             name="password"
-                                            //convert to boolean using !! operator
+                                            autoComplete="current-password"
                                             error={!!touched.password && !!errors.password}
                                             helperText={touched.password && errors.password}
                                             sx={{ gridColumn: 'span 4' }}
                                         />
                                     </Box>
-                                    <Box display="flex" justifyContent="end" mt="20px">
-                                        <div className="w-fit inline-block text-white lg:text-xl">
-                                            <button
+                                    <Box display="flex flex-wrap" justifyContent="end" mt="20px">
+                                        <ForgetPasswordDialog
+                                            handleSubmitForgetPassword={handleSubmitForgetPassword}
+                                            variant={'text'}
+                                            buttonOpenContent={"J'ai oublié mon mot de passe"}
+                                            dialogTitle={'Demander un nouveau mot de passe'}
+                                            dialogContentText={
+                                                'Ajoutez votre email et nous vous enverrons un nouveau mot de passe'
+                                            }
+                                            textFieldLabel={'E-mail de votre compte'}
+                                            textFieldType={'email'}
+                                        />
+
+                                        <div className="flex justify-end mt-3">
+                                            <Button
                                                 onClick={goBack}
-                                                className="mr-4 sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-orange-300 hover:border-white-900 rounded"
+                                                color="secondary"
+                                                variant="contained"
+                                                sx={{ color: 'white', mr: 2 }}
                                             >
                                                 Accueil
-                                            </button>
+                                            </Button>
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                className=" bg-cyan-800 text-base lg:text-xl"
+                                            >
+                                                Se connecter
+                                            </Button>
                                         </div>
-                                        <Button
-                                            type="submit"
-                                            variant="contained"
-                                            className=" sm:ml-4 mt-7 sm:mt-0 mb-7 sm:mb-0 bg-cyan-800 text-base lg:text-xl"
-                                        >
-                                            Se connecter
-                                        </Button>
                                     </Box>
                                 </form>
                             )}

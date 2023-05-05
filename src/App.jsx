@@ -7,7 +7,6 @@ import { Route, Routes } from 'react-router-dom';
 import { HomeLayout } from './Components/Auth/HomeLayout';
 import { ProtectedLayout } from './Components/Auth/ProtectedLayout';
 import DashboardPage from './Page/Professional/Dashboard';
-// import ProfilePage from './Page/Professional/Profile';
 import CGUPage from './Page/Professional/CGU';
 import ContactPage from './Page/Professional/Contact';
 import EmployeePage from './Page/Professional/Employee';

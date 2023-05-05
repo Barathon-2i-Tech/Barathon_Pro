@@ -84,13 +84,13 @@ export const profileSchema = () => {
         last_name: yup.string().required('Nom obligatoire'),
         first_name: yup.string().required('Prénom obligatoire'),
         email: yup.string().email('Veuillez entrer une adresse email valide'),
-        // phone: yup
-        //     .string()
-        //     .required('Téléphone est requis')
-        //     .matches(
-        //         /^\+?\d{1,3}[-.\s]?\d{1,14}[-.\s]?\d{1,14}$/,
-        //         'Veuillez entrer un numéro de téléphone valide',
-        //     )
+        phone: yup
+            .string()
+            .required('Téléphone est requis')
+            .matches(
+                /^\+?\d{1,3}[-.\s]?\d{1,14}[-.\s]?\d{1,14}$/,
+                'Veuillez entrer un numéro de téléphone valide',
+            ),
     });
 };
 
@@ -103,11 +103,23 @@ export const newPasswordSchema = () => {
         new_password: yup
             .string()
             .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
-            .required('Nouveau mot de passe obligatoire'),
+            .required('Nouveau mot de passe obligatoire')
+            .test(
+                'passwords-different',
+                'Les mots de passe doivent être différents',
+                function (value) {
+                    return this.parent.password !== value;
+                },
+            ),
         new_password_confirmation: yup
             .string()
             .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
             .required('Confimation du nouveau mot de passe obligatoire')
             .oneOf([yup.ref('new_password'), null], 'Les mots de passe doivent etre identiques'),
+    });
+};
+export const forgotPasswordSchema = () => {
+    return yup.object().shape({
+        email: yup.string().email('Veuillez entrer une adresse email valide'),
     });
 };

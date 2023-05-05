@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import { FormFieldModel } from './FormFieldModel';
 import { Box, Grid } from '@mui/material';
-// import Link from '@mui/material/Link';
 
 export const FormProfile = ({ formik, setSelectedImage }) => {
     const labelMap = {

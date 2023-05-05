@@ -57,7 +57,6 @@ const UseProfile = ({ userId, token, handleFormSubmit }) => {
             // Affectez les données filtrées à `setProfile`
             setProfile(filteredProfile);
             setAvatarUrl(filteredProfile.avatar);
-            console.log(filteredProfile);
             setIsProfileLoaded(true);
         } catch (error) {
             console.error('Error getting profile:', error);
