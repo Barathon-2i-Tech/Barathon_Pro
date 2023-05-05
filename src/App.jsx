@@ -13,7 +13,6 @@ import EmployeePage from './Page/Professional/Employee';
 import EstablishmentPage from './Page/Professional/Establishment';
 import EventPage from './Page/Professional/Event/EventEstablishments';
 import NotificationPage from './Page/Professional/Notification';
-import TagPage from './Page/Professional/Tag';
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
 import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
@@ -23,6 +22,7 @@ import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablish
 import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
 import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
 import ProfileUpdatePage from './Page/Professional/Profile/Profile';
+import CategoryPage from './Page/Professional/category/CategoryPage';
 
 export default function App() {
     return (
@@ -65,7 +65,7 @@ export default function App() {
                         element={<EventOfEstablishmentUpdatePage />}
                     />
                     <Route path="notification" element={<NotificationPage />}></Route>
-                    <Route path="tag" element={<TagPage />}></Route>
+                    <Route path="category" element={<CategoryPage />}></Route>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />
