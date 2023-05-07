@@ -9,6 +9,7 @@ import { Box } from '@mui/material';
 import Link from '@mui/material/Link';
 import Copyright from '../../../Components/CommonComponents/Copyright';
 import Person from '@mui/icons-material/Person';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function EventPage() {
     const { user } = useAuth();
@@ -34,24 +35,6 @@ export default function EventPage() {
         }
         getEstablishments();
     }, [ownerId, token]);
-
-    function getLinkProps(commentCode, establishment) {
-        if (commentCode === 'ESTABL_PENDING' || commentCode === 'ESTABL_REFUSE') {
-            return {
-                component: Box,
-                href: '',
-                className:
-                    'absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer',
-            };
-        } else {
-            return {
-                component: 'a',
-                href: `/pro/establishment/${establishment.establishment_id}/event/list`,
-                className:
-                    'absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer',
-            };
-        }
-    }
 
     function getBackgroundColor(commentCode) {
         if (commentCode === 'ESTABL_PENDING') {
@@ -105,7 +88,6 @@ export default function EventPage() {
                             // Accéder à la propriété "code"
                             const commentCode = commentObj.code;
 
-                            const linkProps = getLinkProps(commentCode, establishment);
                             const backgroundColor = getBackgroundColor(commentCode);
                             const filterColor = getFilterClass(commentCode);
                             const statusText = getStatusText(commentCode);
@@ -117,7 +99,21 @@ export default function EventPage() {
                                         establishment.deleted_at !== null ? 'hidden' : ''
                                     }`}
                                 >
-                                    <Link {...linkProps}></Link>
+                                    <Link
+                                        to={
+                                            commentCode === 'ESTABL_PENDING' ||
+                                            commentCode === 'ESTABL_REFUSE'
+                                                ? ''
+                                                : `/pro/establishment/${establishment.establishment_id}/event/list`
+                                        }
+                                        component={
+                                            commentCode === 'ESTABL_PENDING' ||
+                                            commentCode === 'ESTABL_REFUSE'
+                                                ? Box
+                                                : RouterLink
+                                        }
+                                        className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full hover:no-underline text-white hover-txt-yellow cursor-pointer"
+                                    ></Link>
 
                                     <div
                                         className={`absolute-status-bg absolute top-0 bottom-0 left-0 right-0 h-full w-full z-0 opacity-20 ${filterColor}`}

@@ -1,5 +1,6 @@
 import './App.css';
 import './css/Professional/AtomeCustom.css';
+import { Fragment } from 'react';
 import Welcome from './Page/Welcome.jsx';
 import Register from './Page/Auth/RegisterHome';
 import LoginPage from './Page/Auth/LoginPage';
@@ -38,34 +39,39 @@ export default function App() {
                 </Route>
 
                 <Route path="/pro" element={<ProtectedLayout />}>
-                    <Route path="dashboard" element={<DashboardPage />}></Route>
-                    <Route path="profile" element={<ProfileUpdatePage />}></Route>
-                    <Route path="cgu" element={<CGUPage />}></Route>
+                    <Fragment>
+                        <Route path="dashboard" element={<DashboardPage />}></Route>
+                        <Route path="profile" element={<ProfileUpdatePage />}></Route>
+                        <Route path="cgu" element={<CGUPage />}></Route>
 
-                    <Route path="contact" element={<ContactPage />}></Route>
+                        <Route path="contact" element={<ContactPage />}></Route>
 
-                    <Route path="employee" element={<EmployeePage />}></Route>
-                    <Route path="establishment" element={<EstablishmentPage />}></Route>
-                    <Route path="establishmentForm/:id" element={<EstablishmentFormPage />}></Route>
-                    <Route
-                        path="/pro/:id/establishment/create"
-                        element={<EstablishmentCreatePage />}
-                    ></Route>
-                    <Route path="/pro/establishment/event" element={<EventPage />}></Route>
-                    <Route
-                        path="/pro/establishment/:id/event/list"
-                        element={<EventOfEstablishmentPage />}
-                    ></Route>
-                    <Route
-                        path="/pro/establishment/event/:id/create"
-                        element={<EventOfEstablishmentCreatePage />}
-                    />
-                    <Route
-                        path="/pro/establishment/:establishmentIdParam/event/:eventIdParam/update"
-                        element={<EventOfEstablishmentUpdatePage />}
-                    />
-                    <Route path="notification" element={<NotificationPage />}></Route>
-                    <Route path="category" element={<CategoryPage />}></Route>
+                        <Route path="employee" element={<EmployeePage />}></Route>
+                        <Route path="establishment" element={<EstablishmentPage />}></Route>
+                        <Route
+                            path="establishmentForm/:id"
+                            element={<EstablishmentFormPage />}
+                        ></Route>
+                        <Route
+                            path="/pro/:id/establishment/create"
+                            element={<EstablishmentCreatePage />}
+                        ></Route>
+                        <Route path="/pro/establishment/event" element={<EventPage />}></Route>
+                        <Route
+                            path="/pro/establishment/:id/event/list"
+                            element={<EventOfEstablishmentPage />}
+                        ></Route>
+                        <Route
+                            path="/pro/establishment/event/:id/create"
+                            element={<EventOfEstablishmentCreatePage />}
+                        />
+                        <Route
+                            path="/pro/establishment/:establishmentIdParam/event/:eventIdParam/update"
+                            element={<EventOfEstablishmentUpdatePage />}
+                        />
+                        <Route path="notification" element={<NotificationPage />}></Route>
+                        <Route path="category" element={<CategoryPage />}></Route>
+                    </Fragment>
                 </Route>
 
                 <Route path="*" element={<NotFoundPage />} />

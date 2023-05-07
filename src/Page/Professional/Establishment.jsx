@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import HeaderDatagrid from '../../Components/CommonComponents/DataGrid/HeaderDataGrid';
 import Copyright from '../../Components/CommonComponents/Copyright';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -55,7 +56,7 @@ export default function EstablishmentPage() {
                     <GridToolbarDensitySelector />
                     <GridToolbarExport />
                 </div>
-                <Link href={`/pro/${ownerId}/establishment/create`}>
+                <Link component={RouterLink} to={`/pro/${ownerId}/establishment/create`}>
                     <Button
                         sx={{ marginRight: '10px', px: '40px' }}
                         variant="contained"
@@ -259,7 +260,7 @@ export default function EstablishmentPage() {
                 return (
                     <>
                         <Link
-                            href={
+                            to={
                                 params.row.status.code === 'ESTABL_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
@@ -269,7 +270,7 @@ export default function EstablishmentPage() {
                                 params.row.status.code === 'ESTABL_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? Box
-                                    : 'a'
+                                    : RouterLink
                             }
                         >
                             <Button

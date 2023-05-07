@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const GridItem = ({ href, icon, label, disabled }) => {
     return (
         <ListItemButton
             disabled={disabled}
-            href={href}
+            component={RouterLink}
+            to={href}
             sx={{
                 boxSizing: 'border-box',
                 display: 'flex',
