@@ -65,7 +65,7 @@ export default function DashboardPage() {
                         <GridItem
                             href="/pro/category"
                             icon={<TagIcon sx={{ color: 'teal.700', fontSize: '2rem' }} />}
-                            label="Demander un Tag"
+                            label="Demander une catégorie"
                         />
                     </Grid>
                     <Grid item xs={6} sm={4} md={4}>
