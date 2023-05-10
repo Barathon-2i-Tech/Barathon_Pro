@@ -3,7 +3,7 @@ import { useAuth } from '../../../Components/Hooks/useAuth';
 import { FormProfile } from '../../../Components/CommonComponents/FormsComponent/FormProfile';
 import Paper from '@mui/material/Paper';
 import UseProfile from '../../../Components/Hooks/useProfile';
-import { sendFormDataPutMultipart, sendFormDataPut } from '../../../utils/AxiosModel';
+import { sendFormDataPutMultipart } from '../../../utils/AxiosModel';
 import { FormPassword } from '../../../Components/CommonComponents/FormsComponent/FormPassword';
 import Divider from '@mui/material/Divider';
 import { ToastForm } from '../../../Components/CommonComponents/Toast/ToastForm';
@@ -51,24 +51,6 @@ export default function ProfileUpdatePage() {
             .catch((error) => {
                 console.log(error);
                 alert('An error occurred while updating the event. Please try again');
-            });
-    };
-
-    const handleFormPasswordSubmit = (values) => {
-        const dataValues = { ...values };
-        console.log(dataValues);
-        const urlCreate = `/user/${userId}/password`;
-        setOpenSnackbaPassword(true);
-
-        sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
-            .then((response) => {
-                //toast MUI
-                setOpenSnackbar(true);
-                console.log(response.data.data);
-            })
-            .catch((e) => {
-                console.error(e);
-                alert('Une erreur est survenue. Merci de réessayer');
             });
     };
 
@@ -131,7 +113,11 @@ export default function ProfileUpdatePage() {
                             <div className="text-center text-2xl text-teal-700 font-bold pb-6 ">
                                 MODIFIER MON MOT DE PASSE :
                             </div>
-                            <FormPassword handleFormPasswordSubmit={handleFormPasswordSubmit} />
+                            <FormPassword
+                                token={token}
+                                userId={userId}
+                                setOpenSnackbaPassword={setOpenSnackbaPassword}
+                            />
                         </>
                     )}
                 </section>

@@ -1,16 +1,48 @@
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { Box, TextField, Grid } from '@mui/material';
+import { Box, TextField, Grid, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { FormInitialValuesNewPassword } from '../../../utils/FormInitialValue';
 import { newPasswordSchema } from '../../../utils/FormSchemaValidation';
+import { sendFormDataPut } from '../../../utils/AxiosModel';
+import { useState } from 'react';
 
-export const FormPassword = ({ handleFormPasswordSubmit }) => {
+export const FormPassword = ({ token, userId, setOpenSnackbaPassword }) => {
+    const [showPassword, setShowPassword] = useState({
+        password: false,
+        new_password: false,
+        new_password_confirmation: false,
+    });
+
+    const toggleShowPassword = (field) => {
+        setShowPassword({ ...showPassword, [field]: !showPassword[field] });
+    };
+
+    const handleFormPasswordSubmit = (values, resetForm) => {
+        const dataValues = { ...values };
+        const urlCreate = `/user/${userId}/password`;
+        setOpenSnackbaPassword(true);
+
+        sendFormDataPut(urlCreate, token, dataValues) // Appel de la fonction
+            .then(() => {
+                //toast MUI
+                setOpenSnackbaPassword(true);
+                resetForm();
+            })
+            .catch((e) => {
+                console.error(e);
+                alert('Une erreur est survenue. Merci de réessayer');
+            });
+    };
     return (
         <>
             <Box display="grid" gap="30px" gridTemplateColumns="repeat(4, minmax(0,1 fr))">
                 <Formik
                     initialValues={FormInitialValuesNewPassword}
-                    onSubmit={handleFormPasswordSubmit}
+                    onSubmit={(values, { resetForm }) =>
+                        handleFormPasswordSubmit(values, resetForm)
+                    }
                     validationSchema={newPasswordSchema}
                 >
                     {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
@@ -32,7 +64,7 @@ export const FormPassword = ({ handleFormPasswordSubmit }) => {
                                             fullWidth
                                             autoComplete="current-password"
                                             variant="filled"
-                                            type="password"
+                                            type={showPassword.password ? 'text' : 'password'}
                                             label="Mot de passe actuel"
                                             onBlur={handleBlur}
                                             onChange={handleChange}
@@ -43,12 +75,24 @@ export const FormPassword = ({ handleFormPasswordSubmit }) => {
                                             sx={{ gridColumn: 'span 4' }}
                                         />
                                     </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            edge="end"
+                                            onClick={() => toggleShowPassword('password')}
+                                        >
+                                            {showPassword.password ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
+                                    </Grid>
                                     <Grid item xs={9}>
                                         <TextField
                                             fullWidth
                                             autoComplete="new-password"
                                             variant="filled"
-                                            type="password"
+                                            type={showPassword.new_password ? 'text' : 'password'}
                                             label="Nouveau mot de passe"
                                             onBlur={handleBlur}
                                             onChange={handleChange}
@@ -59,13 +103,29 @@ export const FormPassword = ({ handleFormPasswordSubmit }) => {
                                             sx={{ gridColumn: 'span 4' }}
                                         />
                                     </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            edge="end"
+                                            onClick={() => toggleShowPassword('new_password')}
+                                        >
+                                            {showPassword.new_password ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
+                                    </Grid>
 
                                     <Grid item xs={9}>
                                         <TextField
                                             fullWidth
                                             autoComplete="new-password"
                                             variant="filled"
-                                            type="password"
+                                            type={
+                                                showPassword.new_password_confirmation
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
                                             label="Confirmation du nouveau mot de passe"
                                             onBlur={handleBlur}
                                             onChange={handleChange}
@@ -81,6 +141,20 @@ export const FormPassword = ({ handleFormPasswordSubmit }) => {
                                             }
                                             sx={{ gridColumn: 'span 4' }}
                                         />
+                                    </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            edge="end"
+                                            onClick={() =>
+                                                toggleShowPassword('new_password_confirmation')
+                                            }
+                                        >
+                                            {showPassword.new_password_confirmation ? (
+                                                <Visibility />
+                                            ) : (
+                                                <VisibilityOff />
+                                            )}
+                                        </IconButton>
                                     </Grid>
                                 </Grid>
                             </Box>
@@ -101,6 +175,7 @@ export const FormPassword = ({ handleFormPasswordSubmit }) => {
 };
 
 FormPassword.propTypes = {
-    formik: PropTypes.object,
-    handleFormPasswordSubmit: PropTypes.func,
+    token: PropTypes.string,
+    userId: PropTypes.number,
+    setOpenSnackbaPassword: PropTypes.func,
 };
