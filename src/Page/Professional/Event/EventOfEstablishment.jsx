@@ -21,8 +21,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import HeaderDatagrid from '../../../Components/CommonComponents/DataGrid/HeaderDataGrid';
 import Copyright from '../../../Components/CommonComponents/Copyright';
-import { useParams } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 
 export default function EventOfEstablishmentPage() {
     const { user } = useAuth();
