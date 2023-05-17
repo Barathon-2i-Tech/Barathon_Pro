@@ -87,7 +87,7 @@ export default function EventOfEstablishmentUpdatePage() {
             sendFormDataPutMultipart(urlCreate, token, formData)
                 .then((response) => {
                     // Get the updated event's ID
-                    const newEventId = response.data.data[0].event_id;
+                    const newEventId = response.data.data.event.event_id;
 
                     // Send formatted category data
                     const urlCreateCategories = `/pro/event/${newEventId}/category`;
