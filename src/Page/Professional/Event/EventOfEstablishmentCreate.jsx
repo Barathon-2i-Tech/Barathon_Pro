@@ -75,7 +75,7 @@ export default function EventOfEstablishmentCreatePage() {
             // Create the event
             sendFormDataPost(urlCreate, token, formData) // Modify this line to send formData
                 .then((response) => {
-                    const newEventId = response.data.data[0].event_id;
+                    const newEventId = response.data.data.event.event_id;
                     // Associate categories to the new event
                     const dataValuesCategories = { options: categoryIds };
                     const urlCreateCategories = `/pro/event/${newEventId}/category`;
