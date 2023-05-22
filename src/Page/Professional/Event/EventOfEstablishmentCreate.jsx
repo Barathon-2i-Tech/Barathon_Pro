@@ -25,7 +25,7 @@ export default function EventOfEstablishmentCreatePage() {
         categoriesSelected,
         formikCategories,
         handleCategoryChange,
-        getAllCategories,
+        getAllCategoriesEvent,
         openSnackbarCategoryError,
         setOpenSnackbarCategoryError,
         openSnackbar,
@@ -117,7 +117,7 @@ export default function EventOfEstablishmentCreatePage() {
 
     // Fetch categories and establishment data when the component mounts
     useEffect(() => {
-        getAllCategories();
+        getAllCategoriesEvent();
         getEstablishment();
     }, []);
 

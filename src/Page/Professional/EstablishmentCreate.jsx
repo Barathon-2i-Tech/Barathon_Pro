@@ -78,7 +78,7 @@ export default function EstablishmentCreatePage() {
             setOpenSnackbarCategoryError(true);
         }
     };
-    // This const is for formik shema and action to form Opening
+    // This const is for formik shema and action to form Categories
     const formikCategories = useFormik({
         initialValues: {
             options: [],
@@ -89,6 +89,7 @@ export default function EstablishmentCreatePage() {
 
     useEffect(() => {
         getAllCategories();
+        console.log(opening);
     }, []);
 
     // ------------------------  ESTABLISHMENT ------------------------------------------
@@ -104,7 +105,6 @@ export default function EstablishmentCreatePage() {
         initialValues: FormInitialValuesOpening,
         enableReinitialize: true,
         validationSchema: EstablishmentSchemaOpening,
-        //onSubmit: (values) => handleFormSubmitOpening(values),
     });
 
     // ------------------------  SUBMIT ------------------------------------------
@@ -115,7 +115,6 @@ export default function EstablishmentCreatePage() {
         // Include the logic from handleFormSubmitOpening to save opening hours
         const dataValuesOpening = { ...formikOpening.values };
         setOpening(dataValuesOpening);
-        console.log(opening);
 
         // Replace openingFormat with JSON.stringify(dataValuesOpening)
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
@@ -127,7 +126,7 @@ export default function EstablishmentCreatePage() {
         // Ajouter les paires clé-valeur au FormData
         for (const [key, value] of Object.entries(dataValues)) {
             if (key === 'logo' && value) {
-                // Si la clé est 'logo', ajoutez le fichier image et non son chemin
+                // if key is  'logo', add folder image et and path
                 formData.append(key, value[0]);
             } else {
                 formData.append(key, value);
@@ -135,7 +134,7 @@ export default function EstablishmentCreatePage() {
         }
 
         // Create the establishment
-        sendFormDataPost(urlCreate, token, formData) // Modifier cette ligne pour envoyer formData
+        sendFormDataPost(urlCreate, token, formData)
             .then((response) => {
                 // Get the newly created establishment ID
                 const newEstablishmentId = response.data.data[0].establishment_id;
@@ -148,7 +147,7 @@ export default function EstablishmentCreatePage() {
                     .then(() => {
                         // Show success message
                         setOpenSnackbar(true);
-                        // Navigate to the home page after a delay of 1.5 seconds
+                        // Navigate to the previous page after a delay of 1.5 seconds
                         setTimeout(() => {
                             goBack();
                         }, 1500);

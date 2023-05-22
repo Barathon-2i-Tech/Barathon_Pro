@@ -86,21 +86,19 @@ export default function EstablishmentPage() {
         }
     }
 
-    const deleteEstablishment = (id) => {
-        Axios.api
-            .delete(`/pro/${ownerId}/establishment/${id}`, {
+    const deleteEstablishment = async (id) => {
+        try {
+            await Axios.api.delete(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            .then(() => {
-                setReloading(true);
-            })
-            .catch((error) => {
-                console.log(error);
             });
+            setReloading(true);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     function getStatus(params) {

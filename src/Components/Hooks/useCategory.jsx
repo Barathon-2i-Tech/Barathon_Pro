@@ -21,7 +21,7 @@ const UseCategories = (token, eventId) => {
     };
 
     // This function is used to get All categories in database (who has sub_category ALL and Establishment)
-    const getAllCategories = async () => {
+    const getAllCategoriesEvent = async () => {
         try {
             const response = await Axios.api.get(`/categories/event`, {
                 headers: {
@@ -72,6 +72,13 @@ const UseCategories = (token, eventId) => {
         }
     };
 
+    // This function returns an array of initial category option values
+    const getInitialOptions = (categories) => {
+        return categories && categories.length > 0
+            ? categories.map((category) => category.category_id)
+            : [];
+    };
+
     //This const is for formik shema and action to form Opening
     const formikCategories = useFormik({
         initialValues: {
@@ -82,8 +89,18 @@ const UseCategories = (token, eventId) => {
     });
 
     useEffect(() => {
-        getAllCategories();
+        if (eventCategories && eventCategories.length > 0) {
+            const initialOptions = getInitialOptions(eventCategories);
+            formikCategories.setValues({
+                options: initialOptions,
+            });
+        }
+    }, [eventCategories]);
+
+    useEffect(() => {
+        getAllCategoriesEvent();
     }, []);
+
     useEffect(() => {
         if (fetchedCategories.length > 0) {
             setCategoriesSelected(fetchedCategories);
@@ -97,7 +114,7 @@ const UseCategories = (token, eventId) => {
         formikCategories,
         handleFormReset,
         handleCategoryChange,
-        getAllCategories,
+        getAllCategoriesEvent,
         getEventCategories,
         setEventCategories,
         openSnackbarCategoryError,

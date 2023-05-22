@@ -62,7 +62,7 @@ export const FormEvent = ({ formik, setInputValues, setSelectedImage, establishm
                                     }
                                 }
                             }}
-                            value={formik.values[formFieldValue] || ''} // Modifiez cette ligne
+                            value={formik.values[formFieldValue] || ''}
                             name={formFieldValue}
                             error={
                                 !!formik.touched[formFieldValue] && !!formik.errors[formFieldValue]

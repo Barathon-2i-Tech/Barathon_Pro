@@ -24,8 +24,8 @@ export default function EventOfEstablishmentUpdatePage() {
         categoriesSelected,
         formikCategories,
         handleCategoryChange,
-        eventCategories,
-        getAllCategories,
+
+        getAllCategoriesEvent,
         getEventCategories,
         openSnackbarCategoryError,
         setOpenSnackbarCategoryError,
@@ -50,13 +50,6 @@ export default function EventOfEstablishmentUpdatePage() {
     };
 
     // ------------------------  CATEGORY ------------------------------------------
-
-    // This function returns an array of initial category option values
-    const getInitialOptions = (categories) => {
-        return categories && categories.length > 0
-            ? categories.map((category) => category.category_id)
-            : [];
-    };
 
     // ------------------------  SUBMIT ------------------------------------------
 
@@ -131,20 +124,12 @@ export default function EventOfEstablishmentUpdatePage() {
 
     // Call API methods on component mount
     useEffect(() => {
-        getAllCategories();
+        getAllCategoriesEvent();
         getEstablishment();
         getEventCategories();
     }, []);
 
     // Combine the two useEffects into one
-    useEffect(() => {
-        if (eventCategories && eventCategories.length > 0) {
-            const initialOptions = getInitialOptions(eventCategories);
-            formikCategories.setValues({
-                options: initialOptions,
-            });
-        }
-    }, [eventCategories]);
 
     return (
         <>

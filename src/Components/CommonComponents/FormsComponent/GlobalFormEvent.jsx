@@ -8,6 +8,7 @@ import { FormSelect } from './FormSelect';
 import { FormEvent } from './FormEvent';
 import { EventPhoneDemo } from '../PhoneDemo/EventPhoneDemo';
 import { Loader } from '../Loader';
+import { Link as RouterLink } from 'react-router-dom';
 
 export const GlobalFormEvent = ({
     formikEvent,
@@ -62,7 +63,10 @@ export const GlobalFormEvent = ({
                 <BasicPage title={title} icon={<BusinessIcon />} />
 
                 <section className="container mx-auto relative sm:pt-6 md:pt-11 px-4 z-10">
-                    <Link href={`/pro/establishment/${establishmentId}/event/list`}>
+                    <Link
+                        component={RouterLink}
+                        to={`/pro/establishment/${establishmentId}/event/list`}
+                    >
                         <Button
                             sx={{ marginRight: '10px', px: '10px', background: '#0f766e' }}
                             variant="contained"

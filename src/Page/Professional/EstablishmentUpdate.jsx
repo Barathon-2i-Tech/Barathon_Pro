@@ -24,7 +24,7 @@ import { Loader } from '../../Components/CommonComponents/Loader';
 import { useNavigate } from 'react-router-dom';
 import '../../css/WelcomePage/TypoHome.css';
 
-export default function EstablishmentCreatePage() {
+export default function EstablishmentUpdatePage() {
     const [openSnackbarCategoryError, setOpenSnackbarCategoryError] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const { user } = useAuth();

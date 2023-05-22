@@ -16,7 +16,7 @@ import EventPage from './Page/Professional/Event/EventEstablishments';
 import NotificationPage from './Page/Professional/Notification';
 import UnauthorizedLogin from './Page/ErrorPage/unauthorizedLogin';
 import NotFoundPage from './Page/ErrorPage/NotFoundPage';
-import EstablishmentFormPage from './Page/Professional/EstablishmentUpdate';
+import EstablishmentUpdatePage from './Page/Professional/EstablishmentUpdate';
 import EstablishmentCreatePage from './Page/Professional/EstablishmentCreate';
 import EndRegisterLogin from './Page/Auth/EndRegisterBarathonien';
 import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablishment';
@@ -50,7 +50,7 @@ export default function App() {
                         <Route path="establishment" element={<EstablishmentPage />}></Route>
                         <Route
                             path="establishmentForm/:id"
-                            element={<EstablishmentFormPage />}
+                            element={<EstablishmentUpdatePage />}
                         ></Route>
                         <Route
                             path="/pro/:id/establishment/create"
