@@ -88,13 +88,12 @@ export default function EventOfEstablishmentUpdatePage() {
 
                     sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
                         .then(() => {
-                            console.log('mise a jours des category');
                             // Show success message
                             setOpenSnackbar(true);
                         })
                         .catch((error) => {
                             console.log(error);
-                            alert('An error occurred. Please try again');
+                            alert("Une erreur est arrivé avec l'enregistrement de vos categories");
                         });
                     // Navigate to the home page after a delay of 1.5 seconds
                     setTimeout(() => {
@@ -103,7 +102,7 @@ export default function EventOfEstablishmentUpdatePage() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    alert('An error occurred while updating the event. Please try again');
+                    alert("Une erreur est arrivé avec l'envoi de vos informations, ressayez");
                 });
         }
     };
