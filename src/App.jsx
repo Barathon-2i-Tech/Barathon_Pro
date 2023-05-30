@@ -23,6 +23,7 @@ import EventOfEstablishmentPage from './Page/Professional/Event/EventOfEstablish
 import EventOfEstablishmentCreatePage from './Page/Professional/Event/EventOfEstablishmentCreate';
 import EventOfEstablishmentUpdatePage from './Page/Professional/Event/EventOfEstablishmentUpdate';
 import ProfileUpdatePage from './Page/Professional/Profile/Profile';
+import Ticket from './Page/Professional/Ticket';
 import CategoryPage from './Page/Professional/category/CategoryPage';
 
 export default function App() {
@@ -32,6 +33,10 @@ export default function App() {
                 <Route path="/" element={<Welcome />}></Route>
                 <Route path="/registersucess" element={<EndRegisterLogin />}></Route>
                 <Route path="/unauthorizedlogin" element={<UnauthorizedLogin />}></Route>
+                <Route
+                    path="/pro/event/:idEvent/barathonien/:idBarathonien"
+                    element={<Ticket />}
+                ></Route>
 
                 <Route element={<HomeLayout />}>
                     <Route path="login" element={<LoginPage />}></Route>
