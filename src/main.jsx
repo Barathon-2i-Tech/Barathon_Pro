@@ -11,6 +11,12 @@ const theme = createTheme({
         primary: {
             main: '#0f766e',
         },
+        secondary: {
+            main: '#fdba74',
+        },
+        teal: {
+            700: '#2c7a7b',
+        },
     },
 });
 

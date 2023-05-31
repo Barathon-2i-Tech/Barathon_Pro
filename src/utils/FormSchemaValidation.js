@@ -78,3 +78,48 @@ export const eventSchema = () => {
             .required("Veuillez renseigner la date de fin de l'évènement"),
     });
 };
+export const profileSchema = () => {
+    return yup.object().shape({
+        avatar: yup.mixed().required('Ajoutez une image'),
+        last_name: yup.string().required('Nom obligatoire'),
+        first_name: yup.string().required('Prénom obligatoire'),
+        email: yup.string().email('Veuillez entrer une adresse email valide'),
+        phone: yup
+            .string()
+            .required('Téléphone est requis')
+            .matches(
+                /^\+?\d{1,3}[-.\s]?\d{1,14}[-.\s]?\d{1,14}$/,
+                'Veuillez entrer un numéro de téléphone valide',
+            ),
+    });
+};
+
+export const newPasswordSchema = () => {
+    return yup.object().shape({
+        password: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('Ancien mot de passe obligatoire'),
+        new_password: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('Nouveau mot de passe obligatoire')
+            .test(
+                'passwords-different',
+                'Les mots de passe doivent être différents',
+                function (value) {
+                    return this.parent.password !== value;
+                },
+            ),
+        new_password_confirmation: yup
+            .string()
+            .min(8, 'Minimum 8 characteres pour votre nouveau mot de passe')
+            .required('Confimation du nouveau mot de passe obligatoire')
+            .oneOf([yup.ref('new_password'), null], 'Les mots de passe doivent etre identiques'),
+    });
+};
+export const forgotPasswordSchema = () => {
+    return yup.object().shape({
+        email: yup.string().email('Veuillez entrer une adresse email valide'),
+    });
+};

@@ -24,8 +24,8 @@ export default function EventOfEstablishmentUpdatePage() {
         categoriesSelected,
         formikCategories,
         handleCategoryChange,
-        eventCategories,
-        getAllCategories,
+
+        getAllCategoriesEvent,
         getEventCategories,
         openSnackbarCategoryError,
         setOpenSnackbarCategoryError,
@@ -50,13 +50,6 @@ export default function EventOfEstablishmentUpdatePage() {
     };
 
     // ------------------------  CATEGORY ------------------------------------------
-
-    // This function returns an array of initial category option values
-    const getInitialOptions = (categories) => {
-        return categories && categories.length > 0
-            ? categories.map((category) => category.category_id)
-            : [];
-    };
 
     // ------------------------  SUBMIT ------------------------------------------
 
@@ -87,7 +80,7 @@ export default function EventOfEstablishmentUpdatePage() {
             sendFormDataPutMultipart(urlCreate, token, formData)
                 .then((response) => {
                     // Get the updated event's ID
-                    const newEventId = response.data.data[0].event_id;
+                    const newEventId = response.data.data.event.event_id;
 
                     // Send formatted category data
                     const urlCreateCategories = `/pro/event/${newEventId}/category`;
@@ -95,13 +88,12 @@ export default function EventOfEstablishmentUpdatePage() {
 
                     sendFormDataPutCategory(urlCreateCategories, token, dataValuesCategories)
                         .then(() => {
-                            console.log('mise a jours des category');
                             // Show success message
                             setOpenSnackbar(true);
                         })
                         .catch((error) => {
                             console.log(error);
-                            alert('An error occurred. Please try again');
+                            alert("Une erreur est arrivé avec l'enregistrement de vos categories");
                         });
                     // Navigate to the home page after a delay of 1.5 seconds
                     setTimeout(() => {
@@ -110,7 +102,7 @@ export default function EventOfEstablishmentUpdatePage() {
                 })
                 .catch((error) => {
                     console.log(error);
-                    alert('An error occurred while updating the event. Please try again');
+                    alert("Une erreur est arrivé avec l'envoi de vos informations, ressayez");
                 });
         }
     };
@@ -131,20 +123,12 @@ export default function EventOfEstablishmentUpdatePage() {
 
     // Call API methods on component mount
     useEffect(() => {
-        getAllCategories();
+        getAllCategoriesEvent();
         getEstablishment();
         getEventCategories();
     }, []);
 
     // Combine the two useEffects into one
-    useEffect(() => {
-        if (eventCategories && eventCategories.length > 0) {
-            const initialOptions = getInitialOptions(eventCategories);
-            formikCategories.setValues({
-                options: initialOptions,
-            });
-        }
-    }, [eventCategories]);
 
     return (
         <>

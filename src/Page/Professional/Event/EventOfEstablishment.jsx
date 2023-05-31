@@ -21,7 +21,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import HeaderDatagrid from '../../../Components/CommonComponents/DataGrid/HeaderDataGrid';
 import Copyright from '../../../Components/CommonComponents/Copyright';
-import { useParams } from 'react-router-dom';
+import { useParams, Link as RouterLink } from 'react-router-dom';
 
 export default function EventOfEstablishmentPage() {
     const { user } = useAuth();
@@ -61,7 +61,7 @@ export default function EventOfEstablishmentPage() {
                     <GridToolbarDensitySelector />
                     <GridToolbarExport />
                 </div>
-                <Link href={`/pro/establishment/event/${id}/create`}>
+                <Link component={RouterLink} to={`/pro/establishment/event/${id}/create`}>
                     <Button
                         sx={{ marginRight: '10px', px: '40px' }}
                         variant="contained"
@@ -221,7 +221,7 @@ export default function EventOfEstablishmentPage() {
                 return (
                     <>
                         <Link
-                            href={
+                            to={
                                 params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
@@ -231,7 +231,7 @@ export default function EventOfEstablishmentPage() {
                                 params.row.status.code === 'EVENT_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? Box
-                                    : 'a'
+                                    : RouterLink
                             }
                         >
                             <Button
@@ -283,7 +283,7 @@ export default function EventOfEstablishmentPage() {
 
     return (
         <>
-            <Link href={`/pro/establishment/event`}>
+            <Link component={RouterLink} to={`/pro/establishment/event`}>
                 <Button
                     sx={{
                         marginRight: '10px',
@@ -298,7 +298,6 @@ export default function EventOfEstablishmentPage() {
                     Retour aux établissements
                 </Button>
             </Link>
-
             <Paper
                 sx={{
                     display: 'flex',

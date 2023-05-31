@@ -46,14 +46,14 @@ export const FormSelect = ({
                                             name: 'options',
                                         }}
                                     >
-                                        {allCategories.map((allEstablishment) => {
+                                        {allCategories.map((category) => {
                                             const categoryDetails = JSON.parse(
-                                                allEstablishment.category_details,
+                                                category.category_details,
                                             );
                                             return (
                                                 <MenuItem
-                                                    key={allEstablishment.category_id}
-                                                    value={allEstablishment.category_id}
+                                                    key={category.category_id}
+                                                    value={category.category_id}
                                                 >
                                                     {categoryDetails.label}
                                                 </MenuItem>

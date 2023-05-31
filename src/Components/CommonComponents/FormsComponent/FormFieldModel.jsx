@@ -15,7 +15,7 @@ export const FormFieldModel = ({
     setSelectedImage,
     buttonTextDownload,
 }) => {
-    const isLogoField = name === 'logo' || name === 'poster';
+    const isLogoField = name === 'logo' || name === 'poster' || name === 'avatar';
     const isDateTimePickerField = name === 'start_event' || name === 'end_event';
     const [fileName, setFileName] = useState('');
 
@@ -35,7 +35,11 @@ export const FormFieldModel = ({
     return (
         <Grid item xs={grid}>
             {isLogoField ? (
-                <Box display="flex" alignItems="center">
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent={name === 'avatar' ? 'center' : 'flex-start'}
+                >
                     <Button variant="contained" component="label">
                         <UploadIcon style={{ marginRight: '8px' }} />
                         {buttonTextDownload}

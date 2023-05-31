@@ -20,6 +20,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import HeaderDatagrid from '../../Components/CommonComponents/DataGrid/HeaderDataGrid';
 import Copyright from '../../Components/CommonComponents/Copyright';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function EstablishmentPage() {
     const { user } = useAuth();
@@ -55,7 +56,7 @@ export default function EstablishmentPage() {
                     <GridToolbarDensitySelector />
                     <GridToolbarExport />
                 </div>
-                <Link href={`/pro/${ownerId}/establishment/create`}>
+                <Link component={RouterLink} to={`/pro/${ownerId}/establishment/create`}>
                     <Button
                         sx={{ marginRight: '10px', px: '40px' }}
                         variant="contained"
@@ -79,27 +80,26 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
+            console.log(response.data.data);
             setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const deleteEstablishment = (id) => {
-        Axios.api
-            .delete(`/pro/${ownerId}/establishment/${id}`, {
+    const deleteEstablishment = async (id) => {
+        try {
+            await Axios.api.delete(`/pro/${ownerId}/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
                     Authorization: `Bearer ${token}`,
                 },
-            })
-            .then(() => {
-                setReloading(true);
-            })
-            .catch((error) => {
-                console.log(error);
             });
+            setReloading(true);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     function getStatus(params) {
@@ -124,6 +124,7 @@ export default function EstablishmentPage() {
         establishment_id: establishment.establishment_id,
         trade_name: establishment.trade_name,
         opening: JSON.parse(establishment.opening),
+        validation_code: establishment.validation_code,
         siret: establishment.siret,
         logo: establishment.logo,
         phone: establishment.phone,
@@ -151,6 +152,13 @@ export default function EstablishmentPage() {
             field: 'trade_name',
             headerName: 'Nom commercial',
             flex: 0.5,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'validation_code',
+            headerName: 'Code',
+            flex: 0.2,
             headerAlign: 'center',
             align: 'center',
         },
@@ -259,7 +267,7 @@ export default function EstablishmentPage() {
                 return (
                     <>
                         <Link
-                            href={
+                            to={
                                 params.row.status.code === 'ESTABL_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? ''
@@ -269,7 +277,7 @@ export default function EstablishmentPage() {
                                 params.row.status.code === 'ESTABL_PENDING' ||
                                 params.row.deleted_at !== null
                                     ? Box
-                                    : 'a'
+                                    : RouterLink
                             }
                         >
                             <Button

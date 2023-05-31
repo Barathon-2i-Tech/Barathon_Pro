@@ -29,3 +29,19 @@ export const FormInitialValuesEvent = {
     start_event: '',
     end_event: '',
 };
+export const FormInitialValuesProfile = {
+    avatar: '',
+    last_name: '',
+    first_name: '',
+    email: '',
+    // phone:"",
+};
+
+export const FormInitialValuesNewPassword = {
+    password: '',
+    new_password: '',
+    new_password_confirmation: '',
+};
+export const FormInitialValuesForgotPassword = {
+    email: '',
+};
