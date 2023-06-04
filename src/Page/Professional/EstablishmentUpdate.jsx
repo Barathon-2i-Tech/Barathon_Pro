@@ -65,7 +65,7 @@ export default function EstablishmentUpdatePage() {
     // This function is used to get the establishment to update by his ID
     async function getEstablishment() {
         try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
+            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${establishmentId}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -214,7 +214,7 @@ export default function EstablishmentUpdatePage() {
         // Replace openingFormat with JSON.stringify(dataValuesOpening)
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
 
-        const urlCreate = `/pro/${ownerId}/establishment/${id}`;
+        const urlCreate = `/pro/establishment/${establishmentId}`;
 
         const formData = new FormData();
         for (const [key, value] of Object.entries(dataValues)) {
