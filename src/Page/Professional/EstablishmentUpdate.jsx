@@ -65,13 +65,16 @@ export default function EstablishmentUpdatePage() {
     // This function is used to get the establishment to update by his ID
     async function getEstablishment() {
         try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${establishmentId}`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
+            const response = await Axios.api.get(
+                `/pro/${ownerId}/establishment/${establishmentId}`,
+                {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                        Authorization: `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             setEstablishment(response.data.data);
 
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
