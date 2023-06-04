@@ -24,7 +24,6 @@ export default function EventOfEstablishmentUpdatePage() {
         categoriesSelected,
         formikCategories,
         handleCategoryChange,
-
         getAllCategoriesEvent,
         getEventCategories,
         openSnackbarCategoryError,
@@ -61,8 +60,8 @@ export default function EventOfEstablishmentUpdatePage() {
         } else {
             const categoryIds = formikCategories.values.options;
 
-            const dataValues = { ...values, user_id: userId, establishment_id: establishmentId };
-            const urlCreate = `pro/establishment/${establishmentId}/event/${eventId}`;
+            const dataValues = { ...values, user_id: userId, event_update_id: eventId || null };
+            const urlCreate = `pro/event/${eventId}`;
 
             // Create a new FormData object
             const formData = new FormData();
@@ -119,7 +118,7 @@ export default function EventOfEstablishmentUpdatePage() {
         inputValues,
         setInputValues,
         setSelectedImage,
-    } = UseEvent({ establishmentId, eventId, token, handleFormSubmit });
+    } = UseEvent({ eventId, token, handleFormSubmit });
 
     // Call API methods on component mount
     useEffect(() => {

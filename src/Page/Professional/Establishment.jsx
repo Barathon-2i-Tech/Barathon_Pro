@@ -80,7 +80,6 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data.data);
             setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
