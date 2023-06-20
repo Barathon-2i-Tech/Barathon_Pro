@@ -72,7 +72,6 @@ const UseEvent = ({ eventId, token, handleFormSubmit }) => {
             setEvent(response.data.data);
             setPosterUrl(response.data.data.poster);
 
-            await new Promise((resolve) => setTimeout(resolve));
             const loader = document.getElementById('loader');
             if (loader) {
                 loader.classList.remove('display');
