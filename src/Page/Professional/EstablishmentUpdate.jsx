@@ -65,13 +65,16 @@ export default function EstablishmentUpdatePage() {
     // This function is used to get the establishment to update by his ID
     async function getEstablishment() {
         try {
-            const response = await Axios.api.get(`/pro/${ownerId}/establishment/${id}`, {
-                headers: {
-                    accept: 'application/vnd.api+json',
-                    'Content-Type': 'application/vnd.api+json',
-                    Authorization: `Bearer ${token}`,
+            const response = await Axios.api.get(
+                `/pro/${ownerId}/establishment/${establishmentId}`,
+                {
+                    headers: {
+                        accept: 'application/vnd.api+json',
+                        'Content-Type': 'application/vnd.api+json',
+                        Authorization: `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             setEstablishment(response.data.data);
 
             await new Promise((resolve) => setTimeout(resolve)); // Attendre un tick pour laisser le temps à React de mettre à jour l'interface utilisateur
@@ -214,7 +217,7 @@ export default function EstablishmentUpdatePage() {
         // Replace openingFormat with JSON.stringify(dataValuesOpening)
         const dataValues = { ...values, opening: JSON.stringify(dataValuesOpening) };
 
-        const urlCreate = `/pro/${ownerId}/establishment/${id}`;
+        const urlCreate = `/pro/establishment/${establishmentId}`;
 
         const formData = new FormData();
         for (const [key, value] of Object.entries(dataValues)) {

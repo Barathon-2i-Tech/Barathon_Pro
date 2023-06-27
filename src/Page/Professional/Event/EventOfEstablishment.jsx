@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../../Components/Hooks/useAuth';
 import {
     DataGrid,
+    frFR,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
@@ -310,6 +311,7 @@ export default function EventOfEstablishmentPage() {
                 <HeaderDatagrid title={`Événements de ${establishmentName}`} />
 
                 <DataGrid
+                    localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                     rows={eventsRows}
                     columns={eventColumns}
                     columnVisibilityModel={columnVisibilityModel}

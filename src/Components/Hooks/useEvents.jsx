@@ -6,7 +6,7 @@ import Axios from '../../utils/axiosUrl';
 import dayjs from 'dayjs';
 import 'dayjs/locale/fr';
 
-const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
+const UseEvent = ({ eventId, token, handleFormSubmit }) => {
     dayjs.locale('fr');
     const [posterUrl, setPosterUrl] = useState('');
     const [event, setEvent] = useState([]);
@@ -62,20 +62,16 @@ const UseEvent = ({ eventId, establishmentId, token, handleFormSubmit }) => {
 
     async function getEvent() {
         try {
-            const response = await Axios.api.get(
-                `/pro/establishment/${establishmentId}/event/${eventId}`,
-                {
-                    headers: {
-                        accept: 'application/vnd.api+json',
-                        'Content-Type': 'application/vnd.api+json',
-                        Authorization: `Bearer ${token}`,
-                    },
+            const response = await Axios.api.get(`/pro/event/${eventId}`, {
+                headers: {
+                    accept: 'application/vnd.api+json',
+                    'Content-Type': 'application/vnd.api+json',
+                    Authorization: `Bearer ${token}`,
                 },
-            );
+            });
             setEvent(response.data.data);
             setPosterUrl(response.data.data.poster);
 
-            await new Promise((resolve) => setTimeout(resolve));
             const loader = document.getElementById('loader');
             if (loader) {
                 loader.classList.remove('display');

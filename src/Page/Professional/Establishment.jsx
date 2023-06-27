@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../Components/Hooks/useAuth';
 import {
     DataGrid,
+    frFR,
     GridToolbarContainer,
     GridToolbarColumnsButton,
     GridToolbarFilterButton,
@@ -80,7 +81,6 @@ export default function EstablishmentPage() {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            console.log(response.data.data);
             setAllEstablishments(response.data.data);
         } catch (error) {
             console.log(error);
@@ -89,7 +89,7 @@ export default function EstablishmentPage() {
 
     const deleteEstablishment = async (id) => {
         try {
-            await Axios.api.delete(`/pro/${ownerId}/establishment/${id}`, {
+            await Axios.api.delete(`/pro/establishment/${id}`, {
                 headers: {
                     accept: 'application/vnd.api+json',
                     'Content-Type': 'application/vnd.api+json',
@@ -333,6 +333,7 @@ export default function EstablishmentPage() {
         >
             <HeaderDatagrid title={'Tous mes etablissements'} />
             <DataGrid
+                localeText={frFR.components.MuiDataGrid.defaultProps.localeText}
                 rows={establishmentsRows}
                 columns={establishmentColumns}
                 columnVisibilityModel={columnVisibilityModel}
